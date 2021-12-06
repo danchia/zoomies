@@ -1,0 +1,6 @@
+[submodule "external/eigen"]
+	path = src/eigen
+	url = https://gitlab.com/libeigen/eigen.git
+[submodule "src/userland"]
+	path = src/userland
+	url = https://github.com/raspberrypi/userland.git
