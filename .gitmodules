@@ -4,3 +4,9 @@
 [submodule "src/userland"]
 	path = src/userland
 	url = https://github.com/raspberrypi/userland.git
+[submodule "src/googletest"]
+	path = src/googletest
+	url = https://github.com/google/googletest
+[submodule "src/spdlog"]
+	path = src/spdlog
+	url = https://github.com/gabime/spdlog

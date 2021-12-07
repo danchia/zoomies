@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 
-#include <Eigen/Dense>
+#include "Eigen/Dense"
 
 struct HWSensorReading {
   uint16_t motor_ticks;

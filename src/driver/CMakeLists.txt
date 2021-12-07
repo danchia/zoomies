@@ -1,3 +1,5 @@
-add_executable(driver driver.cc)
+add_library(driver_lib controlloop.cc)
+target_link_libraries(driver_lib hw common)
 
-target_link_libraries(driver PUBLIC hw -static)
+add_executable(driver driver.cc)
+target_link_libraries(driver driver_lib hw -static)
