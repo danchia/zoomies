@@ -1,9 +1,9 @@
 #include "driver/controlloop.h"
 
 #include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
-
-#include <cstdio>
 
 #include "common/clock.h"
 #include "hw/hw.h"
@@ -31,12 +31,14 @@ struct State {
 
 float MotorTickPeriodToMetersPerSecond(uint16_t p) {
   if (p == 0) return 0.0f;
-  return (10000 * kMetersPerTick) / p;
+  return (1e6 * kMetersPerTick) / p;
 }
 
 }  // namespace
 
 bool RunControlLoop(HW& hw) {
+  auto* lf = fopen("datalog.csv", "w");
+  fprintf(lf, "esc,fwd_vel,set_vel,e,e_i\n");
   int64_t loop_ticks = 0;
   HWSensorReading prev_reading, reading;
 
@@ -50,8 +52,16 @@ bool RunControlLoop(HW& hw) {
   Clock loop_clock;
   State prev_state;
 
+  float desired_velocity = 1.0f;
+  float esc = 0.0f;
+  float vel_e_i = 0.0f;
+
   while (true) {
     ++loop_ticks;
+
+    if (loop_ticks == 30) desired_velocity = 1.5f;
+    if (loop_ticks == 60) desired_velocity = 2.0f;
+    if (loop_ticks > 110) break;
 
     int64_t now = loop_clock.ElapsedMicros();
     while (target_ftime < now) {
@@ -87,14 +97,21 @@ bool RunControlLoop(HW& hw) {
     prev_state = state;
 
     // PID
+    float e = desired_velocity - state.fwd_vel;
+    vel_e_i = 0.9 * vel_e_i + e;
+    float esc = 0.1 + e * 0.2 + vel_e_i * 0.06;
 
-    hw.SetLedSpeedSteering(3, 0.0, 0.0f + kSteerTrim);
+    hw.SetLedSpeedSteering(3, esc, 0.0f + kSteerTrim);
 
+    fprintf(lf, "%.3f,%.3f,%.3f,%.3f,%.3f\n", esc, state.fwd_vel,
+            desired_velocity, e, vel_e_i);
     // // TODO: remove
     // if (loop_ticks > 50) {
     //   return true;
     // }
-    if (loop_ticks % 100 == 0) {
+    if (loop_ticks % 10 == 0) {
+      spdlog::info("esc: {:.3f}", esc);
+      spdlog::info("fwd_vel: {:3f}", state.fwd_vel);
       spdlog::info("motor: {} cum, {} period", reading.motor_ticks,
                    reading.motor_period);
       spdlog::info("gyro: {:.3f} {:.3f} {:.3f}", reading.gyro.x(),
@@ -103,4 +120,11 @@ bool RunControlLoop(HW& hw) {
                    reading.accel.y(), reading.accel.z());
     }
   }
+
+  // brake
+  hw.SetLedSpeedSteering(3, -0.3f, 0.0f + kSteerTrim);
+  fclose(lf);
+  usleep(1000000);
+
+  return true;
 }
