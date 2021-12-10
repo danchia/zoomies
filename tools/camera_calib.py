@@ -71,7 +71,7 @@ tvecs = [np.zeros((1, 1, 3), dtype=np.float32) for i in range(N_imm)]
 calibration_flags = (
     cv2.fisheye.CALIB_RECOMPUTE_EXTRINSIC
 #    + cv2.fisheye.CALIB_FIX_SKEW
-#    + cv2.fisheye.CALIB_CHECK_COND
+    + cv2.fisheye.CALIB_CHECK_COND
 #    + cv2.fisheye.CALIB_FIX_K2
 #    + cv2.fisheye.CALIB_FIX_K3
 #    + cv2.fisheye.CALIB_FIX_K4
