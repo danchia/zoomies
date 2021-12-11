@@ -1,5 +1,6 @@
 #include "driver/controlloop.h"
 
+#include <assert.h>
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,10 +37,37 @@ float MotorTickPeriodToMetersPerSecond(uint16_t p) {
 
 }  // namespace
 
-bool RunControlLoop(HW& hw) {
+Driver::Driver() {
+  assert(std::atomic_is_lock_free(&ticks_));
+  vid_file_ = fopen("vidlog.bin", "w");
+
+  ticks_.store(0, std::memory_order_relaxed);
+}
+
+Driver::~Driver() {
+  if (vid_file_ != nullptr) {
+    fclose(vid_file_);
+  }
+}
+
+// 30Hz update rate.
+void Driver::OnCameraTick(uint8_t* buf, int len) {
+  int64_t loop_tick = ticks_.load(std::memory_order_relaxed);
+  if (loop_tick <= 0) return;
+
+  fwrite(&loop_tick, sizeof(loop_tick), 1, vid_file_);
+  int32_t l = len;
+  fwrite(&l, sizeof(l), 1, vid_file_);
+  fwrite(buf, sizeof(uint8_t), len, vid_file_);
+
+  if (loop_tick % 15 == 0) {
+    fflush(vid_file_);  // sketchy, how long will this block?
+  }
+}
+
+bool Driver::RunControlLoop(HW& hw) {
   auto* lf = fopen("datalog.csv", "w");
   fprintf(lf, "esc,fwd_vel,set_vel,e,e_i\n");
-  int64_t loop_ticks = 0;
   HWSensorReading prev_reading, reading;
 
   int64_t target_ftime = kLoopPeriodMicros;
@@ -57,11 +85,11 @@ bool RunControlLoop(HW& hw) {
   float vel_e_i = 0.0f;
 
   while (true) {
-    ++loop_ticks;
+    int64_t loop_tick = ticks_.fetch_add(1, std::memory_order_relaxed) + 1;
 
-    if (loop_ticks == 30) desired_velocity = 1.5f;
-    if (loop_ticks == 60) desired_velocity = 2.0f;
-    if (loop_ticks > 110) break;
+    if (loop_tick == 30) desired_velocity = 1.5f;
+    if (loop_tick == 60) desired_velocity = 2.0f;
+    if (loop_tick > 110) break;
 
     int64_t now = loop_clock.ElapsedMicros();
     while (target_ftime < now) {
@@ -109,7 +137,7 @@ bool RunControlLoop(HW& hw) {
     // if (loop_ticks > 50) {
     //   return true;
     // }
-    if (loop_ticks % 10 == 0) {
+    if (loop_tick % 10 == 0) {
       spdlog::info("esc: {:.3f}", esc);
       spdlog::info("fwd_vel: {:3f}", state.fwd_vel);
       spdlog::info("motor: {} cum, {} period", reading.motor_ticks,
@@ -118,6 +146,9 @@ bool RunControlLoop(HW& hw) {
                    reading.gyro.y(), reading.gyro.z());
       spdlog::info("accel: {:.3f} {:.3f}, {:.3f}", reading.accel.x(),
                    reading.accel.y(), reading.accel.z());
+    }
+    if (loop_tick % 50 == 0) {
+      fflush(lf);  // sketchy, will block?
     }
   }
 
