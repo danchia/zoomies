@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import glob
 
-DIM = ( 2592, 1944)
 K = np.load('../data/calib/camera_K.npy')
 D = np.load('../data/calib/camera_D.npy')
 
