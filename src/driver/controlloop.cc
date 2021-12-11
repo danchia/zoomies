@@ -12,6 +12,7 @@
 
 namespace {
 
+constexpr bool kManualDrive = false;
 constexpr int64_t kLoopPeriodMicros = 10000;
 constexpr float kSteerTrim = -0.02f;
 // pi * 62.7e-3 (wheel diameter) * 0.5 (belt ratio, 17t) * 25/90 / 3 =
@@ -60,14 +61,18 @@ void Driver::OnCameraTick(uint8_t* buf, int len) {
   fwrite(&l, sizeof(l), 1, vid_file_);
   fwrite(buf, sizeof(uint8_t), len, vid_file_);
 
-  if (loop_tick % 15 == 0) {
+  if (loop_tick % 20 == 0) {
     fflush(vid_file_);  // sketchy, how long will this block?
   }
 }
 
-bool Driver::RunControlLoop(HW& hw) {
+bool Driver::RunControlLoop(HW& hw, JS& js) {
+  hw.SetLedSpeedSteering(0.0f, 0.0f, kSteerTrim);
+  usleep(1000000);
+
   auto* lf = fopen("datalog.csv", "w");
-  fprintf(lf, "esc,fwd_vel,set_vel,e,e_i\n");
+  fprintf(lf,
+          "t_micros,x,y,heading,total_distance,esc,fwd_vel,set_vel,e,e_i\n");
   HWSensorReading prev_reading, reading;
 
   int64_t target_ftime = kLoopPeriodMicros;
@@ -89,7 +94,7 @@ bool Driver::RunControlLoop(HW& hw) {
 
     if (loop_tick == 30) desired_velocity = 1.5f;
     if (loop_tick == 60) desired_velocity = 2.0f;
-    if (loop_tick > 110) break;
+    if (loop_tick > 130) break;
 
     int64_t now = loop_clock.ElapsedMicros();
     while (target_ftime < now) {
@@ -118,25 +123,29 @@ bool Driver::RunControlLoop(HW& hw) {
 
     float dt = (state.t_micros - prev_state.t_micros) * 1e-6;
     state.heading += state.rot_vel * dt;
-    state.x += sin(state.heading) * state.fwd_vel * dt;
-    state.y += cos(state.heading) * state.fwd_vel * dt;
+    state.x += cos(state.heading) * state.fwd_vel * dt;
+    state.y += sin(state.heading) * state.fwd_vel * dt;
 
     prev_reading = reading;
     prev_state = state;
+
+    float steer = 0.0f;
+    if (kManualDrive) {
+      auto s = js.Poll();
+      desired_velocity = s.accel > 0 ? s.accel * 0.8f : 0.0f;
+      steer = s.steer;
+    }
 
     // PID
     float e = desired_velocity - state.fwd_vel;
     vel_e_i = 0.9 * vel_e_i + e;
     float esc = 0.1 + e * 0.2 + vel_e_i * 0.06;
+    hw.SetLedSpeedSteering(3, esc, steer + kSteerTrim);
 
-    hw.SetLedSpeedSteering(3, esc, 0.0f + kSteerTrim);
-
-    fprintf(lf, "%.3f,%.3f,%.3f,%.3f,%.3f\n", esc, state.fwd_vel,
-            desired_velocity, e, vel_e_i);
-    // // TODO: remove
-    // if (loop_ticks > 50) {
-    //   return true;
-    // }
+    fprintf(lf, "%ld,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\n",
+            state.t_micros, state.x, state.y, state.heading,
+            state.total_distance, esc, state.fwd_vel, desired_velocity, e,
+            vel_e_i);
     if (loop_tick % 10 == 0) {
       spdlog::info("esc: {:.3f}", esc);
       spdlog::info("fwd_vel: {:3f}", state.fwd_vel);
