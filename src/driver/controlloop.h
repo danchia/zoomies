@@ -6,13 +6,14 @@
 #include <atomic>
 
 #include "hw/hw.h"
+#include "hw/js.h"
 
 class Driver {
  public:
   Driver();
   ~Driver();
 
-  bool RunControlLoop(HW& hw);
+  bool RunControlLoop(HW& hw, JS& js);
   void OnCameraTick(uint8_t* buf, int len);
 
  private:
