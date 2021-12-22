@@ -1,0 +1,786 @@
+
+Å
+ros/builtins.protoros",
+Time
+sec (Rsec
+nsec (Rnsec"0
+Duration
+sec (Rsec
+nsec (Rnsecbproto3
+å
+ros/actionlib_msgs/GoalID.protoros.actionlib_msgsros/builtins.proto"9
+GoalID
+stamp (2	.ros.TimeRstamp
+id (	Ridbproto3
+—
+#ros/actionlib_msgs/GoalStatus.protoros.actionlib_msgsros/actionlib_msgs/GoalID.proto"m
+
+GoalStatus3
+goal_id (2.ros.actionlib_msgs.GoalIDRgoalId
+status (Rstatus
+text (	Rtextbproto3
+ù
+ros/std_msgs/Header.protoros.std_msgsros/builtins.proto"V
+Header
+seq (Rseq
+stamp (2	.ros.TimeRstamp
+frame_id (	RframeIdbproto3
+â
+(ros/actionlib_msgs/GoalStatusArray.protoros.actionlib_msgs#ros/actionlib_msgs/GoalStatus.protoros/std_msgs/Header.proto"Ä
+GoalStatusArray,
+header (2.ros.std_msgs.HeaderRheader?
+status_list (2.ros.actionlib_msgs.GoalStatusR
+statusListbproto3
+u
+"ros/diagnostic_msgs/KeyValue.protoros.diagnostic_msgs"2
+KeyValue
+key (	Rkey
+value (	Rvaluebproto3
+û
+*ros/diagnostic_msgs/DiagnosticStatus.protoros.diagnostic_msgs"ros/diagnostic_msgs/KeyValue.proto"Æ
+DiagnosticStatus
+level (Rlevel
+name (	Rname
+message (	Rmessage
+hardware_id (	R
+hardwareId5
+values (2.ros.diagnostic_msgs.KeyValueRvaluesbproto3
+è
+)ros/diagnostic_msgs/DiagnosticArray.protoros.diagnostic_msgs*ros/diagnostic_msgs/DiagnosticStatus.protoros/std_msgs/Header.proto"~
+DiagnosticArray,
+header (2.ros.std_msgs.HeaderRheader=
+status (2%.ros.diagnostic_msgs.DiagnosticStatusRstatusbproto3
+q
+ros/geometry_msgs/Vector3.protoros.geometry_msgs"3
+Vector3
+x (Rx
+y (Ry
+z (Rzbproto3
+Œ
+ros/geometry_msgs/Accel.protoros.geometry_msgsros/geometry_msgs/Vector3.proto"q
+Accel2
+linear (2.ros.geometry_msgs.Vector3Rlinear4
+angular (2.ros.geometry_msgs.Vector3Rangularbproto3
+È
+$ros/geometry_msgs/AccelStamped.protoros.geometry_msgsros/geometry_msgs/Accel.protoros/std_msgs/Header.proto"l
+AccelStamped,
+header (2.ros.std_msgs.HeaderRheader.
+accel (2.ros.geometry_msgs.AccelRaccelbproto3
+Œ
++ros/geometry_msgs/AccelWithCovariance.protoros.geometry_msgsros/geometry_msgs/Accel.proto"e
+AccelWithCovariance.
+accel (2.ros.geometry_msgs.AccelRaccel
+
+covariance (R
+covariancebproto3
+¢
+2ros/geometry_msgs/AccelWithCovarianceStamped.protoros.geometry_msgs+ros/geometry_msgs/AccelWithCovariance.protoros/std_msgs/Header.proto"à
+AccelWithCovarianceStamped,
+header (2.ros.std_msgs.HeaderRheader<
+accel (2&.ros.geometry_msgs.AccelWithCovarianceRaccelbproto3
+ë
+ros/geometry_msgs/Inertia.protoros.geometry_msgsros/geometry_msgs/Vector3.proto"±
+Inertia
+m (Rm,
+com (2.ros.geometry_msgs.Vector3Rcom
+ixx (Rixx
+ixy (Rixy
+ixz (Rixz
+iyy (Riyy
+iyz (Riyz
+izz (Rizzbproto3
+ı
+&ros/geometry_msgs/InertiaStamped.protoros.geometry_msgsros/geometry_msgs/Inertia.protoros/std_msgs/Header.proto"t
+InertiaStamped,
+header (2.ros.std_msgs.HeaderRheader4
+inertia (2.ros.geometry_msgs.InertiaRinertiabproto3
+m
+ros/geometry_msgs/Point.protoros.geometry_msgs"1
+Point
+x (Rx
+y (Ry
+z (Rzbproto3
+q
+ros/geometry_msgs/Point32.protoros.geometry_msgs"3
+Point32
+x (Rx
+y (Ry
+z (Rzbproto3
+È
+$ros/geometry_msgs/PointStamped.protoros.geometry_msgsros/geometry_msgs/Point.protoros/std_msgs/Header.proto"l
+PointStamped,
+header (2.ros.std_msgs.HeaderRheader.
+point (2.ros.geometry_msgs.PointRpointbproto3
+ú
+ros/geometry_msgs/Polygon.protoros.geometry_msgsros/geometry_msgs/Point32.proto"=
+Polygon2
+points (2.ros.geometry_msgs.Point32Rpointsbproto3
+ı
+&ros/geometry_msgs/PolygonStamped.protoros.geometry_msgsros/geometry_msgs/Polygon.protoros/std_msgs/Header.proto"t
+PolygonStamped,
+header (2.ros.std_msgs.HeaderRheader4
+polygon (2.ros.geometry_msgs.PolygonRpolygonbproto3
+Ö
+"ros/geometry_msgs/Quaternion.protoros.geometry_msgs"D
+
+Quaternion
+x (Rx
+y (Ry
+z (Rz
+w (Rwbproto3
+˚
+ros/geometry_msgs/Pose.protoros.geometry_msgsros/geometry_msgs/Point.proto"ros/geometry_msgs/Quaternion.proto"}
+Pose4
+position (2.ros.geometry_msgs.PointRposition?
+orientation (2.ros.geometry_msgs.QuaternionRorientationbproto3
+·
+!ros/geometry_msgs/PoseArray.protoros.geometry_msgsros/geometry_msgs/Pose.protoros/std_msgs/Header.proto"h
+	PoseArray,
+header (2.ros.std_msgs.HeaderRheader-
+poses (2.ros.geometry_msgs.PoseRposesbproto3
+„
+#ros/geometry_msgs/PoseStamped.protoros.geometry_msgsros/geometry_msgs/Pose.protoros/std_msgs/Header.proto"h
+PoseStamped,
+header (2.ros.std_msgs.HeaderRheader+
+pose (2.ros.geometry_msgs.PoseRposebproto3
+»
+*ros/geometry_msgs/PoseWithCovariance.protoros.geometry_msgsros/geometry_msgs/Pose.proto"a
+PoseWithCovariance+
+pose (2.ros.geometry_msgs.PoseRpose
+
+covariance (R
+covariancebproto3
+ú
+1ros/geometry_msgs/PoseWithCovarianceStamped.protoros.geometry_msgs*ros/geometry_msgs/PoseWithCovariance.protoros/std_msgs/Header.proto"Ñ
+PoseWithCovarianceStamped,
+header (2.ros.std_msgs.HeaderRheader9
+pose (2%.ros.geometry_msgs.PoseWithCovarianceRposebproto3
+à
+)ros/geometry_msgs/QuaternionStamped.protoros.geometry_msgs"ros/geometry_msgs/Quaternion.protoros/std_msgs/Header.proto"Ä
+QuaternionStamped,
+header (2.ros.std_msgs.HeaderRheader=
+
+quaternion (2.ros.geometry_msgs.QuaternionR
+quaternionbproto3
+ä
+!ros/geometry_msgs/Transform.protoros.geometry_msgs"ros/geometry_msgs/Quaternion.protoros/geometry_msgs/Vector3.proto"Ñ
+	Transform<
+translation (2.ros.geometry_msgs.Vector3Rtranslation9
+rotation (2.ros.geometry_msgs.QuaternionRrotationbproto3
+®
+(ros/geometry_msgs/TransformStamped.protoros.geometry_msgs!ros/geometry_msgs/Transform.protoros/std_msgs/Header.proto"¢
+TransformStamped,
+header (2.ros.std_msgs.HeaderRheader$
+child_frame_id (	RchildFrameId:
+	transform (2.ros.geometry_msgs.TransformR	transformbproto3
+Œ
+ros/geometry_msgs/Twist.protoros.geometry_msgsros/geometry_msgs/Vector3.proto"q
+Twist2
+linear (2.ros.geometry_msgs.Vector3Rlinear4
+angular (2.ros.geometry_msgs.Vector3Rangularbproto3
+È
+$ros/geometry_msgs/TwistStamped.protoros.geometry_msgsros/geometry_msgs/Twist.protoros/std_msgs/Header.proto"l
+TwistStamped,
+header (2.ros.std_msgs.HeaderRheader.
+twist (2.ros.geometry_msgs.TwistRtwistbproto3
+Œ
++ros/geometry_msgs/TwistWithCovariance.protoros.geometry_msgsros/geometry_msgs/Twist.proto"e
+TwistWithCovariance.
+twist (2.ros.geometry_msgs.TwistRtwist
+
+covariance (R
+covariancebproto3
+¢
+2ros/geometry_msgs/TwistWithCovarianceStamped.protoros.geometry_msgs+ros/geometry_msgs/TwistWithCovariance.protoros/std_msgs/Header.proto"à
+TwistWithCovarianceStamped,
+header (2.ros.std_msgs.HeaderRheader<
+twist (2&.ros.geometry_msgs.TwistWithCovarianceRtwistbproto3
+Û
+&ros/geometry_msgs/Vector3Stamped.protoros.geometry_msgsros/geometry_msgs/Vector3.protoros/std_msgs/Header.proto"r
+Vector3Stamped,
+header (2.ros.std_msgs.HeaderRheader2
+vector (2.ros.geometry_msgs.Vector3Rvectorbproto3
+Ã
+ros/geometry_msgs/Wrench.protoros.geometry_msgsros/geometry_msgs/Vector3.proto"n
+Wrench0
+force (2.ros.geometry_msgs.Vector3Rforce2
+torque (2.ros.geometry_msgs.Vector3Rtorquebproto3
+Ô
+%ros/geometry_msgs/WrenchStamped.protoros.geometry_msgsros/geometry_msgs/Wrench.protoros/std_msgs/Header.proto"p
+WrenchStamped,
+header (2.ros.std_msgs.HeaderRheader1
+wrench (2.ros.geometry_msgs.WrenchRwrenchbproto3
+¶
+ros/nav_msgs/MapMetaData.protoros.nav_msgsros/builtins.protoros/geometry_msgs/Pose.proto"ª
+MapMetaData-
+map_load_time (2	.ros.TimeRmapLoadTime
+
+resolution (R
+resolution
+width (Rwidth
+height (Rheight/
+origin (2.ros.geometry_msgs.PoseRoriginbproto3
+ˆ
+ ros/nav_msgs/OccupancyGrid.protoros.nav_msgsros/nav_msgs/MapMetaData.protoros/std_msgs/Header.proto"Ä
+OccupancyGrid,
+header (2.ros.std_msgs.HeaderRheader-
+info (2.ros.nav_msgs.MapMetaDataRinfo
+data (Rdatabproto3
+Å
+ros/nav_msgs/Odometry.protoros.nav_msgs*ros/geometry_msgs/PoseWithCovariance.proto+ros/geometry_msgs/TwistWithCovariance.protoros/std_msgs/Header.proto"◊
+Odometry,
+header (2.ros.std_msgs.HeaderRheader$
+child_frame_id (	RchildFrameId9
+pose (2%.ros.geometry_msgs.PoseWithCovarianceRpose<
+twist (2&.ros.geometry_msgs.TwistWithCovarianceRtwistbproto3
+€
+ros/nav_msgs/Path.protoros.nav_msgs#ros/geometry_msgs/PoseStamped.protoros/std_msgs/Header.proto"j
+Path,
+header (2.ros.std_msgs.HeaderRheader4
+poses (2.ros.geometry_msgs.PoseStampedRposesbproto3
+˜
+ros/rcl_interfaces/Log.protoros.rcl_interfacesros/builtins.proto"¶
+Log
+stamp (2	.ros.TimeRstamp
+level (Rlevel
+name (	Rname
+msg (	Rmsg
+file (	Rfile
+function (	Rfunction
+line (Rlinebproto3
+x
+ros/rosgraph_msgs/Clock.protoros.rosgraph_msgsros/builtins.proto"(
+Clock
+clock (2	.ros.TimeRclockbproto3
+°
+ros/rosgraph_msgs/Log.protoros.rosgraph_msgsros/std_msgs/Header.proto"À
+Log,
+header (2.ros.std_msgs.HeaderRheader
+level (Rlevel
+name (	Rname
+msg (	Rmsg
+file (	Rfile
+function (	Rfunction
+line (Rline
+topics (	Rtopicsbproto3
+©
+'ros/rosgraph_msgs/TopicStatistics.protoros.rosgraph_msgsros/builtins.proto"Œ
+TopicStatistics
+topic (	Rtopic
+node_pub (	RnodePub
+node_sub (	RnodeSub,
+window_start (2	.ros.TimeRwindowStart*
+window_stop (2	.ros.TimeR
+windowStop%
+delivered_msgs (RdeliveredMsgs!
+dropped_msgs (RdroppedMsgs
+traffic (Rtraffic.
+period_mean	 (2.ros.DurationR
+periodMean2
+period_stddev
+ (2.ros.DurationRperiodStddev,
+
+period_max (2.ros.DurationR	periodMax3
+stamp_age_mean (2.ros.DurationRstampAgeMean7
+stamp_age_stddev (2.ros.DurationRstampAgeStddev1
+stamp_age_max (2.ros.DurationRstampAgeMaxbproto3
+´
+"ros/sensor_msgs/BatteryState.protoros.sensor_msgsros/std_msgs/Header.proto"–
+BatteryState,
+header (2.ros.std_msgs.HeaderRheader
+voltage (Rvoltage 
+temperature (Rtemperature
+current (Rcurrent
+charge (Rcharge
+capacity (Rcapacity'
+design_capacity (RdesignCapacity
+
+percentage (R
+percentage.
+power_supply_status	 (RpowerSupplyStatus.
+power_supply_health
+ (RpowerSupplyHealth6
+power_supply_technology (RpowerSupplyTechnology
+present (Rpresent!
+cell_voltage (RcellVoltage)
+cell_temperature (RcellTemperature
+location (	Rlocation#
+serial_number (	RserialNumberbproto3
+Ÿ
+&ros/sensor_msgs/RegionOfInterest.protoros.sensor_msgs"ï
+RegionOfInterest
+x_offset (RxOffset
+y_offset (RyOffset
+height (Rheight
+width (Rwidth
+
+do_rectify (R	doRectifybproto3
+ª
+ ros/sensor_msgs/CameraInfo.protoros.sensor_msgs&ros/sensor_msgs/RegionOfInterest.protoros/std_msgs/Header.proto"∫
+
+CameraInfo,
+header (2.ros.std_msgs.HeaderRheader
+height (Rheight
+width (Rwidth)
+distortion_model (	RdistortionModel
+D (RD
+K (RK
+R (RR
+P (RP
+	binning_x	 (RbinningX
+	binning_y
+ (RbinningY3
+roi (2!.ros.sensor_msgs.RegionOfInterestRroibproto3
+»
+%ros/sensor_msgs/CompressedImage.protoros.sensor_msgsros/std_msgs/Header.proto"k
+CompressedImage,
+header (2.ros.std_msgs.HeaderRheader
+format (	Rformat
+data (Rdatabproto3
+‹
+#ros/sensor_msgs/FluidPressure.protoros.sensor_msgsros/std_msgs/Header.proto"Ä
+FluidPressure,
+header (2.ros.std_msgs.HeaderRheader%
+fluid_pressure (RfluidPressure
+variance (Rvariancebproto3
+“
+!ros/sensor_msgs/Illuminance.protoros.sensor_msgsros/std_msgs/Header.proto"y
+Illuminance,
+header (2.ros.std_msgs.HeaderRheader 
+illuminance (Rilluminance
+variance (Rvariancebproto3
+û
+ros/sensor_msgs/Image.protoros.sensor_msgsros/std_msgs/Header.proto" 
+Image,
+header (2.ros.std_msgs.HeaderRheader
+height (Rheight
+width (Rwidth
+encoding (	Rencoding!
+is_bigendian (RisBigendian
+step (Rstep
+data (Rdatabproto3
+‹
+ros/sensor_msgs/Imu.protoros.sensor_msgs"ros/geometry_msgs/Quaternion.protoros/geometry_msgs/Vector3.protoros/std_msgs/Header.proto"≈
+Imu,
+header (2.ros.std_msgs.HeaderRheader?
+orientation (2.ros.geometry_msgs.QuaternionRorientation5
+orientation_covariance (RorientationCovarianceE
+angular_velocity (2.ros.geometry_msgs.Vector3RangularVelocity>
+angular_velocity_covariance (RangularVelocityCovarianceK
+linear_acceleration (2.ros.geometry_msgs.Vector3RlinearAccelerationD
+linear_acceleration_covariance (RlinearAccelerationCovariancebproto3
+˜
+ ros/sensor_msgs/JointState.protoros.sensor_msgsros/std_msgs/Header.proto"û
+
+JointState,
+header (2.ros.std_msgs.HeaderRheader
+name (	Rname
+position (Rposition
+velocity (Rvelocity
+effort (Reffortbproto3
+≤
+ros/sensor_msgs/Joy.protoros.sensor_msgsros/std_msgs/Header.proto"a
+Joy,
+header (2.ros.std_msgs.HeaderRheader
+axes (Raxes
+buttons (Rbuttonsbproto3
+ç
+!ros/sensor_msgs/JoyFeedback.protoros.sensor_msgs"O
+JoyFeedback
+type (Rtype
+id (Rid
+	intensity (R	intensitybproto3
+¨
+&ros/sensor_msgs/JoyFeedbackArray.protoros.sensor_msgs!ros/sensor_msgs/JoyFeedback.proto"F
+JoyFeedbackArray2
+array (2.ros.sensor_msgs.JoyFeedbackRarraybproto3
+_
+ros/sensor_msgs/LaserEcho.protoros.sensor_msgs"#
+	LaserEcho
+echoes (Rechoesbproto3
+¨
+ros/sensor_msgs/LaserScan.protoros.sensor_msgsros/std_msgs/Header.proto"‘
+	LaserScan,
+header (2.ros.std_msgs.HeaderRheader
+	angle_min (RangleMin
+	angle_max (RangleMax'
+angle_increment (RangleIncrement%
+time_increment (RtimeIncrement
+	scan_time (RscanTime
+	range_min (RrangeMin
+	range_max (RrangeMax
+ranges	 (Rranges 
+intensities
+ (Rintensitiesbproto3
+π
+#ros/sensor_msgs/MagneticField.protoros.sensor_msgsros/geometry_msgs/Vector3.protoros/std_msgs/Header.proto"º
+MagneticField,
+header (2.ros.std_msgs.HeaderRheaderA
+magnetic_field (2.ros.geometry_msgs.Vector3RmagneticField:
+magnetic_field_covariance (RmagneticFieldCovariancebproto3
+«
+(ros/sensor_msgs/MultiDOFJointState.protoros.sensor_msgs!ros/geometry_msgs/Transform.protoros/geometry_msgs/Twist.protoros/geometry_msgs/Wrench.protoros/std_msgs/Header.proto"Ñ
+MultiDOFJointState,
+header (2.ros.std_msgs.HeaderRheader
+joint_names (	R
+jointNames<
+
+transforms (2.ros.geometry_msgs.TransformR
+transforms.
+twist (2.ros.geometry_msgs.TwistRtwist1
+wrench (2.ros.geometry_msgs.WrenchRwrenchbproto3
+ó
+(ros/sensor_msgs/MultiEchoLaserScan.protoros.sensor_msgsros/sensor_msgs/LaserEcho.protoros/std_msgs/Header.proto"ï
+MultiEchoLaserScan,
+header (2.ros.std_msgs.HeaderRheader
+	angle_min (RangleMin
+	angle_max (RangleMax'
+angle_increment (RangleIncrement%
+time_increment (RtimeIncrement
+	scan_time (RscanTime
+	range_min (RrangeMin
+	range_max (RrangeMax2
+ranges	 (2.ros.sensor_msgs.LaserEchoRranges<
+intensities
+ (2.ros.sensor_msgs.LaserEchoRintensitiesbproto3
+
+"ros/sensor_msgs/NavSatStatus.protoros.sensor_msgs"@
+NavSatStatus
+status (Rstatus
+service (Rservicebproto3
+≠
+ros/sensor_msgs/NavSatFix.protoros.sensor_msgs"ros/sensor_msgs/NavSatStatus.protoros/std_msgs/Header.proto"±
+	NavSatFix,
+header (2.ros.std_msgs.HeaderRheader5
+status (2.ros.sensor_msgs.NavSatStatusRstatus
+latitude (Rlatitude
+	longitude (R	longitude
+altitude (Raltitude/
+position_covariance (RpositionCovariance8
+position_covariance_type (RpositionCovarianceTypebproto3
+ß
+ ros/sensor_msgs/PointField.protoros.sensor_msgs"j
+
+PointField
+name (	Rname
+offset (Roffset
+datatype (Rdatatype
+count (Rcountbproto3
+¶
+!ros/sensor_msgs/PointCloud2.protoros.sensor_msgs ros/sensor_msgs/PointField.protoros/std_msgs/Header.proto"™
+PointCloud2,
+header (2.ros.std_msgs.HeaderRheader
+height (Rheight
+width (Rwidth3
+fields (2.ros.sensor_msgs.PointFieldRfields!
+is_bigendian (RisBigendian
+
+point_step (R	pointStep
+row_step (RrowStep
+data (Rdata
+is_dense	 (RisDensebproto3
+§
+ros/sensor_msgs/Range.protoros.sensor_msgsros/std_msgs/Header.proto"–
+Range,
+header (2.ros.std_msgs.HeaderRheader%
+radiation_type (RradiationType"
+field_of_view (RfieldOfView
+	min_range (RminRange
+	max_range (RmaxRange
+range (Rrangebproto3
+Ë
+&ros/sensor_msgs/RelativeHumidity.protoros.sensor_msgsros/std_msgs/Header.proto"â
+RelativeHumidity,
+header (2.ros.std_msgs.HeaderRheader+
+relative_humidity (RrelativeHumidity
+variance (Rvariancebproto3
+“
+!ros/sensor_msgs/Temperature.protoros.sensor_msgsros/std_msgs/Header.proto"y
+Temperature,
+header (2.ros.std_msgs.HeaderRheader 
+temperature (Rtemperature
+variance (Rvariancebproto3
+Í
+#ros/sensor_msgs/TimeReference.protoros.sensor_msgsros/builtins.protoros/std_msgs/Header.proto"{
+TimeReference,
+header (2.ros.std_msgs.HeaderRheader$
+time_ref (2	.ros.TimeRtimeRef
+source (	Rsourcebproto3
+r
+!ros/shape_msgs/MeshTriangle.protoros.shape_msgs"5
+MeshTriangle%
+vertex_indices (RvertexIndicesbproto3
+Ô
+ros/shape_msgs/Mesh.protoros.shape_msgsros/geometry_msgs/Point.proto!ros/shape_msgs/MeshTriangle.proto"x
+Mesh:
+	triangles (2.ros.shape_msgs.MeshTriangleR	triangles4
+vertices (2.ros.geometry_msgs.PointRverticesbproto3
+Q
+ros/shape_msgs/Plane.protoros.shape_msgs"
+Plane
+coef (Rcoefbproto3
+É
+#ros/shape_msgs/SolidPrimitive.protoros.shape_msgs"D
+SolidPrimitive
+type (Rtype
+
+dimensions (R
+dimensionsbproto3
+K
+ros/std_msgs/Bool.protoros.std_msgs"
+Bool
+data (Rdatabproto3
+K
+ros/std_msgs/Byte.protoros.std_msgs"
+Byte
+data (Rdatabproto3
+ó
+&ros/std_msgs/MultiArrayDimension.protoros.std_msgs"W
+MultiArrayDimension
+label (	Rlabel
+size (Rsize
+stride (Rstridebproto3
+Õ
+#ros/std_msgs/MultiArrayLayout.protoros.std_msgs&ros/std_msgs/MultiArrayDimension.proto"h
+MultiArrayLayout3
+dim (2!.ros.std_msgs.MultiArrayDimensionRdim
+data_offset (R
+dataOffsetbproto3
+º
+!ros/std_msgs/ByteMultiArray.protoros.std_msgs#ros/std_msgs/MultiArrayLayout.proto"\
+ByteMultiArray6
+layout (2.ros.std_msgs.MultiArrayLayoutRlayout
+data (Rdatabproto3
+K
+ros/std_msgs/Char.protoros.std_msgs"
+Char
+data (Rdatabproto3
+y
+ros/std_msgs/ColorRGBA.protoros.std_msgs"C
+	ColorRGBA
+r (Rr
+g (Rg
+b (Rb
+a (Rabproto3
+v
+ros/std_msgs/Duration.protoros.std_msgsros/builtins.proto"-
+Duration!
+data (2.ros.DurationRdatabproto3
+9
+ros/std_msgs/Empty.protoros.std_msgs"
+Emptybproto3
+Q
+ros/std_msgs/Float32.protoros.std_msgs"
+Float32
+data (Rdatabproto3
+¬
+$ros/std_msgs/Float32MultiArray.protoros.std_msgs#ros/std_msgs/MultiArrayLayout.proto"_
+Float32MultiArray6
+layout (2.ros.std_msgs.MultiArrayLayoutRlayout
+data (Rdatabproto3
+Q
+ros/std_msgs/Float64.protoros.std_msgs"
+Float64
+data (Rdatabproto3
+¬
+$ros/std_msgs/Float64MultiArray.protoros.std_msgs#ros/std_msgs/MultiArrayLayout.proto"_
+Float64MultiArray6
+layout (2.ros.std_msgs.MultiArrayLayoutRlayout
+data (Rdatabproto3
+M
+ros/std_msgs/Int16.protoros.std_msgs"
+Int16
+data (Rdatabproto3
+æ
+"ros/std_msgs/Int16MultiArray.protoros.std_msgs#ros/std_msgs/MultiArrayLayout.proto"]
+Int16MultiArray6
+layout (2.ros.std_msgs.MultiArrayLayoutRlayout
+data (Rdatabproto3
+M
+ros/std_msgs/Int32.protoros.std_msgs"
+Int32
+data (Rdatabproto3
+æ
+"ros/std_msgs/Int32MultiArray.protoros.std_msgs#ros/std_msgs/MultiArrayLayout.proto"]
+Int32MultiArray6
+layout (2.ros.std_msgs.MultiArrayLayoutRlayout
+data (Rdatabproto3
+M
+ros/std_msgs/Int64.protoros.std_msgs"
+Int64
+data (Rdatabproto3
+æ
+"ros/std_msgs/Int64MultiArray.protoros.std_msgs#ros/std_msgs/MultiArrayLayout.proto"]
+Int64MultiArray6
+layout (2.ros.std_msgs.MultiArrayLayoutRlayout
+data (Rdatabproto3
+K
+ros/std_msgs/Int8.protoros.std_msgs"
+Int8
+data (Rdatabproto3
+º
+!ros/std_msgs/Int8MultiArray.protoros.std_msgs#ros/std_msgs/MultiArrayLayout.proto"\
+Int8MultiArray6
+layout (2.ros.std_msgs.MultiArrayLayoutRlayout
+data (Rdatabproto3
+O
+ros/std_msgs/String.protoros.std_msgs"
+String
+data (	Rdatabproto3
+j
+ros/std_msgs/Time.protoros.std_msgsros/builtins.proto"%
+Time
+data (2	.ros.TimeRdatabproto3
+O
+ros/std_msgs/UInt16.protoros.std_msgs"
+UInt16
+data (Rdatabproto3
+¿
+#ros/std_msgs/UInt16MultiArray.protoros.std_msgs#ros/std_msgs/MultiArrayLayout.proto"^
+UInt16MultiArray6
+layout (2.ros.std_msgs.MultiArrayLayoutRlayout
+data (Rdatabproto3
+O
+ros/std_msgs/UInt32.protoros.std_msgs"
+UInt32
+data (Rdatabproto3
+¿
+#ros/std_msgs/UInt32MultiArray.protoros.std_msgs#ros/std_msgs/MultiArrayLayout.proto"^
+UInt32MultiArray6
+layout (2.ros.std_msgs.MultiArrayLayoutRlayout
+data (Rdatabproto3
+O
+ros/std_msgs/UInt64.protoros.std_msgs"
+UInt64
+data (Rdatabproto3
+¿
+#ros/std_msgs/UInt64MultiArray.protoros.std_msgs#ros/std_msgs/MultiArrayLayout.proto"^
+UInt64MultiArray6
+layout (2.ros.std_msgs.MultiArrayLayoutRlayout
+data (Rdatabproto3
+M
+ros/std_msgs/UInt8.protoros.std_msgs"
+UInt8
+data (Rdatabproto3
+”
+$ros/stereo_msgs/DisparityImage.protoros.stereo_msgsros/sensor_msgs/Image.proto&ros/sensor_msgs/RegionOfInterest.protoros/std_msgs/Header.proto"±
+DisparityImage,
+header (2.ros.std_msgs.HeaderRheader,
+image (2.ros.sensor_msgs.ImageRimage
+f (Rf
+T (RTD
+valid_window (2!.ros.sensor_msgs.RegionOfInterestRvalidWindow#
+min_disparity (RminDisparity#
+max_disparity (RmaxDisparity
+delta_d (RdeltaDbproto3
+∞
+ros/tf2_msgs/TFMessage.protoros.tf2_msgs(ros/geometry_msgs/TransformStamped.proto"P
+	TFMessageC
+
+transforms (2#.ros.geometry_msgs.TransformStampedR
+transformsbproto3
+≠
+.ros/trajectory_msgs/JointTrajectoryPoint.protoros.trajectory_msgsros/builtins.proto"…
+JointTrajectoryPoint
+	positions (R	positions
+
+velocities (R
+velocities$
+accelerations (Raccelerations
+effort (Reffort5
+time_from_start (2.ros.DurationRtimeFromStartbproto3
+π
+)ros/trajectory_msgs/JointTrajectory.protoros.trajectory_msgsros/std_msgs/Header.proto.ros/trajectory_msgs/JointTrajectoryPoint.proto"£
+JointTrajectory,
+header (2.ros.std_msgs.HeaderRheader
+joint_names (	R
+jointNamesA
+points (2).ros.trajectory_msgs.JointTrajectoryPointRpointsbproto3
+ª
+6ros/trajectory_msgs/MultiDOFJointTrajectoryPoint.protoros.trajectory_msgsros/builtins.proto!ros/geometry_msgs/Transform.protoros/geometry_msgs/Twist.proto"ç
+MultiDOFJointTrajectoryPoint<
+
+transforms (2.ros.geometry_msgs.TransformR
+transforms8
+
+velocities (2.ros.geometry_msgs.TwistR
+velocities>
+accelerations (2.ros.geometry_msgs.TwistRaccelerations5
+time_from_start (2.ros.DurationRtimeFromStartbproto3
+Ÿ
+1ros/trajectory_msgs/MultiDOFJointTrajectory.protoros.trajectory_msgsros/std_msgs/Header.proto6ros/trajectory_msgs/MultiDOFJointTrajectoryPoint.proto"≥
+MultiDOFJointTrajectory,
+header (2.ros.std_msgs.HeaderRheader
+joint_names (	R
+jointNamesI
+points (21.ros.trajectory_msgs.MultiDOFJointTrajectoryPointRpointsbproto3
+∑
+(ros/visualization_msgs/ImageMarker.protoros.visualization_msgsros/builtins.protoros/geometry_msgs/Point.protoros/std_msgs/ColorRGBA.protoros/std_msgs/Header.proto"˛
+ImageMarker,
+header (2.ros.std_msgs.HeaderRheader
+ns (	Rns
+id (Rid
+type (Rtype
+action (Raction4
+position (2.ros.geometry_msgs.PointRposition
+scale (Rscale<
+outline_color (2.ros.std_msgs.ColorRGBARoutlineColor
+filled	 (Rfilled6
+
+fill_color
+ (2.ros.std_msgs.ColorRGBAR	fillColor)
+lifetime (2.ros.DurationRlifetime0
+points (2.ros.geometry_msgs.PointRpoints>
+outline_colors (2.ros.std_msgs.ColorRGBARoutlineColorsbproto3
+¨
+#ros/visualization_msgs/Marker.protoros.visualization_msgsros/builtins.protoros/geometry_msgs/Point.protoros/geometry_msgs/Pose.protoros/geometry_msgs/Vector3.protoros/std_msgs/ColorRGBA.protoros/std_msgs/Header.proto"π
+Marker,
+header (2.ros.std_msgs.HeaderRheader
+ns (	Rns
+id (Rid
+type (Rtype
+action (Raction+
+pose (2.ros.geometry_msgs.PoseRpose0
+scale (2.ros.geometry_msgs.Vector3Rscale-
+color (2.ros.std_msgs.ColorRGBARcolor)
+lifetime	 (2.ros.DurationRlifetime!
+frame_locked
+ (RframeLocked0
+points (2.ros.geometry_msgs.PointRpoints/
+colors (2.ros.std_msgs.ColorRGBARcolors
+text (	Rtext#
+mesh_resource (	RmeshResource=
+mesh_use_embedded_materials (RmeshUseEmbeddedMaterialsbproto3
+±
+5ros/visualization_msgs/InteractiveMarkerControl.protoros.visualization_msgs"ros/geometry_msgs/Quaternion.proto#ros/visualization_msgs/Marker.proto"é
+InteractiveMarkerControl
+name (	Rname?
+orientation (2.ros.geometry_msgs.QuaternionRorientation)
+orientation_mode (RorientationMode)
+interaction_mode (RinteractionMode%
+always_visible (RalwaysVisible8
+markers (2.ros.visualization_msgs.MarkerRmarkersD
+independent_marker_orientation (RindependentMarkerOrientation 
+description (	Rdescriptionbproto3
+÷
+&ros/visualization_msgs/MenuEntry.protoros.visualization_msgs"ã
+	MenuEntry
+id (Rid
+	parent_id (RparentId
+title (	Rtitle
+command (	Rcommand!
+command_type (RcommandTypebproto3
+π
+.ros/visualization_msgs/InteractiveMarker.protoros.visualization_msgsros/geometry_msgs/Pose.protoros/std_msgs/Header.proto5ros/visualization_msgs/InteractiveMarkerControl.proto&ros/visualization_msgs/MenuEntry.proto"Œ
+InteractiveMarker,
+header (2.ros.std_msgs.HeaderRheader+
+pose (2.ros.geometry_msgs.PoseRpose
+name (	Rname 
+description (	Rdescription
+scale (RscaleD
+menu_entries (2!.ros.visualization_msgs.MenuEntryRmenuEntriesL
+controls (20.ros.visualization_msgs.InteractiveMarkerControlRcontrolsbproto3
+∏
+(ros/visualization_msgs/MarkerArray.protoros.visualization_msgs#ros/visualization_msgs/Marker.proto"G
+MarkerArray8
+markers (2.ros.visualization_msgs.MarkerRmarkersbproto3
