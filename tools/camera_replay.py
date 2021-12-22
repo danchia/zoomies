@@ -3,7 +3,7 @@ import numpy as np
 
 npix_y = 640*480
 npix_uv = 320*240
-vidfile = open(r'c:\tmp\vidlog.bin', 'rb')
+vidfile = open(r'c:\tmp\car\1401\vidlog.bin', 'rb')
 
 while True:
   fbytes = vidfile.read(8)
