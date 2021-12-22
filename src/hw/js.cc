@@ -27,19 +27,19 @@ JS::State JS::Poll() {
   struct js_event e;
   while (read(fd_, &e, sizeof(e)) == sizeof(e)) {
     if (e.type & JS_EVENT_AXIS) {
-      if (e.number == 1) {
-        accel_ = e.value / -32767.0f;
+      if (e.number == 5) {
+        accel_ = (e.value / 32767.0f) / 2.0f + 0.5f;
       }
-      if (e.number == 2) {
-        steer_ = e.value / 32767.0f;
-        bool neg = steer_ < 0.0f;
-        steer_ *= steer_;
-        if (neg) steer_ = -steer_;
+      if (e.number == 0) {
+        steer_ = e.value / -32767.0f;
+        // bool neg = steer_ < 0.0f;
+        steer_ *= steer_ * steer_;
+        // if (neg) steer_ = -steer_;
       }
     }
     if (e.type & JS_EVENT_BUTTON) {
       if (e.number == 0) {
-        a_btn_ = e.value;
+        a_btn_ = e.value > 0;
       }
     }
   }
