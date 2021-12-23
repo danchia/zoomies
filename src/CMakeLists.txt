@@ -15,6 +15,12 @@ include_directories(.)
 
 add_subdirectory(eigen)
 include_directories(eigen)
+
+set(EIGEN3_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/eigen)
+add_subdirectory(g2o)
+include_directories(g2o)
+
+add_subdirectory(sqlite)
 add_subdirectory(googletest)
 add_subdirectory(spdlog)
 include_directories(spdlog/include)
@@ -26,3 +32,4 @@ include_directories(userland)
 add_subdirectory(common)
 add_subdirectory(driver)
 add_subdirectory(hw)
+add_subdirectory(slam)
