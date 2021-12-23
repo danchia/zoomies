@@ -9,7 +9,6 @@ bool sCheckAndLog(int rc, std::string_view msg, sqlite3* db) {
   if (rc) {
     const char* err_msg = sqlite3_errmsg(db);
     spdlog::warn("sqlite {} {}: {}", msg, sqlite3_errstr(rc), err_msg);
-    sqlite3_free(const_cast<char*>(err_msg));
     return false;
   }
   return true;
