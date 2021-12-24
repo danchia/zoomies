@@ -15,5 +15,13 @@ pts = np.append(pts, np.ones((480*640, 1)), axis=1)
 R, _ = cv2.Rodrigues(np.array([0, np.radians(29), 0], dtype=np.float32))
 pts = np.dot(pts, R.transpose())
 
-pts = pts / np.linalg.norm(pts, axis=1, keepdims=True)
+# pts = pts / np.linalg.norm(pts, axis=1, keepdims=True)
+# normalize z=1
+pts = pts / pts[:, 2][:, None]
 np.save('../data/calib/camera_lut.npy', pts, False)
+
+pts = pts[:, 0:2]
+pts = pts.reshape(480*640*2).astype(np.float32)
+f = open('../data/calib/camera_lut.bin', 'wb')
+f.write(pts.tobytes())
+f.close()
