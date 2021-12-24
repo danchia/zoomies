@@ -81,6 +81,23 @@ std::vector<Rect> FindRect(int width, int height, uint8_t* img,
   return res;
 }
 
+Eigen::Vector2f FisheyeProject(Eigen::Vector4f K, Eigen::Vector4f D,
+                               Eigen::Vector3f point) {
+  if (fabs(point.z()) < 0.0001) point.z() = 1.0f;
+  Eigen::Vector2f x{point.x() / point.z(), point.y() / point.z()};
+  double r = std::sqrt(x.dot(x));
+  double theta = atan(r);
+  double theta3 = theta * theta * theta;
+  double theta5 = theta3 * theta * theta;
+  double theta7 = theta5 * theta * theta;
+  double theta9 = theta7 * theta * theta;
+  double theta_d =
+      theta + D[0] * theta3 + D[1] * theta5 + D[2] * theta7 + D[3] * theta9;
+
+  Eigen::Vector2f xp = (theta_d / r) * x;
+  return Eigen::Vector2f{K[0] * xp[0] + K[2], K[1] * xp[1] + K[3]};
+}
+
 std::ostream& operator<<(std::ostream& os, const Rect& rect) {
   os << "{" << rect.x << "," << rect.y << "," << rect.width << ","
      << rect.height << "}";

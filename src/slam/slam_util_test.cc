@@ -3,6 +3,7 @@
 #include <gmock/gmock-matchers.h>
 #include <gtest/gtest.h>
 
+#include <Eigen/Dense>
 #include <fstream>
 
 namespace {
@@ -23,6 +24,16 @@ TEST(FindRects, Basic) {
   EXPECT_THAT(res, testing::UnorderedElementsAre(Rect{110, 116, 82, 33},
                                                  Rect{287, 143, 62, 43},
                                                  Rect{279, 336, 62, 38}));
+}
+
+const Eigen::Vector4f K{1.83260687e+02, 1.83044898e+02, 3.18091934e+02,
+                        2.50873559e+02};
+const Eigen::Vector4f D{0.06782692, -0.03927174, 0.00502321, 0.00063159};
+
+TEST(FisheyeProject, Basic) {
+  auto r = FisheyeProject(K, D, {1.06, 2.2, 3.2});
+  EXPECT_THAT(r.x(), testing::FloatNear(371.09, 0.01));
+  EXPECT_THAT(r.y(), testing::FloatNear(360.75, 0.01));
 }
 
 }  // namespace

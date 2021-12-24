@@ -2,6 +2,7 @@
 
 #include <inttypes.h>
 
+#include <Eigen/Dense>
 #include <iostream>
 #include <vector>
 
@@ -17,3 +18,7 @@ struct Rect {
 // NOTE: modifies img.
 std::vector<Rect> FindRect(int width, int height, uint8_t* img,
                            uint8_t pix_thres, int min_area);
+
+// K = [fx fy cx cy]
+Eigen::Vector2f FisheyeProject(Eigen::Vector4f K, Eigen::Vector4f D,
+                               Eigen::Vector3f point);
