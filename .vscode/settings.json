@@ -2,5 +2,6 @@
   "cmake.sourceDirectory": "${workspaceFolder}/src",
   "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
   "editor.formatOnSave": true,
-  "files.eol": "\n"
+  "files.eol": "\n",
+  "cmake.configureOnEdit": false
 }
