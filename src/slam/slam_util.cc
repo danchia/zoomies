@@ -1,5 +1,7 @@
 #include "slam/slam_util.h"
 
+#include <math.h>
+
 #include <limits>
 
 namespace {
@@ -96,6 +98,16 @@ Eigen::Vector2f FisheyeProject(Eigen::Vector4f K, Eigen::Vector4f D,
 
   Eigen::Vector2f xp = (theta_d / r) * x;
   return Eigen::Vector2f{K[0] * xp[0] + K[2], K[1] * xp[1] + K[3]};
+}
+
+float normAngle(float x) {
+  while (x > M_PI) {
+    x -= 2.0 * M_PI;
+  }
+  while (x < -M_PI) {
+    x += 2.0 * M_PI;
+  }
+  return x;
 }
 
 std::ostream& operator<<(std::ostream& os, const Rect& rect) {

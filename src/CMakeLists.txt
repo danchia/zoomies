@@ -17,6 +17,7 @@ include_directories(eigen)
 set(EIGEN3_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/eigen)
 add_subdirectory(g2o)
 include_directories(g2o)
+include_directories(${PROJECT_BINARY_DIR}/g2o)
 
 OPTION(INSTALL_GTEST "" OFF)
 include_directories(googletest/googletest/include)

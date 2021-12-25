@@ -22,3 +22,6 @@ std::vector<Rect> FindRect(int width, int height, uint8_t* img,
 // K = [fx fy cx cy]
 Eigen::Vector2f FisheyeProject(Eigen::Vector4f K, Eigen::Vector4f D,
                                Eigen::Vector3f point);
+
+// Normalize angle between [-pi, pi]
+float normAngle(float x);
