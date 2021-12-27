@@ -3,9 +3,12 @@
   "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
   "editor.formatOnSave": true,
   "files.eol": "\n",
-  "cmake.configureOnEdit": false,
   "files.associations": {
     "nonlinearoptimization": "cpp",
-    "regex": "cpp"
-  }
+    "regex": "cpp",
+    "iosfwd": "cpp",
+    "string_view": "cpp",
+    "*.idl": "cpp"
+  },
+  "cmake.configureOnOpen": true
 }

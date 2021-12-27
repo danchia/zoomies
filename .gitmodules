@@ -13,3 +13,6 @@
 [submodule "src/g2o"]
 	path = src/g2o
 	url = https://github.com/RainerKuemmerle/g2o.git
+[submodule "src/Fast-CDR"]
+	path = src/Fast-CDR
+	url = https://github.com/eProsima/Fast-CDR

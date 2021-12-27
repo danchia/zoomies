@@ -1,0 +1,140 @@
+struct builtins__Time {
+  long sec;
+  long nsec;
+};
+
+struct builtins__Duration {
+  long sec;
+  long nsec;
+};
+
+struct std_msgs__Header {
+  builtins__Time stamp;
+  string frame_id;
+};
+
+struct std_msgs__ColorRGBA {
+  float r;
+  float g;
+  float b;
+  float a;
+};
+
+struct sensor_msgs__RegionOfInterest {
+  uint32 x_offset;
+  uint32 y_offset;
+  uint32 height;
+  uint32 width;
+  boolean do_rectify;
+};
+
+struct sensor_msgs__CameraInfo {
+  std_msgs__Header header;
+
+  uint32 height;
+  uint32 width;
+
+  string distortion_model;
+
+  sequence<double> D;
+  double K[9];
+  double R[9];
+  double P[12];
+
+  uint32 binning_x;
+  uint32 binning_y;
+
+  sensor_msgs__RegionOfInterest roi;
+};
+
+struct sensor_msgs__Image {
+  std_msgs__Header header;
+
+  unsigned long height;
+  unsigned long width;
+
+  string encoding;
+
+  octet is_bigendian;
+
+  unsigned long step;
+  sequence<octet> data;
+};
+
+struct sensor_msgs__CompressedImage {
+  std_msgs__Header header;
+
+  string format;
+  sequence<octet> data;
+};
+
+struct sensor_msgs__PointField {
+  string name;
+  uint32 offset;
+  /*
+    INT8    = 1
+    UINT8   = 2
+    INT16   = 3
+    UINT16  = 4
+    INT32   = 5
+    UINT32  = 6
+    FLOAT32 = 7
+    FLOAT64 = 8
+  */
+  uint8 datatype;
+  uint32 count;
+};
+
+struct sensor_msgs__PointCloud2 {
+  std_msgs__Header header;
+
+  unsigned long height;
+  unsigned long width;
+
+  sequence<sensor_msgs__PointField> fields;
+
+  boolean is_bigendian;
+  unsigned long point_step;
+  unsigned long row_step;
+
+  sequence<octet> data;
+
+  boolean is_dense;
+};
+
+struct geometry_msgs__Point {
+  double x;
+  double y;
+  double z;
+};
+
+struct visualization_msgs__ImageMarker {
+  std_msgs__Header header;
+
+  string ns;
+  int32 id;
+  /*
+  uint8 CIRCLE=0
+  uint8 LINE_STRIP=1
+  uint8 LINE_LIST=2
+  uint8 POLYGON=3
+  uint8 POINTS=4
+  */
+  int32 type;
+  /* ADD=0 / REMOVE=1 */
+  int32 action;
+  geometry_msgs__Point position;
+
+  float scale;
+  std_msgs__ColorRGBA outline_color;
+  uint8 filled;
+  std_msgs__ColorRGBA fill_color;
+  builtins__Duration lifetime;
+
+  sequence<geometry_msgs__Point> points;
+  sequence<std_msgs__ColorRGBA> outline_colors;
+};
+
+struct foxglove_msgs__ImageMarkerArray {
+  sequence<visualization_msgs__ImageMarker> markers;
+};

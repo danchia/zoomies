@@ -3,6 +3,7 @@
 #include <Eigen/Geometry>
 #include <fstream>
 #include <memory>
+#include <optional>
 #include <string_view>
 
 #include "g2o/core/block_solver.h"
@@ -13,6 +14,9 @@
 #include "g2o/types/slam2d/edge_se2_pointxy.h"
 #include "g2o/types/slam2d/vertex_point_xy.h"
 #include "g2o/types/slam2d/vertex_se2.h"
+#include "ros/ros_types.h"
+#include "ros/ros_util.h"
+#include "ros/ros_writer.h"
 #include "slam_util.h"
 #include "spdlog/cfg/env.h"
 #include "spdlog/fmt/ostr.h"
@@ -24,6 +28,8 @@ constexpr float kLightAssocDist = 0.5f;
 constexpr int kImageWidth = 640;
 constexpr int kImageHeight = 480;
 constexpr int kImageNoisePixels = 10;
+
+namespace {
 
 void sCheck(int rc, std::string_view msg, sqlite3* db) {
   if (rc) {
@@ -143,6 +149,8 @@ class SLAM {
            kCeilHeight;
   }
 
+  void InitViz();
+
   void AddObservation(int pose_id, int landmark_id, Eigen::Vector2f measure,
                       int u, int v);
   int next_id() { return next_id_++; }
@@ -162,6 +170,13 @@ class SLAM {
   int last_pose_id_;
 
   float dist_since_opt = 0.0f;
+
+  // Viz
+  std::optional<RosWriter> ros_writer_;
+  int img_topic_;
+  int landmark_raw_topic_;
+  int landmark_map_topic_;
+  int landmark_img_overlay_topic_;
 };
 
 void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
@@ -187,9 +202,9 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
     odom_e->setMeasurement({dx, dy, dt});
     // terrible, FIXME!
     Eigen::Matrix3d cov = Eigen::Matrix3d::Zero();
-    cov(0, 0) = 0.2 * 0.2 * dx * dx;
-    cov(1, 1) = 0.2 * 0.2 * dy * dy;
-    cov(2, 2) = 0.2 * 0.2 * dt * dt;
+    cov(0, 0) = std::max(0.2 * 0.2 * dx * dx, 0.05);
+    cov(1, 1) = std::max(0.2 * 0.2 * dy * dy, 0.05);
+    cov(2, 2) = std::max(0.2 * 0.2 * dt * dt, 0.05);
     Eigen::Matrix3d information = cov.inverse();
     odom_e->setInformation(information);
     optimizer_.addEdge(odom_e);
@@ -209,6 +224,9 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
 
   auto rects = FindRect(kImageWidth, kImageHeight, img_copy.data(), 220, 300);
 
+  std::vector<Eigen::Vector3f> light_positions;
+  std::vector<Eigen::Vector2i> landmark_overlay;
+
   auto cam_to_world_rot = Eigen::Rotation2Df(heading_);
   for (const auto& rect : rects) {
     int u = rect.x + rect.width / 2;
@@ -216,6 +234,10 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
     Eigen::Vector2f pos_cam = camera_lookup(u, v);
     Eigen::Vector2f pos_world =
         cam_to_world_rot * pos_cam + Eigen::Vector2f{x_, y_};
+
+    landmark_overlay.push_back(Eigen::Vector2i{u, v});
+
+    light_positions.push_back({pos_world.x(), pos_world.y(), kCeilHeight});
 
     float best_dist = kLightAssocDist;
     int landmark_idx = -1;
@@ -232,8 +254,8 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
         landmark_idx = i;
       }
     }
-    spdlog::info("best landmark fit {}. my pos {} {} {} {}", best_dist, u, v,
-                 pos_world.x(), pos_world.y());
+    spdlog::trace("best landmark fit {}. my pos {} {} {} {}", best_dist, u, v,
+                  pos_world.x(), pos_world.y());
     if (landmark_idx != -1) {
       // spdlog::info("  their pos {} {}", landmarks_[landmark_idx].pos.x(),
       //              landmarks_[landmark_idx].pos.y());
@@ -271,8 +293,9 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
   }
 
   // trigger optimization every so often
-  if (dist_since_opt > 0.3) {
-    dist_since_opt -= 0.3;
+  constexpr float kOptDist = 0.3;
+  if (dist_since_opt > kOptDist) {
+    dist_since_opt -= kOptDist;
 
     if (!landmarks_.empty()) {
       auto* lm =
@@ -302,6 +325,89 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
                     lm->estimate().y());
     }
   }
+
+  // Update visualizations
+  sensor_msgs__Image ros_img;
+  ros_img.header().stamp() = MicrosToRos(t_us);
+  ros_img.header().frame_id("/camera-frame");
+  ros_img.height(kImageHeight);
+  ros_img.width(kImageWidth);
+  ros_img.encoding("mono8");
+  ros_img.is_bigendian(false);
+  ros_img.step(kImageWidth);
+  ros_img.data(img_copy);
+  // ros_img.data(img);
+  // ros_img.data().resize(kImageWidth *
+  //                       kImageHeight);  // not the most efficient, but it
+  //                       works.
+  ros_writer_->Write(img_topic_, t_us, ros_img);
+
+  sensor_msgs__PointCloud2 pt_cloud;
+  pt_cloud.header().stamp() = MicrosToRos(t_us);
+  pt_cloud.header().frame_id("/world");
+  pt_cloud.height(1);
+  pt_cloud.width(light_positions.size());
+
+  pt_cloud.fields().emplace_back();
+  pt_cloud.fields().back().name("x");
+  pt_cloud.fields().back().offset(0);
+  pt_cloud.fields().back().datatype(7);
+  pt_cloud.fields().back().count(1);
+
+  pt_cloud.fields().emplace_back();
+  pt_cloud.fields().back().name("y");
+  pt_cloud.fields().back().offset(4);
+  pt_cloud.fields().back().datatype(7);
+  pt_cloud.fields().back().count(1);
+
+  pt_cloud.fields().emplace_back();
+  pt_cloud.fields().back().name("z");
+  pt_cloud.fields().back().offset(8);
+  pt_cloud.fields().back().datatype(7);
+  pt_cloud.fields().back().count(1);
+
+  pt_cloud.is_bigendian(false);
+  pt_cloud.point_step(12);
+  size_t nbytes = 12 * light_positions.size();
+  pt_cloud.row_step(nbytes);
+  pt_cloud.data().resize(nbytes);
+  memcpy(pt_cloud.data().data(), light_positions.data(), nbytes);
+  pt_cloud.is_dense(true);
+
+  ros_writer_->Write(landmark_raw_topic_, t_us, pt_cloud);
+
+  std::vector<Eigen::Vector3f> landmarks;
+  for (const auto& lm : landmarks_) {
+    auto* l = static_cast<g2o::VertexPointXY*>(optimizer_.vertex(lm.id));
+    landmarks.push_back({l->estimate().x(), l->estimate().y(), kCeilHeight});
+  }
+  pt_cloud.width(landmarks.size());
+  nbytes = 12 * landmarks.size();
+  pt_cloud.row_step(nbytes);
+  pt_cloud.data().resize(nbytes);
+  memcpy(pt_cloud.data().data(), landmarks.data(), nbytes);
+
+  ros_writer_->Write(landmark_map_topic_, t_us, pt_cloud);
+
+  // Would have used image array, but doesn't work in foxglove ros2. Luckily can
+  // use POINTS
+  visualization_msgs__ImageMarker marker;
+  marker.header().stamp() = MicrosToRos(t_us);
+  marker.ns("landmark_overlay");
+  marker.id(0);
+  marker.type(4);  // POINTS
+  marker.action(0);
+  marker.scale(5);
+  marker.lifetime().nsec(100000000);
+  for (int i = 0; i < landmark_overlay.size(); ++i) {
+    auto& pt = marker.points().emplace_back();
+    pt.x(landmark_overlay[i].x());
+    pt.y(landmark_overlay[i].y());
+    auto& oc = marker.outline_colors().emplace_back();
+    oc.g(1.0);
+    oc.a(1.0);
+  }
+  ros_writer_->Write(landmark_img_overlay_topic_, t_us, marker);
 }
 
 void SLAM::OdoFrame(int64_t t_us, float odo_dist_delta, float odo_heading_delta,
@@ -319,6 +425,7 @@ void SLAM::OdoFrame(int64_t t_us, float odo_dist_delta, float odo_heading_delta,
 }
 
 SLAM::SLAM() {
+  InitViz();
   {
     std::ifstream f("../data/calib/camera_lut.bin",
                     std::ios::in | std::ios::binary);
@@ -358,6 +465,18 @@ SLAM::SLAM() {
   last_pose_id_ = pose->id();
 
   //  optimizer_.setVerbose(true);
+}
+
+void SLAM::InitViz() {
+  ros_writer_.emplace("/tmp/slamviz");
+  img_topic_ =
+      ros_writer_->AddConnection("/camera1/image", "sensor_msgs/msg/Image");
+  landmark_raw_topic_ = ros_writer_->AddConnection(
+      "/landmarks/raw", "sensor_msgs/msg/PointCloud2");
+  landmark_map_topic_ = ros_writer_->AddConnection(
+      "/landmarks/map", "sensor_msgs/msg/PointCloud2");
+  landmark_img_overlay_topic_ = ros_writer_->AddConnection(
+      "/landmarks/img_overlay", "visualization_msgs/msg/ImageMarker");
 }
 
 void SLAM::AddObservation(int pose_id, int landmark_id, Eigen::Vector2f measure,
@@ -400,6 +519,8 @@ SLAM::Result SLAM::Finish() {
 
   return {.landmarks = std::move(landmarks)};
 }
+
+}  // namespace
 
 int main() {
   spdlog::cfg::load_env_levels();
@@ -456,9 +577,9 @@ int main() {
   auto result = slam.Finish();
 
   spdlog::info("Light locations ({} lights):", result.landmarks.size());
-  // for (const auto& lm : result.landmarks) {
-  //   spdlog::info("  {} {} {}", lm.x(), lm.y(), kCeilHeight);
-  // }
+  for (const auto& lm : result.landmarks) {
+    spdlog::info("  {},{},{}", lm.x(), lm.y(), kCeilHeight);
+  }
 
   return 0;
 }
