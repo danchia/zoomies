@@ -170,14 +170,33 @@ class SLAM {
   int last_pose_id_;
 
   float dist_since_opt = 0.0f;
+  int optimizer_runs_ = 0;
 
   // Viz
   std::optional<RosWriter> ros_writer_;
   int img_topic_;
   int landmark_raw_topic_;
+  int landmark_thresholded_topic_;
   int landmark_map_topic_;
   int landmark_img_overlay_topic_;
+  int optimizer_runs_topic_;
 };
+
+void SLAM::InitViz() {
+  ros_writer_.emplace("/tmp/slamviz");
+  img_topic_ =
+      ros_writer_->AddConnection("/camera1/image", "sensor_msgs/msg/Image");
+  landmark_raw_topic_ = ros_writer_->AddConnection(
+      "/landmarks/raw", "sensor_msgs/msg/PointCloud2");
+  landmark_thresholded_topic_ = ros_writer_->AddConnection(
+      "/landmarks/thresholded_pts", "sensor_msgs/msg/PointCloud2");
+  landmark_map_topic_ = ros_writer_->AddConnection(
+      "/landmarks/map", "sensor_msgs/msg/PointCloud2");
+  landmark_img_overlay_topic_ = ros_writer_->AddConnection(
+      "/landmarks/img_overlay", "visualization_msgs/msg/ImageMarker");
+  optimizer_runs_topic_ =
+      ros_writer_->AddConnection("/optimizer/runs", "std_msgs/msg/Int32");
+}
 
 void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
   spdlog::info("vid frame t:{}. {} {} {}", t_us, x_, y_, heading_);
@@ -224,14 +243,15 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
 
   auto cam_to_world_rot = Eigen::Rotation2Df(heading_);
 
-  std::vector<Eigen::Vector3f> light_positions;
+  std::vector<Eigen::Vector3f> thresholded_positions;
   for (int v = 0; v < kImageHeight; ++v) {
     for (int u = 0; u < kImageWidth; ++u) {
       if (img_copy[v * kImageWidth + u] > 220) {
         Eigen::Vector2f pos_cam = camera_lookup(u, v);
         Eigen::Vector2f pos_world =
             cam_to_world_rot * pos_cam + Eigen::Vector2f{x_, y_};
-        light_positions.push_back({pos_world.x(), pos_world.y(), kCeilHeight});
+        thresholded_positions.push_back(
+            {pos_world.x(), pos_world.y(), kCeilHeight});
       }
     }
   }
@@ -239,6 +259,7 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
   auto rects = FindRect(kImageWidth, kImageHeight, img_copy.data(), 220, 300);
 
   std::vector<Eigen::Vector2i> landmark_overlay;
+  std::vector<Eigen::Vector3f> light_positions;
 
   for (const auto& rect : rects) {
     int u = rect.x + rect.width / 2;
@@ -249,7 +270,7 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
 
     landmark_overlay.push_back(Eigen::Vector2i{u, v});
 
-    // light_positions.push_back({pos_world.x(), pos_world.y(), kCeilHeight});
+    light_positions.push_back({pos_world.x(), pos_world.y(), kCeilHeight});
 
     float best_dist = kLightAssocDist;
     int landmark_idx = -1;
@@ -308,6 +329,7 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
   constexpr float kOptDist = 0.3;
   if (dist_since_opt > kOptDist) {
     dist_since_opt -= kOptDist;
+    ++optimizer_runs_;
 
     if (!landmarks_.empty()) {
       auto* lm =
@@ -388,6 +410,15 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
 
   ros_writer_->Write(landmark_raw_topic_, t_us, pt_cloud);
 
+  pt_cloud.width(thresholded_positions.size());
+  nbytes = 12 * thresholded_positions.size();
+  pt_cloud.row_step(nbytes);
+  pt_cloud.data().resize(nbytes);
+  memcpy(pt_cloud.data().data(), thresholded_positions.data(), nbytes);
+  pt_cloud.is_dense(true);
+
+  ros_writer_->Write(landmark_thresholded_topic_, t_us, pt_cloud);
+
   std::vector<Eigen::Vector3f> landmarks;
   for (const auto& lm : landmarks_) {
     auto* l = static_cast<g2o::VertexPointXY*>(optimizer_.vertex(lm.id));
@@ -420,6 +451,10 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
     oc.a(1.0);
   }
   ros_writer_->Write(landmark_img_overlay_topic_, t_us, marker);
+
+  std_msgs__Int32 optimizer_runs;
+  optimizer_runs.data(optimizer_runs_);
+  ros_writer_->Write(optimizer_runs_topic_, t_us, optimizer_runs);
 }
 
 void SLAM::OdoFrame(int64_t t_us, float odo_dist_delta, float odo_heading_delta,
@@ -449,7 +484,8 @@ SLAM::SLAM() {
   }
 
   {
-    std::ifstream f("../data/ceil_mask.bin", std::ios::in | std::ios::binary);
+    std::ifstream f("../data/calib/ceil_mask.bin",
+                    std::ios::in | std::ios::binary);
     if (!f.good()) throw std::runtime_error("error opening ceil_mask");
     f.read(reinterpret_cast<char*>(ceil_mask_), kImageWidth * kImageHeight);
     if (!f) throw std::runtime_error("error while reading lut");
@@ -477,18 +513,6 @@ SLAM::SLAM() {
   last_pose_id_ = pose->id();
 
   //  optimizer_.setVerbose(true);
-}
-
-void SLAM::InitViz() {
-  ros_writer_.emplace("/tmp/slamviz");
-  img_topic_ =
-      ros_writer_->AddConnection("/camera1/image", "sensor_msgs/msg/Image");
-  landmark_raw_topic_ = ros_writer_->AddConnection(
-      "/landmarks/raw", "sensor_msgs/msg/PointCloud2");
-  landmark_map_topic_ = ros_writer_->AddConnection(
-      "/landmarks/map", "sensor_msgs/msg/PointCloud2");
-  landmark_img_overlay_topic_ = ros_writer_->AddConnection(
-      "/landmarks/img_overlay", "visualization_msgs/msg/ImageMarker");
 }
 
 void SLAM::AddObservation(int pose_id, int landmark_id, Eigen::Vector2f measure,

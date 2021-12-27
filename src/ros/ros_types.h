@@ -758,6 +758,147 @@ private:
     float m_a;
 };
 /*!
+ * @brief This class represents the structure std_msgs__Int32 defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class std_msgs__Int32
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport std_msgs__Int32();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~std_msgs__Int32();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object std_msgs__Int32 that will be copied.
+     */
+    eProsima_user_DllExport std_msgs__Int32(
+            const std_msgs__Int32& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object std_msgs__Int32 that will be copied.
+     */
+    eProsima_user_DllExport std_msgs__Int32(
+            std_msgs__Int32&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object std_msgs__Int32 that will be copied.
+     */
+    eProsima_user_DllExport std_msgs__Int32& operator =(
+            const std_msgs__Int32& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object std_msgs__Int32 that will be copied.
+     */
+    eProsima_user_DllExport std_msgs__Int32& operator =(
+            std_msgs__Int32&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x std_msgs__Int32 object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const std_msgs__Int32& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x std_msgs__Int32 object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const std_msgs__Int32& x) const;
+
+    /*!
+     * @brief This function sets a value in member data
+     * @param _data New value for member data
+     */
+    eProsima_user_DllExport void data(
+            int32_t _data);
+
+    /*!
+     * @brief This function returns the value of member data
+     * @return Value of member data
+     */
+    eProsima_user_DllExport int32_t data() const;
+
+    /*!
+     * @brief This function returns a reference to member data
+     * @return Reference to member data
+     */
+    eProsima_user_DllExport int32_t& data();
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const std_msgs__Int32& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    int32_t m_data;
+};
+/*!
  * @brief This class represents the structure sensor_msgs__RegionOfInterest defined by the user in the IDL file.
  * @ingroup ROS_TYPES
  */

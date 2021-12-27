@@ -910,17 +910,163 @@ void std_msgs__ColorRGBA::serializeKey(
         
 }
 
+std_msgs__Int32::std_msgs__Int32()
+{
+    // m_data com.eprosima.idl.parser.typecode.PrimitiveTypeCode@701fc37a
+    m_data = 0;
+
+}
+
+std_msgs__Int32::~std_msgs__Int32()
+{
+}
+
+std_msgs__Int32::std_msgs__Int32(
+        const std_msgs__Int32& x)
+{
+    m_data = x.m_data;
+}
+
+std_msgs__Int32::std_msgs__Int32(
+        std_msgs__Int32&& x)
+{
+    m_data = x.m_data;
+}
+
+std_msgs__Int32& std_msgs__Int32::operator =(
+        const std_msgs__Int32& x)
+{
+
+    m_data = x.m_data;
+
+    return *this;
+}
+
+std_msgs__Int32& std_msgs__Int32::operator =(
+        std_msgs__Int32&& x)
+{
+
+    m_data = x.m_data;
+
+    return *this;
+}
+
+bool std_msgs__Int32::operator ==(
+        const std_msgs__Int32& x) const
+{
+
+    return (m_data == x.m_data);
+}
+
+bool std_msgs__Int32::operator !=(
+        const std_msgs__Int32& x) const
+{
+    return !(*this == x);
+}
+
+size_t std_msgs__Int32::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    return current_alignment - initial_alignment;
+}
+
+size_t std_msgs__Int32::getCdrSerializedSize(
+        const std_msgs__Int32& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    return current_alignment - initial_alignment;
+}
+
+void std_msgs__Int32::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_data;
+
+}
+
+void std_msgs__Int32::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_data;
+}
+
+/*!
+ * @brief This function sets a value in member data
+ * @param _data New value for member data
+ */
+void std_msgs__Int32::data(
+        int32_t _data)
+{
+    m_data = _data;
+}
+
+/*!
+ * @brief This function returns the value of member data
+ * @return Value of member data
+ */
+int32_t std_msgs__Int32::data() const
+{
+    return m_data;
+}
+
+/*!
+ * @brief This function returns a reference to member data
+ * @return Reference to member data
+ */
+int32_t& std_msgs__Int32::data()
+{
+    return m_data;
+}
+
+
+size_t std_msgs__Int32::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+    return current_align;
+}
+
+bool std_msgs__Int32::isKeyDefined()
+{
+    return false;
+}
+
+void std_msgs__Int32::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+     
+}
+
 sensor_msgs__RegionOfInterest::sensor_msgs__RegionOfInterest()
 {
-    // m_x_offset com.eprosima.idl.parser.typecode.PrimitiveTypeCode@4df828d7
+    // m_x_offset com.eprosima.idl.parser.typecode.PrimitiveTypeCode@11e21d0e
     m_x_offset = 0;
-    // m_y_offset com.eprosima.idl.parser.typecode.PrimitiveTypeCode@b59d31
+    // m_y_offset com.eprosima.idl.parser.typecode.PrimitiveTypeCode@1dd02175
     m_y_offset = 0;
-    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@62fdb4a6
+    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@31206beb
     m_height = 0;
-    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@11e21d0e
+    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@3e77a1ed
     m_width = 0;
-    // m_do_rectify com.eprosima.idl.parser.typecode.PrimitiveTypeCode@1dd02175
+    // m_do_rectify com.eprosima.idl.parser.typecode.PrimitiveTypeCode@1176dcec
     m_do_rectify = false;
 
 }
@@ -1238,27 +1384,27 @@ void sensor_msgs__RegionOfInterest::serializeKey(
 
 sensor_msgs__CameraInfo::sensor_msgs__CameraInfo()
 {
-    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@7fe8ea47
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@226a82c4
 
-    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@226a82c4
+    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@731f8236
     m_height = 0;
-    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@731f8236
+    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@6b53e23f
     m_width = 0;
-    // m_distortion_model com.eprosima.idl.parser.typecode.StringTypeCode@6b53e23f
+    // m_distortion_model com.eprosima.idl.parser.typecode.StringTypeCode@4f9a3314
     m_distortion_model ="";
-    // m_D com.eprosima.idl.parser.typecode.SequenceTypeCode@64d2d351
+    // m_D com.eprosima.idl.parser.typecode.SequenceTypeCode@3b2c72c2
 
-    // m_K com.eprosima.idl.parser.typecode.ArrayTypeCode@1b68b9a4
+    // m_K com.eprosima.idl.parser.typecode.ArrayTypeCode@491666ad
     memset(&m_K, 0, (9) * 8);
-    // m_R com.eprosima.idl.parser.typecode.ArrayTypeCode@4f9a3314
+    // m_R com.eprosima.idl.parser.typecode.ArrayTypeCode@176d53b2
     memset(&m_R, 0, (9) * 8);
-    // m_P com.eprosima.idl.parser.typecode.ArrayTypeCode@3b2c72c2
+    // m_P com.eprosima.idl.parser.typecode.ArrayTypeCode@971d0d8
     memset(&m_P, 0, (12) * 8);
-    // m_binning_x com.eprosima.idl.parser.typecode.PrimitiveTypeCode@491666ad
+    // m_binning_x com.eprosima.idl.parser.typecode.PrimitiveTypeCode@51931956
     m_binning_x = 0;
-    // m_binning_y com.eprosima.idl.parser.typecode.PrimitiveTypeCode@51931956
+    // m_binning_y com.eprosima.idl.parser.typecode.PrimitiveTypeCode@2b4a2ec7
     m_binning_y = 0;
-    // m_roi com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@2b4a2ec7
+    // m_roi com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@564718df
 
 
 }
@@ -1902,19 +2048,19 @@ void sensor_msgs__CameraInfo::serializeKey(
 
 sensor_msgs__Image::sensor_msgs__Image()
 {
-    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@7fe8ea47
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@226a82c4
 
-    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@1a38c59b
+    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@7f9fcf7f
     m_height = 0;
-    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@7f77e91b
+    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@2357d90a
     m_width = 0;
-    // m_encoding com.eprosima.idl.parser.typecode.StringTypeCode@44a664f2
+    // m_encoding com.eprosima.idl.parser.typecode.StringTypeCode@6328d34a
     m_encoding ="";
-    // m_is_bigendian com.eprosima.idl.parser.typecode.PrimitiveTypeCode@7f9fcf7f
+    // m_is_bigendian com.eprosima.idl.parser.typecode.PrimitiveTypeCode@145eaa29
     m_is_bigendian = 0;
-    // m_step com.eprosima.idl.parser.typecode.PrimitiveTypeCode@2357d90a
+    // m_step com.eprosima.idl.parser.typecode.PrimitiveTypeCode@15bb6bea
     m_step = 0;
-    // m_data com.eprosima.idl.parser.typecode.SequenceTypeCode@6328d34a
+    // m_data com.eprosima.idl.parser.typecode.SequenceTypeCode@8b96fde
 
 
 }
@@ -2346,11 +2492,11 @@ void sensor_msgs__Image::serializeKey(
 
 sensor_msgs__CompressedImage::sensor_msgs__CompressedImage()
 {
-    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@7fe8ea47
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@226a82c4
 
-    // m_format com.eprosima.idl.parser.typecode.StringTypeCode@6ee12bac
+    // m_format com.eprosima.idl.parser.typecode.StringTypeCode@525f1e4e
     m_format ="";
-    // m_data com.eprosima.idl.parser.typecode.SequenceTypeCode@55040f2f
+    // m_data com.eprosima.idl.parser.typecode.SequenceTypeCode@75f9eccc
 
 
 }
@@ -2614,13 +2760,13 @@ void sensor_msgs__CompressedImage::serializeKey(
 
 sensor_msgs__PointField::sensor_msgs__PointField()
 {
-    // m_name com.eprosima.idl.parser.typecode.StringTypeCode@52aa2946
+    // m_name com.eprosima.idl.parser.typecode.StringTypeCode@4de5031f
     m_name ="";
-    // m_offset com.eprosima.idl.parser.typecode.PrimitiveTypeCode@4de5031f
+    // m_offset com.eprosima.idl.parser.typecode.PrimitiveTypeCode@67e2d983
     m_offset = 0;
-    // m_datatype com.eprosima.idl.parser.typecode.PrimitiveTypeCode@67e2d983
+    // m_datatype com.eprosima.idl.parser.typecode.PrimitiveTypeCode@5d47c63f
     m_datatype = 0;
-    // m_count com.eprosima.idl.parser.typecode.PrimitiveTypeCode@5d47c63f
+    // m_count com.eprosima.idl.parser.typecode.PrimitiveTypeCode@5ea434c8
     m_count = 0;
 
 }
@@ -2903,23 +3049,23 @@ void sensor_msgs__PointField::serializeKey(
 
 sensor_msgs__PointCloud2::sensor_msgs__PointCloud2()
 {
-    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@7fe8ea47
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@226a82c4
 
-    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@5ea434c8
+    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@3bbc39f8
     m_height = 0;
-    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@3bbc39f8
+    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@4ae3c1cd
     m_width = 0;
-    // m_fields com.eprosima.idl.parser.typecode.SequenceTypeCode@4ae3c1cd
+    // m_fields com.eprosima.idl.parser.typecode.SequenceTypeCode@29f69090
 
-    // m_is_bigendian com.eprosima.idl.parser.typecode.PrimitiveTypeCode@29f69090
+    // m_is_bigendian com.eprosima.idl.parser.typecode.PrimitiveTypeCode@568bf312
     m_is_bigendian = false;
-    // m_point_step com.eprosima.idl.parser.typecode.PrimitiveTypeCode@568bf312
+    // m_point_step com.eprosima.idl.parser.typecode.PrimitiveTypeCode@ca263c2
     m_point_step = 0;
-    // m_row_step com.eprosima.idl.parser.typecode.PrimitiveTypeCode@ca263c2
+    // m_row_step com.eprosima.idl.parser.typecode.PrimitiveTypeCode@589b3632
     m_row_step = 0;
-    // m_data com.eprosima.idl.parser.typecode.SequenceTypeCode@589b3632
+    // m_data com.eprosima.idl.parser.typecode.SequenceTypeCode@45f45fa1
 
-    // m_is_dense com.eprosima.idl.parser.typecode.PrimitiveTypeCode@45f45fa1
+    // m_is_dense com.eprosima.idl.parser.typecode.PrimitiveTypeCode@4c6e276e
     m_is_dense = false;
 
 }
@@ -3445,11 +3591,11 @@ void sensor_msgs__PointCloud2::serializeKey(
 
 geometry_msgs__Point::geometry_msgs__Point()
 {
-    // m_x com.eprosima.idl.parser.typecode.PrimitiveTypeCode@52e677af
+    // m_x com.eprosima.idl.parser.typecode.PrimitiveTypeCode@35083305
     m_x = 0.0;
-    // m_y com.eprosima.idl.parser.typecode.PrimitiveTypeCode@35083305
+    // m_y com.eprosima.idl.parser.typecode.PrimitiveTypeCode@8e0379d
     m_y = 0.0;
-    // m_z com.eprosima.idl.parser.typecode.PrimitiveTypeCode@8e0379d
+    // m_z com.eprosima.idl.parser.typecode.PrimitiveTypeCode@341b80b2
     m_z = 0.0;
 
 }
@@ -3683,31 +3829,31 @@ void geometry_msgs__Point::serializeKey(
 
 visualization_msgs__ImageMarker::visualization_msgs__ImageMarker()
 {
-    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@7fe8ea47
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@226a82c4
 
-    // m_ns com.eprosima.idl.parser.typecode.StringTypeCode@341b80b2
+    // m_ns com.eprosima.idl.parser.typecode.StringTypeCode@55a1c291
     m_ns ="";
-    // m_id com.eprosima.idl.parser.typecode.PrimitiveTypeCode@55a1c291
+    // m_id com.eprosima.idl.parser.typecode.PrimitiveTypeCode@2145433b
     m_id = 0;
-    // m_type com.eprosima.idl.parser.typecode.PrimitiveTypeCode@2145433b
+    // m_type com.eprosima.idl.parser.typecode.PrimitiveTypeCode@2890c451
     m_type = 0;
-    // m_action com.eprosima.idl.parser.typecode.PrimitiveTypeCode@2890c451
+    // m_action com.eprosima.idl.parser.typecode.PrimitiveTypeCode@40e6dfe1
     m_action = 0;
-    // m_position com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@40e6dfe1
+    // m_position com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@1b083826
 
-    // m_scale com.eprosima.idl.parser.typecode.PrimitiveTypeCode@1b083826
+    // m_scale com.eprosima.idl.parser.typecode.PrimitiveTypeCode@105fece7
     m_scale = 0.0;
-    // m_outline_color com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@105fece7
+    // m_outline_color com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@3ec300f1
 
-    // m_filled com.eprosima.idl.parser.typecode.PrimitiveTypeCode@3ec300f1
+    // m_filled com.eprosima.idl.parser.typecode.PrimitiveTypeCode@482cd91f
     m_filled = 0;
-    // m_fill_color com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@105fece7
+    // m_fill_color com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@3ec300f1
 
-    // m_lifetime com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@482cd91f
+    // m_lifetime com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@123f1134
 
-    // m_points com.eprosima.idl.parser.typecode.SequenceTypeCode@123f1134
+    // m_points com.eprosima.idl.parser.typecode.SequenceTypeCode@7d68ef40
 
-    // m_outline_colors com.eprosima.idl.parser.typecode.SequenceTypeCode@7d68ef40
+    // m_outline_colors com.eprosima.idl.parser.typecode.SequenceTypeCode@5b0abc94
 
 
 }
@@ -4427,7 +4573,7 @@ void visualization_msgs__ImageMarker::serializeKey(
 
 foxglove_msgs__ImageMarkerArray::foxglove_msgs__ImageMarkerArray()
 {
-    // m_markers com.eprosima.idl.parser.typecode.SequenceTypeCode@5b0abc94
+    // m_markers com.eprosima.idl.parser.typecode.SequenceTypeCode@75c072cb
 
 
 }

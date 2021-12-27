@@ -20,6 +20,10 @@ struct std_msgs__ColorRGBA {
   float a;
 };
 
+struct std_msgs__Int32 {
+  int32 data;
+};
+
 struct sensor_msgs__RegionOfInterest {
   uint32 x_offset;
   uint32 y_offset;
