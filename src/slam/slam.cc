@@ -23,7 +23,7 @@
 #include "spdlog/spdlog.h"
 #include "sqlite/sqlite3.h"
 
-constexpr float kCeilHeight = 3.2f;
+constexpr float kCeilHeight = 2.5f;
 constexpr float kLightAssocDist = 0.5f;
 constexpr int kImageWidth = 640;
 constexpr int kImageHeight = 480;
@@ -222,12 +222,24 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
     }
   }
 
-  auto rects = FindRect(kImageWidth, kImageHeight, img_copy.data(), 220, 300);
+  auto cam_to_world_rot = Eigen::Rotation2Df(heading_);
 
   std::vector<Eigen::Vector3f> light_positions;
+  for (int v = 0; v < kImageHeight; ++v) {
+    for (int u = 0; u < kImageWidth; ++u) {
+      if (img_copy[v * kImageWidth + u] > 220) {
+        Eigen::Vector2f pos_cam = camera_lookup(u, v);
+        Eigen::Vector2f pos_world =
+            cam_to_world_rot * pos_cam + Eigen::Vector2f{x_, y_};
+        light_positions.push_back({pos_world.x(), pos_world.y(), kCeilHeight});
+      }
+    }
+  }
+
+  auto rects = FindRect(kImageWidth, kImageHeight, img_copy.data(), 220, 300);
+
   std::vector<Eigen::Vector2i> landmark_overlay;
 
-  auto cam_to_world_rot = Eigen::Rotation2Df(heading_);
   for (const auto& rect : rects) {
     int u = rect.x + rect.width / 2;
     int v = rect.y + rect.height / 2;
@@ -237,7 +249,7 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
 
     landmark_overlay.push_back(Eigen::Vector2i{u, v});
 
-    light_positions.push_back({pos_world.x(), pos_world.y(), kCeilHeight});
+    // light_positions.push_back({pos_world.x(), pos_world.y(), kCeilHeight});
 
     float best_dist = kLightAssocDist;
     int landmark_idx = -1;
