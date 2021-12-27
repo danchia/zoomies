@@ -8,7 +8,7 @@ D = np.load('../data/calib/camera_D.npy')
 K[:2] /= 4.05
 
 uv = np.mgrid[:480, :640][[1, 0]].transpose(1, 2, 0).astype(np.float32)
-pts = cv2.undistortPoints(uv.reshape(640*480, 1, 2), K, D)
+pts = cv2.fisheye.undistortPoints(uv.reshape(640*480, 1, 2), K, D)
 pts = pts.reshape(480*640, 2)
 pts = np.append(pts, np.ones((480*640, 1)), axis=1)
 
