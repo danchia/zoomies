@@ -65,46 +65,52 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   state.t_micros = t_us;
   state.fwd_vel = MotorTickPeriodToMetersPerSecond(reading.motor_period);
   if (state.fwd_vel > 50.0) state.fwd_vel = prev_state_.fwd_vel;
-  state.rot_vel = reading.gyro.z();
+  state.angular_vel = reading.gyro.z();
   state.total_distance = prev_state_.total_distance + dist_delta;
 
   float dt = (state.t_micros - prev_state_.t_micros) * 1e-6;
-  state.heading = prev_state_.heading + state.rot_vel * dt;
+  state.heading = prev_state_.heading + state.angular_vel * dt;
   state.x = prev_state_.x + cos(state.heading) * state.fwd_vel * dt;
   state.y = prev_state_.y + sin(state.heading) * state.fwd_vel * dt;
 
-  // constexpr float tspeed = 1.0f;
-  // if (loop_tick < 20) {
-  //   state.desired_fwd_vel_ = (tspeed * loop_tick) / 20;
-  // } else if (loop_tick < 60) {
+  // longitudinal PID test prog
+  // constexpr float tspeed = 2.5f;
+  // if (loop_tick < 75) {
+  //   state.desired_fwd_vel_ = (tspeed * loop_tick) / 75;
+  // } else if (loop_tick < 150) {
   //   state.desired_fwd_vel_ = tspeed;
-  // } else if (loop_tick < 80) {
-  //   state.desired_fwd_vel_ = tspeed - ((tspeed * (loop_tick - 60)) / 20);
-  // } else if (loop_tick < 120) {
+  // } else if (loop_tick < 225) {
+  //   state.desired_fwd_vel_ = tspeed - ((tspeed * (loop_tick - 150)) / 75);
+  // } else if (loop_tick < 400) {
   //   state.desired_fwd_vel_ = 0.0f;
   // } else {
   //   return Done();
   // }
-  constexpr float tspeed = 2.5f;
-  if (loop_tick < 75) {
-    state.desired_fwd_vel_ = (tspeed * loop_tick) / 75;
-  } else if (loop_tick < 150) {
-    state.desired_fwd_vel_ = tspeed;
-  } else if (loop_tick < 225) {
-    state.desired_fwd_vel_ = tspeed - ((tspeed * (loop_tick - 150)) / 75);
-  } else if (loop_tick < 400) {
-    state.desired_fwd_vel_ = 0.0f;
+
+  if (loop_tick < 15) {
+    state.desired_fwd_vel_ += 0.07f;
+  } else if (loop_tick < 30) {
+    state.desired_fwd_vel_ = 1.05f;
+  } else if (loop_tick < 70) {
+    state.desired_fwd_vel_ = 1.05f;
+    state.desired_angular_vel_ = 1.1f;
+  } else if (loop_tick < 140) {
+    state.desired_fwd_vel_ = 1.05f;
+    state.desired_angular_vel_ = 1.5f;
   } else {
     return Done();
   }
 
-  float steer = 0.0f;
   if (kManualDrive) {
     state.desired_fwd_vel_ = js_state.accel > 0 ? js_state.accel * 1.5f : 0.0f;
-    steer = js_state.steer;
   }
 
   float esc = CalculateLongitudinalControl(state);
+  float steer = CalculateLateralControl(state);
+
+  if (kManualDrive) {
+    steer = js_state.steer;
+  }
 
   // Done with iteration, overwrite previous states.
   prev_reading_ = reading;
@@ -112,8 +118,9 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
 
   // Log all ze things...
   datalogger_.LogIMU(t_us, reading.accel, reading.gyro);
-  datalogger_.LogDesiredTwist(t_us, state.desired_fwd_vel_, 0.0f);
-  datalogger_.LogActualTwist(t_us, state.fwd_vel, state.rot_vel);
+  datalogger_.LogDesiredTwist(t_us, state.desired_fwd_vel_,
+                              state.desired_angular_vel_);
+  datalogger_.LogActualTwist(t_us, state.fwd_vel, state.angular_vel);
   datalogger_.LogEscSteer(t_us, esc, steer);
   datalogger_.LogGlobalPose(t_us, state.x, state.y, state.heading);
 
@@ -148,11 +155,25 @@ float Driver::CalculateLongitudinalControl(State& state) {
   fwd_vel_decel_e_i_ = 0.0f;
   float feedforward = state.desired_fwd_vel_ * 0.108f;
   if (state.desired_fwd_vel_ > 0.0f) feedforward += 0.042f;
-  float esc = feedforward + e * 0.149f + fwd_vel_accel_e_i_ * 0.05f;
+  float esc = feedforward + e * 0.149f + fwd_vel_accel_e_i_ * 0.030f -
+              0.01f * (state.fwd_vel - prev_state_.fwd_vel);
   return std::clamp(esc, 0.0f, 1.0f);
 }
 
-float Driver::CalculateLateralControl(State& state) {}
+float Driver::CalculateLateralControl(State& state) {
+  float e = state.desired_angular_vel_ - state.angular_vel;
+  angular_vel_e_i_ = 0.8f * angular_vel_e_i_ + e;
+
+  // tan delta = L/R = L*w / V
+  // Fitted data gives: 3E-03 + 0.516x + -0.0673x^2
+  float ov = (state.desired_fwd_vel_ > 0.1f)
+                 ? state.desired_angular_vel_ / state.desired_fwd_vel_
+                 : 0.0f;
+  float feedforward = 0.516f * ov - 0.0673f * ov * ov;
+  float steer = feedforward + 0.25f * e -
+                0.002f * (state.angular_vel - prev_state_.angular_vel);
+  return std::clamp(steer, -1.0f, 1.0f);
+}
 
 Driver::ControlOutput Driver::Done() {
   // stop the camera

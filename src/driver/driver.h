@@ -30,8 +30,9 @@ class Driver {
   struct State {
     int64_t t_micros = 0;
 
-    float fwd_vel = 0.0f;  // m/s
-    float rot_vel = 0.0f;  // rad/s
+    // Actual velocities.
+    float fwd_vel = 0.0f;      // m/s
+    float angular_vel = 0.0f;  // rad/s
 
     float heading = 0.0f;
     float x = 0.0f;
@@ -40,6 +41,7 @@ class Driver {
     float total_distance = 0.0f;
 
     float desired_fwd_vel_ = 0.0f;
+    float desired_angular_vel_ = 0.0f;
   };
 
   ControlOutput Done();
@@ -54,4 +56,5 @@ class Driver {
 
   float fwd_vel_accel_e_i_ = 0.0f;
   float fwd_vel_decel_e_i_ = 0.0f;
+  float angular_vel_e_i_ = 0.0f;
 };
