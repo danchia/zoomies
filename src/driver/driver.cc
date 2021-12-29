@@ -20,6 +20,8 @@ constexpr float kMetersPerTick = 0.00911934534f;
 constexpr int kVideoWidth = 640;
 constexpr int kVideoHeight = 480;
 
+constexpr bool kLogVideo = false;
+
 float MotorTickPeriodToMetersPerSecond(uint16_t p) {
   if (p == 0) return 0.0f;
   return (1e6 * kMetersPerTick) / p;
@@ -40,13 +42,14 @@ void Driver::OnCameraTick(int64_t t_us, uint8_t* buf, int len) {
   int64_t loop_tick = ticks_.load(std::memory_order_relaxed);
   if (loop_tick <= 0) return;
 
-  datalogger_.LogVideoFrame(t_us, kVideoWidth, kVideoHeight, buf, len);
+  if (kLogVideo) {
+    datalogger_.LogVideoFrame(t_us, kVideoWidth, kVideoHeight, buf, len);
+  }
 }
 
 Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
                                             const HWSensorReading& reading,
                                             const JS::State& js_state) {
-  float desired_fwd_velocity = 0.0f;
   float desired_angular_velocity = 0.0f;
 
   int64_t loop_tick = ticks_.fetch_add(1, std::memory_order_relaxed) + 1;
@@ -70,31 +73,46 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   state.x = prev_state_.x + cos(state.heading) * state.fwd_vel * dt;
   state.y = prev_state_.y + sin(state.heading) * state.fwd_vel * dt;
 
-  prev_reading_ = reading;
-  prev_state_ = state;
-
-  if (loop_tick < 80) {
-    desired_fwd_velocity = (2.0 * loop_tick) / 80;
-  } else if (loop_tick < 160) {
-    desired_fwd_velocity = 2.0 - ((2.0 * (loop_tick - 80)) / 80);
+  // constexpr float tspeed = 1.0f;
+  // if (loop_tick < 20) {
+  //   state.desired_fwd_vel_ = (tspeed * loop_tick) / 20;
+  // } else if (loop_tick < 60) {
+  //   state.desired_fwd_vel_ = tspeed;
+  // } else if (loop_tick < 80) {
+  //   state.desired_fwd_vel_ = tspeed - ((tspeed * (loop_tick - 60)) / 20);
+  // } else if (loop_tick < 120) {
+  //   state.desired_fwd_vel_ = 0.0f;
+  // } else {
+  //   return Done();
+  // }
+  constexpr float tspeed = 2.5f;
+  if (loop_tick < 75) {
+    state.desired_fwd_vel_ = (tspeed * loop_tick) / 75;
+  } else if (loop_tick < 150) {
+    state.desired_fwd_vel_ = tspeed;
+  } else if (loop_tick < 225) {
+    state.desired_fwd_vel_ = tspeed - ((tspeed * (loop_tick - 150)) / 75);
+  } else if (loop_tick < 400) {
+    state.desired_fwd_vel_ = 0.0f;
   } else {
     return Done();
   }
 
   float steer = 0.0f;
   if (kManualDrive) {
-    desired_fwd_velocity = js_state.accel > 0 ? js_state.accel * 1.5f : 0.0f;
+    state.desired_fwd_vel_ = js_state.accel > 0 ? js_state.accel * 1.5f : 0.0f;
     steer = js_state.steer;
   }
 
-  // longitudinal PID
-  float e = desired_fwd_velocity - state.fwd_vel;
-  vel_e_i_ = 0.9 * vel_e_i_ + e;
-  float esc = e * 0.2 + vel_e_i_ * 0.06;
+  float esc = CalculateLongitudinalControl(state);
+
+  // Done with iteration, overwrite previous states.
+  prev_reading_ = reading;
+  prev_state_ = state;
 
   // Log all ze things...
   datalogger_.LogIMU(t_us, reading.accel, reading.gyro);
-  datalogger_.LogDesiredTwist(t_us, desired_fwd_velocity, 0.0f);
+  datalogger_.LogDesiredTwist(t_us, state.desired_fwd_vel_, 0.0f);
   datalogger_.LogActualTwist(t_us, state.fwd_vel, state.rot_vel);
   datalogger_.LogEscSteer(t_us, esc, steer);
   datalogger_.LogGlobalPose(t_us, state.x, state.y, state.heading);
@@ -106,6 +124,35 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
       .steer = steer,
   };
 }
+
+float Driver::CalculateLongitudinalControl(State& state) {
+  // Consider it a decel event if we're slow at >= 0.5m/s^2, which at 100Hz is a
+  // delta_v of 0.005m/s.
+  bool is_decel =
+      state.desired_fwd_vel_ + 0.005f < prev_state_.desired_fwd_vel_;
+
+  if (is_decel) {
+    // brake controller
+    float e = state.desired_fwd_vel_ - state.fwd_vel;
+    fwd_vel_accel_e_i_ = 0.0f;
+    fwd_vel_decel_e_i_ = 0.8f * fwd_vel_decel_e_i_ + e;
+    float feed_forward =
+        (state.desired_fwd_vel_ - prev_state_.desired_fwd_vel_) * 8.0f;
+    float esc = feed_forward + e * 0.6f + fwd_vel_decel_e_i_ * 0.15f;
+    return std::clamp(esc, -1.0f, 0.0f);
+    return esc;
+  }
+
+  float e = state.desired_fwd_vel_ - state.fwd_vel;
+  fwd_vel_accel_e_i_ = 0.8f * fwd_vel_accel_e_i_ + e;
+  fwd_vel_decel_e_i_ = 0.0f;
+  float feedforward = state.desired_fwd_vel_ * 0.108f;
+  if (state.desired_fwd_vel_ > 0.0f) feedforward += 0.042f;
+  float esc = feedforward + e * 0.149f + fwd_vel_accel_e_i_ * 0.05f;
+  return std::clamp(esc, 0.0f, 1.0f);
+}
+
+float Driver::CalculateLateralControl(State& state) {}
 
 Driver::ControlOutput Driver::Done() {
   // stop the camera

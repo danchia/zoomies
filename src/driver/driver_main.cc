@@ -11,7 +11,7 @@
 
 namespace {
 
-constexpr float kSteerTrim = -0.018f;
+constexpr float kSteerTrim = 0.0f;
 constexpr bool kSkipWaitJs = true;
 constexpr int64_t kLoopPeriodMicros = 10000;
 

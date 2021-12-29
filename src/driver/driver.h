@@ -27,8 +27,6 @@ class Driver {
   void OnCameraTick(int64_t t_us, uint8_t* buf, int len);
 
  private:
-  ControlOutput Done();
-
   struct State {
     int64_t t_micros = 0;
 
@@ -40,7 +38,13 @@ class Driver {
     float y = 0.0f;
 
     float total_distance = 0.0f;
+
+    float desired_fwd_vel_ = 0.0f;
   };
+
+  ControlOutput Done();
+  float CalculateLongitudinalControl(State& state);
+  float CalculateLateralControl(State& state);
 
   std::atomic<int64_t> ticks_;
   Datalogger& datalogger_;
@@ -48,5 +52,6 @@ class Driver {
   HWSensorReading prev_reading_;
   State prev_state_;
 
-  float vel_e_i_ = 0.0f;
+  float fwd_vel_accel_e_i_ = 0.0f;
+  float fwd_vel_decel_e_i_ = 0.0f;
 };
