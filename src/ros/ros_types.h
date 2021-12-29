@@ -899,6 +899,2397 @@ private:
     int32_t m_data;
 };
 /*!
+ * @brief This class represents the structure std_msgs__Float32 defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class std_msgs__Float32
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport std_msgs__Float32();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~std_msgs__Float32();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object std_msgs__Float32 that will be copied.
+     */
+    eProsima_user_DllExport std_msgs__Float32(
+            const std_msgs__Float32& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object std_msgs__Float32 that will be copied.
+     */
+    eProsima_user_DllExport std_msgs__Float32(
+            std_msgs__Float32&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object std_msgs__Float32 that will be copied.
+     */
+    eProsima_user_DllExport std_msgs__Float32& operator =(
+            const std_msgs__Float32& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object std_msgs__Float32 that will be copied.
+     */
+    eProsima_user_DllExport std_msgs__Float32& operator =(
+            std_msgs__Float32&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x std_msgs__Float32 object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const std_msgs__Float32& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x std_msgs__Float32 object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const std_msgs__Float32& x) const;
+
+    /*!
+     * @brief This function sets a value in member data
+     * @param _data New value for member data
+     */
+    eProsima_user_DllExport void data(
+            float _data);
+
+    /*!
+     * @brief This function returns the value of member data
+     * @return Value of member data
+     */
+    eProsima_user_DllExport float data() const;
+
+    /*!
+     * @brief This function returns a reference to member data
+     * @return Reference to member data
+     */
+    eProsima_user_DllExport float& data();
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const std_msgs__Float32& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    float m_data;
+};
+/*!
+ * @brief This class represents the structure geometry_msgs__Vector3 defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class geometry_msgs__Vector3
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport geometry_msgs__Vector3();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~geometry_msgs__Vector3();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object geometry_msgs__Vector3 that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Vector3(
+            const geometry_msgs__Vector3& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object geometry_msgs__Vector3 that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Vector3(
+            geometry_msgs__Vector3&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object geometry_msgs__Vector3 that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Vector3& operator =(
+            const geometry_msgs__Vector3& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object geometry_msgs__Vector3 that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Vector3& operator =(
+            geometry_msgs__Vector3&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__Vector3 object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const geometry_msgs__Vector3& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__Vector3 object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const geometry_msgs__Vector3& x) const;
+
+    /*!
+     * @brief This function sets a value in member x
+     * @param _x New value for member x
+     */
+    eProsima_user_DllExport void x(
+            double _x);
+
+    /*!
+     * @brief This function returns the value of member x
+     * @return Value of member x
+     */
+    eProsima_user_DllExport double x() const;
+
+    /*!
+     * @brief This function returns a reference to member x
+     * @return Reference to member x
+     */
+    eProsima_user_DllExport double& x();
+
+    /*!
+     * @brief This function sets a value in member y
+     * @param _y New value for member y
+     */
+    eProsima_user_DllExport void y(
+            double _y);
+
+    /*!
+     * @brief This function returns the value of member y
+     * @return Value of member y
+     */
+    eProsima_user_DllExport double y() const;
+
+    /*!
+     * @brief This function returns a reference to member y
+     * @return Reference to member y
+     */
+    eProsima_user_DllExport double& y();
+
+    /*!
+     * @brief This function sets a value in member z
+     * @param _z New value for member z
+     */
+    eProsima_user_DllExport void z(
+            double _z);
+
+    /*!
+     * @brief This function returns the value of member z
+     * @return Value of member z
+     */
+    eProsima_user_DllExport double z() const;
+
+    /*!
+     * @brief This function returns a reference to member z
+     * @return Reference to member z
+     */
+    eProsima_user_DllExport double& z();
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const geometry_msgs__Vector3& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    double m_x;
+    double m_y;
+    double m_z;
+};
+/*!
+ * @brief This class represents the structure geometry_msgs__Point defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class geometry_msgs__Point
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport geometry_msgs__Point();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~geometry_msgs__Point();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object geometry_msgs__Point that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Point(
+            const geometry_msgs__Point& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object geometry_msgs__Point that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Point(
+            geometry_msgs__Point&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object geometry_msgs__Point that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Point& operator =(
+            const geometry_msgs__Point& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object geometry_msgs__Point that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Point& operator =(
+            geometry_msgs__Point&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__Point object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const geometry_msgs__Point& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__Point object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const geometry_msgs__Point& x) const;
+
+    /*!
+     * @brief This function sets a value in member x
+     * @param _x New value for member x
+     */
+    eProsima_user_DllExport void x(
+            double _x);
+
+    /*!
+     * @brief This function returns the value of member x
+     * @return Value of member x
+     */
+    eProsima_user_DllExport double x() const;
+
+    /*!
+     * @brief This function returns a reference to member x
+     * @return Reference to member x
+     */
+    eProsima_user_DllExport double& x();
+
+    /*!
+     * @brief This function sets a value in member y
+     * @param _y New value for member y
+     */
+    eProsima_user_DllExport void y(
+            double _y);
+
+    /*!
+     * @brief This function returns the value of member y
+     * @return Value of member y
+     */
+    eProsima_user_DllExport double y() const;
+
+    /*!
+     * @brief This function returns a reference to member y
+     * @return Reference to member y
+     */
+    eProsima_user_DllExport double& y();
+
+    /*!
+     * @brief This function sets a value in member z
+     * @param _z New value for member z
+     */
+    eProsima_user_DllExport void z(
+            double _z);
+
+    /*!
+     * @brief This function returns the value of member z
+     * @return Value of member z
+     */
+    eProsima_user_DllExport double z() const;
+
+    /*!
+     * @brief This function returns a reference to member z
+     * @return Reference to member z
+     */
+    eProsima_user_DllExport double& z();
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const geometry_msgs__Point& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    double m_x;
+    double m_y;
+    double m_z;
+};
+/*!
+ * @brief This class represents the structure geometry_msgs__Quaternion defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class geometry_msgs__Quaternion
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport geometry_msgs__Quaternion();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~geometry_msgs__Quaternion();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object geometry_msgs__Quaternion that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Quaternion(
+            const geometry_msgs__Quaternion& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object geometry_msgs__Quaternion that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Quaternion(
+            geometry_msgs__Quaternion&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object geometry_msgs__Quaternion that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Quaternion& operator =(
+            const geometry_msgs__Quaternion& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object geometry_msgs__Quaternion that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Quaternion& operator =(
+            geometry_msgs__Quaternion&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__Quaternion object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const geometry_msgs__Quaternion& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__Quaternion object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const geometry_msgs__Quaternion& x) const;
+
+    /*!
+     * @brief This function sets a value in member x
+     * @param _x New value for member x
+     */
+    eProsima_user_DllExport void x(
+            double _x);
+
+    /*!
+     * @brief This function returns the value of member x
+     * @return Value of member x
+     */
+    eProsima_user_DllExport double x() const;
+
+    /*!
+     * @brief This function returns a reference to member x
+     * @return Reference to member x
+     */
+    eProsima_user_DllExport double& x();
+
+    /*!
+     * @brief This function sets a value in member y
+     * @param _y New value for member y
+     */
+    eProsima_user_DllExport void y(
+            double _y);
+
+    /*!
+     * @brief This function returns the value of member y
+     * @return Value of member y
+     */
+    eProsima_user_DllExport double y() const;
+
+    /*!
+     * @brief This function returns a reference to member y
+     * @return Reference to member y
+     */
+    eProsima_user_DllExport double& y();
+
+    /*!
+     * @brief This function sets a value in member z
+     * @param _z New value for member z
+     */
+    eProsima_user_DllExport void z(
+            double _z);
+
+    /*!
+     * @brief This function returns the value of member z
+     * @return Value of member z
+     */
+    eProsima_user_DllExport double z() const;
+
+    /*!
+     * @brief This function returns a reference to member z
+     * @return Reference to member z
+     */
+    eProsima_user_DllExport double& z();
+
+    /*!
+     * @brief This function sets a value in member w
+     * @param _w New value for member w
+     */
+    eProsima_user_DllExport void w(
+            double _w);
+
+    /*!
+     * @brief This function returns the value of member w
+     * @return Value of member w
+     */
+    eProsima_user_DllExport double w() const;
+
+    /*!
+     * @brief This function returns a reference to member w
+     * @return Reference to member w
+     */
+    eProsima_user_DllExport double& w();
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const geometry_msgs__Quaternion& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    double m_x;
+    double m_y;
+    double m_z;
+    double m_w;
+};
+/*!
+ * @brief This class represents the structure geometry_msgs__Twist defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class geometry_msgs__Twist
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport geometry_msgs__Twist();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~geometry_msgs__Twist();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object geometry_msgs__Twist that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Twist(
+            const geometry_msgs__Twist& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object geometry_msgs__Twist that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Twist(
+            geometry_msgs__Twist&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object geometry_msgs__Twist that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Twist& operator =(
+            const geometry_msgs__Twist& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object geometry_msgs__Twist that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Twist& operator =(
+            geometry_msgs__Twist&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__Twist object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const geometry_msgs__Twist& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__Twist object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const geometry_msgs__Twist& x) const;
+
+    /*!
+     * @brief This function copies the value in member linear
+     * @param _linear New value to be copied in member linear
+     */
+    eProsima_user_DllExport void linear(
+            const geometry_msgs__Vector3& _linear);
+
+    /*!
+     * @brief This function moves the value in member linear
+     * @param _linear New value to be moved in member linear
+     */
+    eProsima_user_DllExport void linear(
+            geometry_msgs__Vector3&& _linear);
+
+    /*!
+     * @brief This function returns a constant reference to member linear
+     * @return Constant reference to member linear
+     */
+    eProsima_user_DllExport const geometry_msgs__Vector3& linear() const;
+
+    /*!
+     * @brief This function returns a reference to member linear
+     * @return Reference to member linear
+     */
+    eProsima_user_DllExport geometry_msgs__Vector3& linear();
+    /*!
+     * @brief This function copies the value in member angular
+     * @param _angular New value to be copied in member angular
+     */
+    eProsima_user_DllExport void angular(
+            const geometry_msgs__Vector3& _angular);
+
+    /*!
+     * @brief This function moves the value in member angular
+     * @param _angular New value to be moved in member angular
+     */
+    eProsima_user_DllExport void angular(
+            geometry_msgs__Vector3&& _angular);
+
+    /*!
+     * @brief This function returns a constant reference to member angular
+     * @return Constant reference to member angular
+     */
+    eProsima_user_DllExport const geometry_msgs__Vector3& angular() const;
+
+    /*!
+     * @brief This function returns a reference to member angular
+     * @return Reference to member angular
+     */
+    eProsima_user_DllExport geometry_msgs__Vector3& angular();
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const geometry_msgs__Twist& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    geometry_msgs__Vector3 m_linear;
+    geometry_msgs__Vector3 m_angular;
+};
+/*!
+ * @brief This class represents the structure geometry_msgs__TwistStamped defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class geometry_msgs__TwistStamped
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistStamped();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~geometry_msgs__TwistStamped();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object geometry_msgs__TwistStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistStamped(
+            const geometry_msgs__TwistStamped& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object geometry_msgs__TwistStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistStamped(
+            geometry_msgs__TwistStamped&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object geometry_msgs__TwistStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistStamped& operator =(
+            const geometry_msgs__TwistStamped& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object geometry_msgs__TwistStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistStamped& operator =(
+            geometry_msgs__TwistStamped&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__TwistStamped object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const geometry_msgs__TwistStamped& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__TwistStamped object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const geometry_msgs__TwistStamped& x) const;
+
+    /*!
+     * @brief This function copies the value in member header
+     * @param _header New value to be copied in member header
+     */
+    eProsima_user_DllExport void header(
+            const std_msgs__Header& _header);
+
+    /*!
+     * @brief This function moves the value in member header
+     * @param _header New value to be moved in member header
+     */
+    eProsima_user_DllExport void header(
+            std_msgs__Header&& _header);
+
+    /*!
+     * @brief This function returns a constant reference to member header
+     * @return Constant reference to member header
+     */
+    eProsima_user_DllExport const std_msgs__Header& header() const;
+
+    /*!
+     * @brief This function returns a reference to member header
+     * @return Reference to member header
+     */
+    eProsima_user_DllExport std_msgs__Header& header();
+    /*!
+     * @brief This function copies the value in member twist
+     * @param _twist New value to be copied in member twist
+     */
+    eProsima_user_DllExport void twist(
+            const geometry_msgs__Twist& _twist);
+
+    /*!
+     * @brief This function moves the value in member twist
+     * @param _twist New value to be moved in member twist
+     */
+    eProsima_user_DllExport void twist(
+            geometry_msgs__Twist&& _twist);
+
+    /*!
+     * @brief This function returns a constant reference to member twist
+     * @return Constant reference to member twist
+     */
+    eProsima_user_DllExport const geometry_msgs__Twist& twist() const;
+
+    /*!
+     * @brief This function returns a reference to member twist
+     * @return Reference to member twist
+     */
+    eProsima_user_DllExport geometry_msgs__Twist& twist();
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const geometry_msgs__TwistStamped& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    std_msgs__Header m_header;
+    geometry_msgs__Twist m_twist;
+};
+/*!
+ * @brief This class represents the structure geometry_msgs__TwistWithCovariance defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class geometry_msgs__TwistWithCovariance
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistWithCovariance();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~geometry_msgs__TwistWithCovariance();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object geometry_msgs__TwistWithCovariance that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistWithCovariance(
+            const geometry_msgs__TwistWithCovariance& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object geometry_msgs__TwistWithCovariance that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistWithCovariance(
+            geometry_msgs__TwistWithCovariance&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object geometry_msgs__TwistWithCovariance that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistWithCovariance& operator =(
+            const geometry_msgs__TwistWithCovariance& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object geometry_msgs__TwistWithCovariance that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistWithCovariance& operator =(
+            geometry_msgs__TwistWithCovariance&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__TwistWithCovariance object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const geometry_msgs__TwistWithCovariance& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__TwistWithCovariance object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const geometry_msgs__TwistWithCovariance& x) const;
+
+    /*!
+     * @brief This function copies the value in member twist
+     * @param _twist New value to be copied in member twist
+     */
+    eProsima_user_DllExport void twist(
+            const geometry_msgs__Twist& _twist);
+
+    /*!
+     * @brief This function moves the value in member twist
+     * @param _twist New value to be moved in member twist
+     */
+    eProsima_user_DllExport void twist(
+            geometry_msgs__Twist&& _twist);
+
+    /*!
+     * @brief This function returns a constant reference to member twist
+     * @return Constant reference to member twist
+     */
+    eProsima_user_DllExport const geometry_msgs__Twist& twist() const;
+
+    /*!
+     * @brief This function returns a reference to member twist
+     * @return Reference to member twist
+     */
+    eProsima_user_DllExport geometry_msgs__Twist& twist();
+    /*!
+     * @brief This function copies the value in member covariance
+     * @param _covariance New value to be copied in member covariance
+     */
+    eProsima_user_DllExport void covariance(
+            const std::array<double, 36>& _covariance);
+
+    /*!
+     * @brief This function moves the value in member covariance
+     * @param _covariance New value to be moved in member covariance
+     */
+    eProsima_user_DllExport void covariance(
+            std::array<double, 36>&& _covariance);
+
+    /*!
+     * @brief This function returns a constant reference to member covariance
+     * @return Constant reference to member covariance
+     */
+    eProsima_user_DllExport const std::array<double, 36>& covariance() const;
+
+    /*!
+     * @brief This function returns a reference to member covariance
+     * @return Reference to member covariance
+     */
+    eProsima_user_DllExport std::array<double, 36>& covariance();
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const geometry_msgs__TwistWithCovariance& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    geometry_msgs__Twist m_twist;
+    std::array<double, 36> m_covariance;
+};
+/*!
+ * @brief This class represents the structure geometry_msgs__TwistWithCovarianceStamped defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class geometry_msgs__TwistWithCovarianceStamped
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistWithCovarianceStamped();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~geometry_msgs__TwistWithCovarianceStamped();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object geometry_msgs__TwistWithCovarianceStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistWithCovarianceStamped(
+            const geometry_msgs__TwistWithCovarianceStamped& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object geometry_msgs__TwistWithCovarianceStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistWithCovarianceStamped(
+            geometry_msgs__TwistWithCovarianceStamped&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object geometry_msgs__TwistWithCovarianceStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistWithCovarianceStamped& operator =(
+            const geometry_msgs__TwistWithCovarianceStamped& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object geometry_msgs__TwistWithCovarianceStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__TwistWithCovarianceStamped& operator =(
+            geometry_msgs__TwistWithCovarianceStamped&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__TwistWithCovarianceStamped object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const geometry_msgs__TwistWithCovarianceStamped& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__TwistWithCovarianceStamped object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const geometry_msgs__TwistWithCovarianceStamped& x) const;
+
+    /*!
+     * @brief This function copies the value in member header
+     * @param _header New value to be copied in member header
+     */
+    eProsima_user_DllExport void header(
+            const std_msgs__Header& _header);
+
+    /*!
+     * @brief This function moves the value in member header
+     * @param _header New value to be moved in member header
+     */
+    eProsima_user_DllExport void header(
+            std_msgs__Header&& _header);
+
+    /*!
+     * @brief This function returns a constant reference to member header
+     * @return Constant reference to member header
+     */
+    eProsima_user_DllExport const std_msgs__Header& header() const;
+
+    /*!
+     * @brief This function returns a reference to member header
+     * @return Reference to member header
+     */
+    eProsima_user_DllExport std_msgs__Header& header();
+    /*!
+     * @brief This function copies the value in member twist
+     * @param _twist New value to be copied in member twist
+     */
+    eProsima_user_DllExport void twist(
+            const geometry_msgs__TwistWithCovariance& _twist);
+
+    /*!
+     * @brief This function moves the value in member twist
+     * @param _twist New value to be moved in member twist
+     */
+    eProsima_user_DllExport void twist(
+            geometry_msgs__TwistWithCovariance&& _twist);
+
+    /*!
+     * @brief This function returns a constant reference to member twist
+     * @return Constant reference to member twist
+     */
+    eProsima_user_DllExport const geometry_msgs__TwistWithCovariance& twist() const;
+
+    /*!
+     * @brief This function returns a reference to member twist
+     * @return Reference to member twist
+     */
+    eProsima_user_DllExport geometry_msgs__TwistWithCovariance& twist();
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const geometry_msgs__TwistWithCovarianceStamped& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    std_msgs__Header m_header;
+    geometry_msgs__TwistWithCovariance m_twist;
+};
+/*!
+ * @brief This class represents the structure geometry_msgs__Pose defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class geometry_msgs__Pose
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport geometry_msgs__Pose();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~geometry_msgs__Pose();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object geometry_msgs__Pose that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Pose(
+            const geometry_msgs__Pose& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object geometry_msgs__Pose that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Pose(
+            geometry_msgs__Pose&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object geometry_msgs__Pose that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Pose& operator =(
+            const geometry_msgs__Pose& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object geometry_msgs__Pose that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__Pose& operator =(
+            geometry_msgs__Pose&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__Pose object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const geometry_msgs__Pose& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__Pose object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const geometry_msgs__Pose& x) const;
+
+    /*!
+     * @brief This function copies the value in member position
+     * @param _position New value to be copied in member position
+     */
+    eProsima_user_DllExport void position(
+            const geometry_msgs__Point& _position);
+
+    /*!
+     * @brief This function moves the value in member position
+     * @param _position New value to be moved in member position
+     */
+    eProsima_user_DllExport void position(
+            geometry_msgs__Point&& _position);
+
+    /*!
+     * @brief This function returns a constant reference to member position
+     * @return Constant reference to member position
+     */
+    eProsima_user_DllExport const geometry_msgs__Point& position() const;
+
+    /*!
+     * @brief This function returns a reference to member position
+     * @return Reference to member position
+     */
+    eProsima_user_DllExport geometry_msgs__Point& position();
+    /*!
+     * @brief This function copies the value in member orientation
+     * @param _orientation New value to be copied in member orientation
+     */
+    eProsima_user_DllExport void orientation(
+            const geometry_msgs__Quaternion& _orientation);
+
+    /*!
+     * @brief This function moves the value in member orientation
+     * @param _orientation New value to be moved in member orientation
+     */
+    eProsima_user_DllExport void orientation(
+            geometry_msgs__Quaternion&& _orientation);
+
+    /*!
+     * @brief This function returns a constant reference to member orientation
+     * @return Constant reference to member orientation
+     */
+    eProsima_user_DllExport const geometry_msgs__Quaternion& orientation() const;
+
+    /*!
+     * @brief This function returns a reference to member orientation
+     * @return Reference to member orientation
+     */
+    eProsima_user_DllExport geometry_msgs__Quaternion& orientation();
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const geometry_msgs__Pose& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    geometry_msgs__Point m_position;
+    geometry_msgs__Quaternion m_orientation;
+};
+/*!
+ * @brief This class represents the structure geometry_msgs__PoseStamped defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class geometry_msgs__PoseStamped
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseStamped();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~geometry_msgs__PoseStamped();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object geometry_msgs__PoseStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseStamped(
+            const geometry_msgs__PoseStamped& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object geometry_msgs__PoseStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseStamped(
+            geometry_msgs__PoseStamped&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object geometry_msgs__PoseStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseStamped& operator =(
+            const geometry_msgs__PoseStamped& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object geometry_msgs__PoseStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseStamped& operator =(
+            geometry_msgs__PoseStamped&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__PoseStamped object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const geometry_msgs__PoseStamped& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__PoseStamped object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const geometry_msgs__PoseStamped& x) const;
+
+    /*!
+     * @brief This function copies the value in member header
+     * @param _header New value to be copied in member header
+     */
+    eProsima_user_DllExport void header(
+            const std_msgs__Header& _header);
+
+    /*!
+     * @brief This function moves the value in member header
+     * @param _header New value to be moved in member header
+     */
+    eProsima_user_DllExport void header(
+            std_msgs__Header&& _header);
+
+    /*!
+     * @brief This function returns a constant reference to member header
+     * @return Constant reference to member header
+     */
+    eProsima_user_DllExport const std_msgs__Header& header() const;
+
+    /*!
+     * @brief This function returns a reference to member header
+     * @return Reference to member header
+     */
+    eProsima_user_DllExport std_msgs__Header& header();
+    /*!
+     * @brief This function copies the value in member pose
+     * @param _pose New value to be copied in member pose
+     */
+    eProsima_user_DllExport void pose(
+            const geometry_msgs__Pose& _pose);
+
+    /*!
+     * @brief This function moves the value in member pose
+     * @param _pose New value to be moved in member pose
+     */
+    eProsima_user_DllExport void pose(
+            geometry_msgs__Pose&& _pose);
+
+    /*!
+     * @brief This function returns a constant reference to member pose
+     * @return Constant reference to member pose
+     */
+    eProsima_user_DllExport const geometry_msgs__Pose& pose() const;
+
+    /*!
+     * @brief This function returns a reference to member pose
+     * @return Reference to member pose
+     */
+    eProsima_user_DllExport geometry_msgs__Pose& pose();
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const geometry_msgs__PoseStamped& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    std_msgs__Header m_header;
+    geometry_msgs__Pose m_pose;
+};
+/*!
+ * @brief This class represents the structure geometry_msgs__PoseWithCovariance defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class geometry_msgs__PoseWithCovariance
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseWithCovariance();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~geometry_msgs__PoseWithCovariance();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object geometry_msgs__PoseWithCovariance that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseWithCovariance(
+            const geometry_msgs__PoseWithCovariance& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object geometry_msgs__PoseWithCovariance that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseWithCovariance(
+            geometry_msgs__PoseWithCovariance&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object geometry_msgs__PoseWithCovariance that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseWithCovariance& operator =(
+            const geometry_msgs__PoseWithCovariance& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object geometry_msgs__PoseWithCovariance that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseWithCovariance& operator =(
+            geometry_msgs__PoseWithCovariance&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__PoseWithCovariance object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const geometry_msgs__PoseWithCovariance& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__PoseWithCovariance object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const geometry_msgs__PoseWithCovariance& x) const;
+
+    /*!
+     * @brief This function copies the value in member pose
+     * @param _pose New value to be copied in member pose
+     */
+    eProsima_user_DllExport void pose(
+            const geometry_msgs__Pose& _pose);
+
+    /*!
+     * @brief This function moves the value in member pose
+     * @param _pose New value to be moved in member pose
+     */
+    eProsima_user_DllExport void pose(
+            geometry_msgs__Pose&& _pose);
+
+    /*!
+     * @brief This function returns a constant reference to member pose
+     * @return Constant reference to member pose
+     */
+    eProsima_user_DllExport const geometry_msgs__Pose& pose() const;
+
+    /*!
+     * @brief This function returns a reference to member pose
+     * @return Reference to member pose
+     */
+    eProsima_user_DllExport geometry_msgs__Pose& pose();
+    /*!
+     * @brief This function copies the value in member covariance
+     * @param _covariance New value to be copied in member covariance
+     */
+    eProsima_user_DllExport void covariance(
+            const std::array<double, 36>& _covariance);
+
+    /*!
+     * @brief This function moves the value in member covariance
+     * @param _covariance New value to be moved in member covariance
+     */
+    eProsima_user_DllExport void covariance(
+            std::array<double, 36>&& _covariance);
+
+    /*!
+     * @brief This function returns a constant reference to member covariance
+     * @return Constant reference to member covariance
+     */
+    eProsima_user_DllExport const std::array<double, 36>& covariance() const;
+
+    /*!
+     * @brief This function returns a reference to member covariance
+     * @return Reference to member covariance
+     */
+    eProsima_user_DllExport std::array<double, 36>& covariance();
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const geometry_msgs__PoseWithCovariance& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    geometry_msgs__Pose m_pose;
+    std::array<double, 36> m_covariance;
+};
+/*!
+ * @brief This class represents the structure geometry_msgs__PoseWithCovarianceStamped defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class geometry_msgs__PoseWithCovarianceStamped
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseWithCovarianceStamped();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~geometry_msgs__PoseWithCovarianceStamped();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object geometry_msgs__PoseWithCovarianceStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseWithCovarianceStamped(
+            const geometry_msgs__PoseWithCovarianceStamped& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object geometry_msgs__PoseWithCovarianceStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseWithCovarianceStamped(
+            geometry_msgs__PoseWithCovarianceStamped&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object geometry_msgs__PoseWithCovarianceStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseWithCovarianceStamped& operator =(
+            const geometry_msgs__PoseWithCovarianceStamped& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object geometry_msgs__PoseWithCovarianceStamped that will be copied.
+     */
+    eProsima_user_DllExport geometry_msgs__PoseWithCovarianceStamped& operator =(
+            geometry_msgs__PoseWithCovarianceStamped&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__PoseWithCovarianceStamped object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const geometry_msgs__PoseWithCovarianceStamped& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x geometry_msgs__PoseWithCovarianceStamped object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const geometry_msgs__PoseWithCovarianceStamped& x) const;
+
+    /*!
+     * @brief This function copies the value in member header
+     * @param _header New value to be copied in member header
+     */
+    eProsima_user_DllExport void header(
+            const std_msgs__Header& _header);
+
+    /*!
+     * @brief This function moves the value in member header
+     * @param _header New value to be moved in member header
+     */
+    eProsima_user_DllExport void header(
+            std_msgs__Header&& _header);
+
+    /*!
+     * @brief This function returns a constant reference to member header
+     * @return Constant reference to member header
+     */
+    eProsima_user_DllExport const std_msgs__Header& header() const;
+
+    /*!
+     * @brief This function returns a reference to member header
+     * @return Reference to member header
+     */
+    eProsima_user_DllExport std_msgs__Header& header();
+    /*!
+     * @brief This function copies the value in member pose
+     * @param _pose New value to be copied in member pose
+     */
+    eProsima_user_DllExport void pose(
+            const geometry_msgs__PoseWithCovariance& _pose);
+
+    /*!
+     * @brief This function moves the value in member pose
+     * @param _pose New value to be moved in member pose
+     */
+    eProsima_user_DllExport void pose(
+            geometry_msgs__PoseWithCovariance&& _pose);
+
+    /*!
+     * @brief This function returns a constant reference to member pose
+     * @return Constant reference to member pose
+     */
+    eProsima_user_DllExport const geometry_msgs__PoseWithCovariance& pose() const;
+
+    /*!
+     * @brief This function returns a reference to member pose
+     * @return Reference to member pose
+     */
+    eProsima_user_DllExport geometry_msgs__PoseWithCovariance& pose();
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const geometry_msgs__PoseWithCovarianceStamped& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    std_msgs__Header m_header;
+    geometry_msgs__PoseWithCovariance m_pose;
+};
+/*!
+ * @brief This class represents the structure sensor_msgs__Imu defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class sensor_msgs__Imu
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport sensor_msgs__Imu();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~sensor_msgs__Imu();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object sensor_msgs__Imu that will be copied.
+     */
+    eProsima_user_DllExport sensor_msgs__Imu(
+            const sensor_msgs__Imu& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object sensor_msgs__Imu that will be copied.
+     */
+    eProsima_user_DllExport sensor_msgs__Imu(
+            sensor_msgs__Imu&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object sensor_msgs__Imu that will be copied.
+     */
+    eProsima_user_DllExport sensor_msgs__Imu& operator =(
+            const sensor_msgs__Imu& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object sensor_msgs__Imu that will be copied.
+     */
+    eProsima_user_DllExport sensor_msgs__Imu& operator =(
+            sensor_msgs__Imu&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x sensor_msgs__Imu object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const sensor_msgs__Imu& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x sensor_msgs__Imu object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const sensor_msgs__Imu& x) const;
+
+    /*!
+     * @brief This function copies the value in member header
+     * @param _header New value to be copied in member header
+     */
+    eProsima_user_DllExport void header(
+            const std_msgs__Header& _header);
+
+    /*!
+     * @brief This function moves the value in member header
+     * @param _header New value to be moved in member header
+     */
+    eProsima_user_DllExport void header(
+            std_msgs__Header&& _header);
+
+    /*!
+     * @brief This function returns a constant reference to member header
+     * @return Constant reference to member header
+     */
+    eProsima_user_DllExport const std_msgs__Header& header() const;
+
+    /*!
+     * @brief This function returns a reference to member header
+     * @return Reference to member header
+     */
+    eProsima_user_DllExport std_msgs__Header& header();
+    /*!
+     * @brief This function copies the value in member orientation
+     * @param _orientation New value to be copied in member orientation
+     */
+    eProsima_user_DllExport void orientation(
+            const geometry_msgs__Quaternion& _orientation);
+
+    /*!
+     * @brief This function moves the value in member orientation
+     * @param _orientation New value to be moved in member orientation
+     */
+    eProsima_user_DllExport void orientation(
+            geometry_msgs__Quaternion&& _orientation);
+
+    /*!
+     * @brief This function returns a constant reference to member orientation
+     * @return Constant reference to member orientation
+     */
+    eProsima_user_DllExport const geometry_msgs__Quaternion& orientation() const;
+
+    /*!
+     * @brief This function returns a reference to member orientation
+     * @return Reference to member orientation
+     */
+    eProsima_user_DllExport geometry_msgs__Quaternion& orientation();
+    /*!
+     * @brief This function copies the value in member orientation_covariance
+     * @param _orientation_covariance New value to be copied in member orientation_covariance
+     */
+    eProsima_user_DllExport void orientation_covariance(
+            const std::array<double, 9>& _orientation_covariance);
+
+    /*!
+     * @brief This function moves the value in member orientation_covariance
+     * @param _orientation_covariance New value to be moved in member orientation_covariance
+     */
+    eProsima_user_DllExport void orientation_covariance(
+            std::array<double, 9>&& _orientation_covariance);
+
+    /*!
+     * @brief This function returns a constant reference to member orientation_covariance
+     * @return Constant reference to member orientation_covariance
+     */
+    eProsima_user_DllExport const std::array<double, 9>& orientation_covariance() const;
+
+    /*!
+     * @brief This function returns a reference to member orientation_covariance
+     * @return Reference to member orientation_covariance
+     */
+    eProsima_user_DllExport std::array<double, 9>& orientation_covariance();
+    /*!
+     * @brief This function copies the value in member angular_velocity
+     * @param _angular_velocity New value to be copied in member angular_velocity
+     */
+    eProsima_user_DllExport void angular_velocity(
+            const geometry_msgs__Vector3& _angular_velocity);
+
+    /*!
+     * @brief This function moves the value in member angular_velocity
+     * @param _angular_velocity New value to be moved in member angular_velocity
+     */
+    eProsima_user_DllExport void angular_velocity(
+            geometry_msgs__Vector3&& _angular_velocity);
+
+    /*!
+     * @brief This function returns a constant reference to member angular_velocity
+     * @return Constant reference to member angular_velocity
+     */
+    eProsima_user_DllExport const geometry_msgs__Vector3& angular_velocity() const;
+
+    /*!
+     * @brief This function returns a reference to member angular_velocity
+     * @return Reference to member angular_velocity
+     */
+    eProsima_user_DllExport geometry_msgs__Vector3& angular_velocity();
+    /*!
+     * @brief This function copies the value in member angular_velocity_covariance
+     * @param _angular_velocity_covariance New value to be copied in member angular_velocity_covariance
+     */
+    eProsima_user_DllExport void angular_velocity_covariance(
+            const std::array<double, 9>& _angular_velocity_covariance);
+
+    /*!
+     * @brief This function moves the value in member angular_velocity_covariance
+     * @param _angular_velocity_covariance New value to be moved in member angular_velocity_covariance
+     */
+    eProsima_user_DllExport void angular_velocity_covariance(
+            std::array<double, 9>&& _angular_velocity_covariance);
+
+    /*!
+     * @brief This function returns a constant reference to member angular_velocity_covariance
+     * @return Constant reference to member angular_velocity_covariance
+     */
+    eProsima_user_DllExport const std::array<double, 9>& angular_velocity_covariance() const;
+
+    /*!
+     * @brief This function returns a reference to member angular_velocity_covariance
+     * @return Reference to member angular_velocity_covariance
+     */
+    eProsima_user_DllExport std::array<double, 9>& angular_velocity_covariance();
+    /*!
+     * @brief This function copies the value in member linear_acceleration
+     * @param _linear_acceleration New value to be copied in member linear_acceleration
+     */
+    eProsima_user_DllExport void linear_acceleration(
+            const geometry_msgs__Vector3& _linear_acceleration);
+
+    /*!
+     * @brief This function moves the value in member linear_acceleration
+     * @param _linear_acceleration New value to be moved in member linear_acceleration
+     */
+    eProsima_user_DllExport void linear_acceleration(
+            geometry_msgs__Vector3&& _linear_acceleration);
+
+    /*!
+     * @brief This function returns a constant reference to member linear_acceleration
+     * @return Constant reference to member linear_acceleration
+     */
+    eProsima_user_DllExport const geometry_msgs__Vector3& linear_acceleration() const;
+
+    /*!
+     * @brief This function returns a reference to member linear_acceleration
+     * @return Reference to member linear_acceleration
+     */
+    eProsima_user_DllExport geometry_msgs__Vector3& linear_acceleration();
+    /*!
+     * @brief This function copies the value in member linear_acceleration_covariance
+     * @param _linear_acceleration_covariance New value to be copied in member linear_acceleration_covariance
+     */
+    eProsima_user_DllExport void linear_acceleration_covariance(
+            const std::array<double, 9>& _linear_acceleration_covariance);
+
+    /*!
+     * @brief This function moves the value in member linear_acceleration_covariance
+     * @param _linear_acceleration_covariance New value to be moved in member linear_acceleration_covariance
+     */
+    eProsima_user_DllExport void linear_acceleration_covariance(
+            std::array<double, 9>&& _linear_acceleration_covariance);
+
+    /*!
+     * @brief This function returns a constant reference to member linear_acceleration_covariance
+     * @return Constant reference to member linear_acceleration_covariance
+     */
+    eProsima_user_DllExport const std::array<double, 9>& linear_acceleration_covariance() const;
+
+    /*!
+     * @brief This function returns a reference to member linear_acceleration_covariance
+     * @return Reference to member linear_acceleration_covariance
+     */
+    eProsima_user_DllExport std::array<double, 9>& linear_acceleration_covariance();
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const sensor_msgs__Imu& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    std_msgs__Header m_header;
+    geometry_msgs__Quaternion m_orientation;
+    std::array<double, 9> m_orientation_covariance;
+    geometry_msgs__Vector3 m_angular_velocity;
+    std::array<double, 9> m_angular_velocity_covariance;
+    geometry_msgs__Vector3 m_linear_acceleration;
+    std::array<double, 9> m_linear_acceleration_covariance;
+};
+/*!
  * @brief This class represents the structure sensor_msgs__RegionOfInterest defined by the user in the IDL file.
  * @ingroup ROS_TYPES
  */
@@ -2505,187 +4896,6 @@ private:
     uint32_t m_row_step;
     std::vector<uint8_t> m_data;
     bool m_is_dense;
-};
-/*!
- * @brief This class represents the structure geometry_msgs__Point defined by the user in the IDL file.
- * @ingroup ROS_TYPES
- */
-class geometry_msgs__Point
-{
-public:
-
-    /*!
-     * @brief Default constructor.
-     */
-    eProsima_user_DllExport geometry_msgs__Point();
-
-    /*!
-     * @brief Default destructor.
-     */
-    eProsima_user_DllExport ~geometry_msgs__Point();
-
-    /*!
-     * @brief Copy constructor.
-     * @param x Reference to the object geometry_msgs__Point that will be copied.
-     */
-    eProsima_user_DllExport geometry_msgs__Point(
-            const geometry_msgs__Point& x);
-
-    /*!
-     * @brief Move constructor.
-     * @param x Reference to the object geometry_msgs__Point that will be copied.
-     */
-    eProsima_user_DllExport geometry_msgs__Point(
-            geometry_msgs__Point&& x);
-
-    /*!
-     * @brief Copy assignment.
-     * @param x Reference to the object geometry_msgs__Point that will be copied.
-     */
-    eProsima_user_DllExport geometry_msgs__Point& operator =(
-            const geometry_msgs__Point& x);
-
-    /*!
-     * @brief Move assignment.
-     * @param x Reference to the object geometry_msgs__Point that will be copied.
-     */
-    eProsima_user_DllExport geometry_msgs__Point& operator =(
-            geometry_msgs__Point&& x);
-
-    /*!
-     * @brief Comparison operator.
-     * @param x geometry_msgs__Point object to compare.
-     */
-    eProsima_user_DllExport bool operator ==(
-            const geometry_msgs__Point& x) const;
-
-    /*!
-     * @brief Comparison operator.
-     * @param x geometry_msgs__Point object to compare.
-     */
-    eProsima_user_DllExport bool operator !=(
-            const geometry_msgs__Point& x) const;
-
-    /*!
-     * @brief This function sets a value in member x
-     * @param _x New value for member x
-     */
-    eProsima_user_DllExport void x(
-            double _x);
-
-    /*!
-     * @brief This function returns the value of member x
-     * @return Value of member x
-     */
-    eProsima_user_DllExport double x() const;
-
-    /*!
-     * @brief This function returns a reference to member x
-     * @return Reference to member x
-     */
-    eProsima_user_DllExport double& x();
-
-    /*!
-     * @brief This function sets a value in member y
-     * @param _y New value for member y
-     */
-    eProsima_user_DllExport void y(
-            double _y);
-
-    /*!
-     * @brief This function returns the value of member y
-     * @return Value of member y
-     */
-    eProsima_user_DllExport double y() const;
-
-    /*!
-     * @brief This function returns a reference to member y
-     * @return Reference to member y
-     */
-    eProsima_user_DllExport double& y();
-
-    /*!
-     * @brief This function sets a value in member z
-     * @param _z New value for member z
-     */
-    eProsima_user_DllExport void z(
-            double _z);
-
-    /*!
-     * @brief This function returns the value of member z
-     * @return Value of member z
-     */
-    eProsima_user_DllExport double z() const;
-
-    /*!
-     * @brief This function returns a reference to member z
-     * @return Reference to member z
-     */
-    eProsima_user_DllExport double& z();
-
-
-    /*!
-     * @brief This function returns the maximum serialized size of an object
-     * depending on the buffer alignment.
-     * @param current_alignment Buffer alignment.
-     * @return Maximum serialized size.
-     */
-    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
-            size_t current_alignment = 0);
-
-    /*!
-     * @brief This function returns the serialized size of a data depending on the buffer alignment.
-     * @param data Data which is calculated its serialized size.
-     * @param current_alignment Buffer alignment.
-     * @return Serialized size.
-     */
-    eProsima_user_DllExport static size_t getCdrSerializedSize(
-            const geometry_msgs__Point& data,
-            size_t current_alignment = 0);
-
-
-    /*!
-     * @brief This function serializes an object using CDR serialization.
-     * @param cdr CDR serialization object.
-     */
-    eProsima_user_DllExport void serialize(
-            eprosima::fastcdr::Cdr& cdr) const;
-
-    /*!
-     * @brief This function deserializes an object using CDR serialization.
-     * @param cdr CDR serialization object.
-     */
-    eProsima_user_DllExport void deserialize(
-            eprosima::fastcdr::Cdr& cdr);
-
-
-
-    /*!
-     * @brief This function returns the maximum serialized size of the Key of an object
-     * depending on the buffer alignment.
-     * @param current_alignment Buffer alignment.
-     * @return Maximum serialized size.
-     */
-    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
-            size_t current_alignment = 0);
-
-    /*!
-     * @brief This function tells you if the Key has been defined for this type
-     */
-    eProsima_user_DllExport static bool isKeyDefined();
-
-    /*!
-     * @brief This function serializes the key members of an object using CDR serialization.
-     * @param cdr CDR serialization object.
-     */
-    eProsima_user_DllExport void serializeKey(
-            eprosima::fastcdr::Cdr& cdr) const;
-
-private:
-
-    double m_x;
-    double m_y;
-    double m_z;
 };
 /*!
  * @brief This class represents the structure visualization_msgs__ImageMarker defined by the user in the IDL file.

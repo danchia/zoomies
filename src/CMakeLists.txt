@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 # set the project name
 project(Zoomies)
 
-set(BUILD_SHARED_LIBS OFF)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -36,7 +36,7 @@ add_subdirectory(userland)
 include_directories(userland)
 
 add_subdirectory(common)
-add_subdirectory(driver)
+add_subdirectory(ros)
 add_subdirectory(hw)
 add_subdirectory(slam)
-add_subdirectory(ros)
+add_subdirectory(driver)

@@ -21,4 +21,4 @@ Clock::Clock() : start_micros_(MonoClockNow()) {}
 
 void Clock::Reset() { start_micros_ = MonoClockNow(); }
 
-int64_t Clock::ElapsedMicros() { return MonoClockNow() - start_micros_; }
+int64_t Clock::ElapsedMicros() const { return MonoClockNow() - start_micros_; }

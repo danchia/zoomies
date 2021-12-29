@@ -582,7 +582,7 @@ int main() {
       int64_t target_t = img_iter.row().t_us;
       int64_t last_datas = datas;
 
-      if (target_t > 4000000) break;
+      if (target_t > 5500000) break;
 
       while (true) {
         const auto& row = data_iter.row();

@@ -1056,17 +1056,3042 @@ void std_msgs__Int32::serializeKey(
      
 }
 
+std_msgs__Float32::std_msgs__Float32()
+{
+    // m_data com.eprosima.idl.parser.typecode.PrimitiveTypeCode@7fad8c79
+    m_data = 0.0;
+
+}
+
+std_msgs__Float32::~std_msgs__Float32()
+{
+}
+
+std_msgs__Float32::std_msgs__Float32(
+        const std_msgs__Float32& x)
+{
+    m_data = x.m_data;
+}
+
+std_msgs__Float32::std_msgs__Float32(
+        std_msgs__Float32&& x)
+{
+    m_data = x.m_data;
+}
+
+std_msgs__Float32& std_msgs__Float32::operator =(
+        const std_msgs__Float32& x)
+{
+
+    m_data = x.m_data;
+
+    return *this;
+}
+
+std_msgs__Float32& std_msgs__Float32::operator =(
+        std_msgs__Float32&& x)
+{
+
+    m_data = x.m_data;
+
+    return *this;
+}
+
+bool std_msgs__Float32::operator ==(
+        const std_msgs__Float32& x) const
+{
+
+    return (m_data == x.m_data);
+}
+
+bool std_msgs__Float32::operator !=(
+        const std_msgs__Float32& x) const
+{
+    return !(*this == x);
+}
+
+size_t std_msgs__Float32::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    return current_alignment - initial_alignment;
+}
+
+size_t std_msgs__Float32::getCdrSerializedSize(
+        const std_msgs__Float32& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    return current_alignment - initial_alignment;
+}
+
+void std_msgs__Float32::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_data;
+
+}
+
+void std_msgs__Float32::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_data;
+}
+
+/*!
+ * @brief This function sets a value in member data
+ * @param _data New value for member data
+ */
+void std_msgs__Float32::data(
+        float _data)
+{
+    m_data = _data;
+}
+
+/*!
+ * @brief This function returns the value of member data
+ * @return Value of member data
+ */
+float std_msgs__Float32::data() const
+{
+    return m_data;
+}
+
+/*!
+ * @brief This function returns a reference to member data
+ * @return Reference to member data
+ */
+float& std_msgs__Float32::data()
+{
+    return m_data;
+}
+
+
+size_t std_msgs__Float32::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+    return current_align;
+}
+
+bool std_msgs__Float32::isKeyDefined()
+{
+    return false;
+}
+
+void std_msgs__Float32::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+     
+}
+
+geometry_msgs__Vector3::geometry_msgs__Vector3()
+{
+    // m_x com.eprosima.idl.parser.typecode.PrimitiveTypeCode@71a794e5
+    m_x = 0.0;
+    // m_y com.eprosima.idl.parser.typecode.PrimitiveTypeCode@76329302
+    m_y = 0.0;
+    // m_z com.eprosima.idl.parser.typecode.PrimitiveTypeCode@5e25a92e
+    m_z = 0.0;
+
+}
+
+geometry_msgs__Vector3::~geometry_msgs__Vector3()
+{
+
+
+
+}
+
+geometry_msgs__Vector3::geometry_msgs__Vector3(
+        const geometry_msgs__Vector3& x)
+{
+    m_x = x.m_x;
+    m_y = x.m_y;
+    m_z = x.m_z;
+}
+
+geometry_msgs__Vector3::geometry_msgs__Vector3(
+        geometry_msgs__Vector3&& x)
+{
+    m_x = x.m_x;
+    m_y = x.m_y;
+    m_z = x.m_z;
+}
+
+geometry_msgs__Vector3& geometry_msgs__Vector3::operator =(
+        const geometry_msgs__Vector3& x)
+{
+
+    m_x = x.m_x;
+    m_y = x.m_y;
+    m_z = x.m_z;
+
+    return *this;
+}
+
+geometry_msgs__Vector3& geometry_msgs__Vector3::operator =(
+        geometry_msgs__Vector3&& x)
+{
+
+    m_x = x.m_x;
+    m_y = x.m_y;
+    m_z = x.m_z;
+
+    return *this;
+}
+
+bool geometry_msgs__Vector3::operator ==(
+        const geometry_msgs__Vector3& x) const
+{
+
+    return (m_x == x.m_x && m_y == x.m_y && m_z == x.m_z);
+}
+
+bool geometry_msgs__Vector3::operator !=(
+        const geometry_msgs__Vector3& x) const
+{
+    return !(*this == x);
+}
+
+size_t geometry_msgs__Vector3::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+
+    return current_alignment - initial_alignment;
+}
+
+size_t geometry_msgs__Vector3::getCdrSerializedSize(
+        const geometry_msgs__Vector3& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+
+    return current_alignment - initial_alignment;
+}
+
+void geometry_msgs__Vector3::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_x;
+    scdr << m_y;
+    scdr << m_z;
+
+}
+
+void geometry_msgs__Vector3::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_x;
+    dcdr >> m_y;
+    dcdr >> m_z;
+}
+
+/*!
+ * @brief This function sets a value in member x
+ * @param _x New value for member x
+ */
+void geometry_msgs__Vector3::x(
+        double _x)
+{
+    m_x = _x;
+}
+
+/*!
+ * @brief This function returns the value of member x
+ * @return Value of member x
+ */
+double geometry_msgs__Vector3::x() const
+{
+    return m_x;
+}
+
+/*!
+ * @brief This function returns a reference to member x
+ * @return Reference to member x
+ */
+double& geometry_msgs__Vector3::x()
+{
+    return m_x;
+}
+
+/*!
+ * @brief This function sets a value in member y
+ * @param _y New value for member y
+ */
+void geometry_msgs__Vector3::y(
+        double _y)
+{
+    m_y = _y;
+}
+
+/*!
+ * @brief This function returns the value of member y
+ * @return Value of member y
+ */
+double geometry_msgs__Vector3::y() const
+{
+    return m_y;
+}
+
+/*!
+ * @brief This function returns a reference to member y
+ * @return Reference to member y
+ */
+double& geometry_msgs__Vector3::y()
+{
+    return m_y;
+}
+
+/*!
+ * @brief This function sets a value in member z
+ * @param _z New value for member z
+ */
+void geometry_msgs__Vector3::z(
+        double _z)
+{
+    m_z = _z;
+}
+
+/*!
+ * @brief This function returns the value of member z
+ * @return Value of member z
+ */
+double geometry_msgs__Vector3::z() const
+{
+    return m_z;
+}
+
+/*!
+ * @brief This function returns a reference to member z
+ * @return Reference to member z
+ */
+double& geometry_msgs__Vector3::z()
+{
+    return m_z;
+}
+
+
+size_t geometry_msgs__Vector3::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+
+
+
+    return current_align;
+}
+
+bool geometry_msgs__Vector3::isKeyDefined()
+{
+    return false;
+}
+
+void geometry_msgs__Vector3::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+       
+}
+
+geometry_msgs__Point::geometry_msgs__Point()
+{
+    // m_x com.eprosima.idl.parser.typecode.PrimitiveTypeCode@1dd02175
+    m_x = 0.0;
+    // m_y com.eprosima.idl.parser.typecode.PrimitiveTypeCode@31206beb
+    m_y = 0.0;
+    // m_z com.eprosima.idl.parser.typecode.PrimitiveTypeCode@23bb8443
+    m_z = 0.0;
+
+}
+
+geometry_msgs__Point::~geometry_msgs__Point()
+{
+
+
+
+}
+
+geometry_msgs__Point::geometry_msgs__Point(
+        const geometry_msgs__Point& x)
+{
+    m_x = x.m_x;
+    m_y = x.m_y;
+    m_z = x.m_z;
+}
+
+geometry_msgs__Point::geometry_msgs__Point(
+        geometry_msgs__Point&& x)
+{
+    m_x = x.m_x;
+    m_y = x.m_y;
+    m_z = x.m_z;
+}
+
+geometry_msgs__Point& geometry_msgs__Point::operator =(
+        const geometry_msgs__Point& x)
+{
+
+    m_x = x.m_x;
+    m_y = x.m_y;
+    m_z = x.m_z;
+
+    return *this;
+}
+
+geometry_msgs__Point& geometry_msgs__Point::operator =(
+        geometry_msgs__Point&& x)
+{
+
+    m_x = x.m_x;
+    m_y = x.m_y;
+    m_z = x.m_z;
+
+    return *this;
+}
+
+bool geometry_msgs__Point::operator ==(
+        const geometry_msgs__Point& x) const
+{
+
+    return (m_x == x.m_x && m_y == x.m_y && m_z == x.m_z);
+}
+
+bool geometry_msgs__Point::operator !=(
+        const geometry_msgs__Point& x) const
+{
+    return !(*this == x);
+}
+
+size_t geometry_msgs__Point::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+
+    return current_alignment - initial_alignment;
+}
+
+size_t geometry_msgs__Point::getCdrSerializedSize(
+        const geometry_msgs__Point& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+
+    return current_alignment - initial_alignment;
+}
+
+void geometry_msgs__Point::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_x;
+    scdr << m_y;
+    scdr << m_z;
+
+}
+
+void geometry_msgs__Point::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_x;
+    dcdr >> m_y;
+    dcdr >> m_z;
+}
+
+/*!
+ * @brief This function sets a value in member x
+ * @param _x New value for member x
+ */
+void geometry_msgs__Point::x(
+        double _x)
+{
+    m_x = _x;
+}
+
+/*!
+ * @brief This function returns the value of member x
+ * @return Value of member x
+ */
+double geometry_msgs__Point::x() const
+{
+    return m_x;
+}
+
+/*!
+ * @brief This function returns a reference to member x
+ * @return Reference to member x
+ */
+double& geometry_msgs__Point::x()
+{
+    return m_x;
+}
+
+/*!
+ * @brief This function sets a value in member y
+ * @param _y New value for member y
+ */
+void geometry_msgs__Point::y(
+        double _y)
+{
+    m_y = _y;
+}
+
+/*!
+ * @brief This function returns the value of member y
+ * @return Value of member y
+ */
+double geometry_msgs__Point::y() const
+{
+    return m_y;
+}
+
+/*!
+ * @brief This function returns a reference to member y
+ * @return Reference to member y
+ */
+double& geometry_msgs__Point::y()
+{
+    return m_y;
+}
+
+/*!
+ * @brief This function sets a value in member z
+ * @param _z New value for member z
+ */
+void geometry_msgs__Point::z(
+        double _z)
+{
+    m_z = _z;
+}
+
+/*!
+ * @brief This function returns the value of member z
+ * @return Value of member z
+ */
+double geometry_msgs__Point::z() const
+{
+    return m_z;
+}
+
+/*!
+ * @brief This function returns a reference to member z
+ * @return Reference to member z
+ */
+double& geometry_msgs__Point::z()
+{
+    return m_z;
+}
+
+
+size_t geometry_msgs__Point::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+
+
+
+    return current_align;
+}
+
+bool geometry_msgs__Point::isKeyDefined()
+{
+    return false;
+}
+
+void geometry_msgs__Point::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+       
+}
+
+geometry_msgs__Quaternion::geometry_msgs__Quaternion()
+{
+    // m_x com.eprosima.idl.parser.typecode.PrimitiveTypeCode@37574691
+    m_x = 0.0;
+    // m_y com.eprosima.idl.parser.typecode.PrimitiveTypeCode@25359ed8
+    m_y = 0.0;
+    // m_z com.eprosima.idl.parser.typecode.PrimitiveTypeCode@21a947fe
+    m_z = 0.0;
+    // m_w com.eprosima.idl.parser.typecode.PrimitiveTypeCode@5606c0b
+    m_w = 0.0;
+
+}
+
+geometry_msgs__Quaternion::~geometry_msgs__Quaternion()
+{
+
+
+
+
+}
+
+geometry_msgs__Quaternion::geometry_msgs__Quaternion(
+        const geometry_msgs__Quaternion& x)
+{
+    m_x = x.m_x;
+    m_y = x.m_y;
+    m_z = x.m_z;
+    m_w = x.m_w;
+}
+
+geometry_msgs__Quaternion::geometry_msgs__Quaternion(
+        geometry_msgs__Quaternion&& x)
+{
+    m_x = x.m_x;
+    m_y = x.m_y;
+    m_z = x.m_z;
+    m_w = x.m_w;
+}
+
+geometry_msgs__Quaternion& geometry_msgs__Quaternion::operator =(
+        const geometry_msgs__Quaternion& x)
+{
+
+    m_x = x.m_x;
+    m_y = x.m_y;
+    m_z = x.m_z;
+    m_w = x.m_w;
+
+    return *this;
+}
+
+geometry_msgs__Quaternion& geometry_msgs__Quaternion::operator =(
+        geometry_msgs__Quaternion&& x)
+{
+
+    m_x = x.m_x;
+    m_y = x.m_y;
+    m_z = x.m_z;
+    m_w = x.m_w;
+
+    return *this;
+}
+
+bool geometry_msgs__Quaternion::operator ==(
+        const geometry_msgs__Quaternion& x) const
+{
+
+    return (m_x == x.m_x && m_y == x.m_y && m_z == x.m_z && m_w == x.m_w);
+}
+
+bool geometry_msgs__Quaternion::operator !=(
+        const geometry_msgs__Quaternion& x) const
+{
+    return !(*this == x);
+}
+
+size_t geometry_msgs__Quaternion::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+
+    return current_alignment - initial_alignment;
+}
+
+size_t geometry_msgs__Quaternion::getCdrSerializedSize(
+        const geometry_msgs__Quaternion& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+
+    return current_alignment - initial_alignment;
+}
+
+void geometry_msgs__Quaternion::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_x;
+    scdr << m_y;
+    scdr << m_z;
+    scdr << m_w;
+
+}
+
+void geometry_msgs__Quaternion::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_x;
+    dcdr >> m_y;
+    dcdr >> m_z;
+    dcdr >> m_w;
+}
+
+/*!
+ * @brief This function sets a value in member x
+ * @param _x New value for member x
+ */
+void geometry_msgs__Quaternion::x(
+        double _x)
+{
+    m_x = _x;
+}
+
+/*!
+ * @brief This function returns the value of member x
+ * @return Value of member x
+ */
+double geometry_msgs__Quaternion::x() const
+{
+    return m_x;
+}
+
+/*!
+ * @brief This function returns a reference to member x
+ * @return Reference to member x
+ */
+double& geometry_msgs__Quaternion::x()
+{
+    return m_x;
+}
+
+/*!
+ * @brief This function sets a value in member y
+ * @param _y New value for member y
+ */
+void geometry_msgs__Quaternion::y(
+        double _y)
+{
+    m_y = _y;
+}
+
+/*!
+ * @brief This function returns the value of member y
+ * @return Value of member y
+ */
+double geometry_msgs__Quaternion::y() const
+{
+    return m_y;
+}
+
+/*!
+ * @brief This function returns a reference to member y
+ * @return Reference to member y
+ */
+double& geometry_msgs__Quaternion::y()
+{
+    return m_y;
+}
+
+/*!
+ * @brief This function sets a value in member z
+ * @param _z New value for member z
+ */
+void geometry_msgs__Quaternion::z(
+        double _z)
+{
+    m_z = _z;
+}
+
+/*!
+ * @brief This function returns the value of member z
+ * @return Value of member z
+ */
+double geometry_msgs__Quaternion::z() const
+{
+    return m_z;
+}
+
+/*!
+ * @brief This function returns a reference to member z
+ * @return Reference to member z
+ */
+double& geometry_msgs__Quaternion::z()
+{
+    return m_z;
+}
+
+/*!
+ * @brief This function sets a value in member w
+ * @param _w New value for member w
+ */
+void geometry_msgs__Quaternion::w(
+        double _w)
+{
+    m_w = _w;
+}
+
+/*!
+ * @brief This function returns the value of member w
+ * @return Value of member w
+ */
+double geometry_msgs__Quaternion::w() const
+{
+    return m_w;
+}
+
+/*!
+ * @brief This function returns a reference to member w
+ * @return Reference to member w
+ */
+double& geometry_msgs__Quaternion::w()
+{
+    return m_w;
+}
+
+
+size_t geometry_msgs__Quaternion::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+
+
+
+
+    return current_align;
+}
+
+bool geometry_msgs__Quaternion::isKeyDefined()
+{
+    return false;
+}
+
+void geometry_msgs__Quaternion::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+        
+}
+
+geometry_msgs__Twist::geometry_msgs__Twist()
+{
+    // m_linear com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@12405818
+
+    // m_angular com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@12405818
+
+
+}
+
+geometry_msgs__Twist::~geometry_msgs__Twist()
+{
+
+
+}
+
+geometry_msgs__Twist::geometry_msgs__Twist(
+        const geometry_msgs__Twist& x)
+{
+    m_linear = x.m_linear;
+    m_angular = x.m_angular;
+}
+
+geometry_msgs__Twist::geometry_msgs__Twist(
+        geometry_msgs__Twist&& x)
+{
+    m_linear = std::move(x.m_linear);
+    m_angular = std::move(x.m_angular);
+}
+
+geometry_msgs__Twist& geometry_msgs__Twist::operator =(
+        const geometry_msgs__Twist& x)
+{
+
+    m_linear = x.m_linear;
+    m_angular = x.m_angular;
+
+    return *this;
+}
+
+geometry_msgs__Twist& geometry_msgs__Twist::operator =(
+        geometry_msgs__Twist&& x)
+{
+
+    m_linear = std::move(x.m_linear);
+    m_angular = std::move(x.m_angular);
+
+    return *this;
+}
+
+bool geometry_msgs__Twist::operator ==(
+        const geometry_msgs__Twist& x) const
+{
+
+    return (m_linear == x.m_linear && m_angular == x.m_angular);
+}
+
+bool geometry_msgs__Twist::operator !=(
+        const geometry_msgs__Twist& x) const
+{
+    return !(*this == x);
+}
+
+size_t geometry_msgs__Twist::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += geometry_msgs__Vector3::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += geometry_msgs__Vector3::getMaxCdrSerializedSize(current_alignment);
+
+    return current_alignment - initial_alignment;
+}
+
+size_t geometry_msgs__Twist::getCdrSerializedSize(
+        const geometry_msgs__Twist& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += geometry_msgs__Vector3::getCdrSerializedSize(data.linear(), current_alignment);
+    current_alignment += geometry_msgs__Vector3::getCdrSerializedSize(data.angular(), current_alignment);
+
+    return current_alignment - initial_alignment;
+}
+
+void geometry_msgs__Twist::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_linear;
+    scdr << m_angular;
+
+}
+
+void geometry_msgs__Twist::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_linear;
+    dcdr >> m_angular;
+}
+
+/*!
+ * @brief This function copies the value in member linear
+ * @param _linear New value to be copied in member linear
+ */
+void geometry_msgs__Twist::linear(
+        const geometry_msgs__Vector3& _linear)
+{
+    m_linear = _linear;
+}
+
+/*!
+ * @brief This function moves the value in member linear
+ * @param _linear New value to be moved in member linear
+ */
+void geometry_msgs__Twist::linear(
+        geometry_msgs__Vector3&& _linear)
+{
+    m_linear = std::move(_linear);
+}
+
+/*!
+ * @brief This function returns a constant reference to member linear
+ * @return Constant reference to member linear
+ */
+const geometry_msgs__Vector3& geometry_msgs__Twist::linear() const
+{
+    return m_linear;
+}
+
+/*!
+ * @brief This function returns a reference to member linear
+ * @return Reference to member linear
+ */
+geometry_msgs__Vector3& geometry_msgs__Twist::linear()
+{
+    return m_linear;
+}
+/*!
+ * @brief This function copies the value in member angular
+ * @param _angular New value to be copied in member angular
+ */
+void geometry_msgs__Twist::angular(
+        const geometry_msgs__Vector3& _angular)
+{
+    m_angular = _angular;
+}
+
+/*!
+ * @brief This function moves the value in member angular
+ * @param _angular New value to be moved in member angular
+ */
+void geometry_msgs__Twist::angular(
+        geometry_msgs__Vector3&& _angular)
+{
+    m_angular = std::move(_angular);
+}
+
+/*!
+ * @brief This function returns a constant reference to member angular
+ * @return Constant reference to member angular
+ */
+const geometry_msgs__Vector3& geometry_msgs__Twist::angular() const
+{
+    return m_angular;
+}
+
+/*!
+ * @brief This function returns a reference to member angular
+ * @return Reference to member angular
+ */
+geometry_msgs__Vector3& geometry_msgs__Twist::angular()
+{
+    return m_angular;
+}
+
+size_t geometry_msgs__Twist::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+
+
+    return current_align;
+}
+
+bool geometry_msgs__Twist::isKeyDefined()
+{
+    return false;
+}
+
+void geometry_msgs__Twist::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+      
+}
+
+geometry_msgs__TwistStamped::geometry_msgs__TwistStamped()
+{
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@314c508a
+
+    // m_twist com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@10b48321
+
+
+}
+
+geometry_msgs__TwistStamped::~geometry_msgs__TwistStamped()
+{
+
+
+}
+
+geometry_msgs__TwistStamped::geometry_msgs__TwistStamped(
+        const geometry_msgs__TwistStamped& x)
+{
+    m_header = x.m_header;
+    m_twist = x.m_twist;
+}
+
+geometry_msgs__TwistStamped::geometry_msgs__TwistStamped(
+        geometry_msgs__TwistStamped&& x)
+{
+    m_header = std::move(x.m_header);
+    m_twist = std::move(x.m_twist);
+}
+
+geometry_msgs__TwistStamped& geometry_msgs__TwistStamped::operator =(
+        const geometry_msgs__TwistStamped& x)
+{
+
+    m_header = x.m_header;
+    m_twist = x.m_twist;
+
+    return *this;
+}
+
+geometry_msgs__TwistStamped& geometry_msgs__TwistStamped::operator =(
+        geometry_msgs__TwistStamped&& x)
+{
+
+    m_header = std::move(x.m_header);
+    m_twist = std::move(x.m_twist);
+
+    return *this;
+}
+
+bool geometry_msgs__TwistStamped::operator ==(
+        const geometry_msgs__TwistStamped& x) const
+{
+
+    return (m_header == x.m_header && m_twist == x.m_twist);
+}
+
+bool geometry_msgs__TwistStamped::operator !=(
+        const geometry_msgs__TwistStamped& x) const
+{
+    return !(*this == x);
+}
+
+size_t geometry_msgs__TwistStamped::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += std_msgs__Header::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += geometry_msgs__Twist::getMaxCdrSerializedSize(current_alignment);
+
+    return current_alignment - initial_alignment;
+}
+
+size_t geometry_msgs__TwistStamped::getCdrSerializedSize(
+        const geometry_msgs__TwistStamped& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += std_msgs__Header::getCdrSerializedSize(data.header(), current_alignment);
+    current_alignment += geometry_msgs__Twist::getCdrSerializedSize(data.twist(), current_alignment);
+
+    return current_alignment - initial_alignment;
+}
+
+void geometry_msgs__TwistStamped::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_header;
+    scdr << m_twist;
+
+}
+
+void geometry_msgs__TwistStamped::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_header;
+    dcdr >> m_twist;
+}
+
+/*!
+ * @brief This function copies the value in member header
+ * @param _header New value to be copied in member header
+ */
+void geometry_msgs__TwistStamped::header(
+        const std_msgs__Header& _header)
+{
+    m_header = _header;
+}
+
+/*!
+ * @brief This function moves the value in member header
+ * @param _header New value to be moved in member header
+ */
+void geometry_msgs__TwistStamped::header(
+        std_msgs__Header&& _header)
+{
+    m_header = std::move(_header);
+}
+
+/*!
+ * @brief This function returns a constant reference to member header
+ * @return Constant reference to member header
+ */
+const std_msgs__Header& geometry_msgs__TwistStamped::header() const
+{
+    return m_header;
+}
+
+/*!
+ * @brief This function returns a reference to member header
+ * @return Reference to member header
+ */
+std_msgs__Header& geometry_msgs__TwistStamped::header()
+{
+    return m_header;
+}
+/*!
+ * @brief This function copies the value in member twist
+ * @param _twist New value to be copied in member twist
+ */
+void geometry_msgs__TwistStamped::twist(
+        const geometry_msgs__Twist& _twist)
+{
+    m_twist = _twist;
+}
+
+/*!
+ * @brief This function moves the value in member twist
+ * @param _twist New value to be moved in member twist
+ */
+void geometry_msgs__TwistStamped::twist(
+        geometry_msgs__Twist&& _twist)
+{
+    m_twist = std::move(_twist);
+}
+
+/*!
+ * @brief This function returns a constant reference to member twist
+ * @return Constant reference to member twist
+ */
+const geometry_msgs__Twist& geometry_msgs__TwistStamped::twist() const
+{
+    return m_twist;
+}
+
+/*!
+ * @brief This function returns a reference to member twist
+ * @return Reference to member twist
+ */
+geometry_msgs__Twist& geometry_msgs__TwistStamped::twist()
+{
+    return m_twist;
+}
+
+size_t geometry_msgs__TwistStamped::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+
+
+    return current_align;
+}
+
+bool geometry_msgs__TwistStamped::isKeyDefined()
+{
+    return false;
+}
+
+void geometry_msgs__TwistStamped::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+      
+}
+
+geometry_msgs__TwistWithCovariance::geometry_msgs__TwistWithCovariance()
+{
+    // m_twist com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@10b48321
+
+    // m_covariance com.eprosima.idl.parser.typecode.ArrayTypeCode@1e9e725a
+    memset(&m_covariance, 0, (36) * 8);
+
+}
+
+geometry_msgs__TwistWithCovariance::~geometry_msgs__TwistWithCovariance()
+{
+
+
+}
+
+geometry_msgs__TwistWithCovariance::geometry_msgs__TwistWithCovariance(
+        const geometry_msgs__TwistWithCovariance& x)
+{
+    m_twist = x.m_twist;
+    m_covariance = x.m_covariance;
+}
+
+geometry_msgs__TwistWithCovariance::geometry_msgs__TwistWithCovariance(
+        geometry_msgs__TwistWithCovariance&& x)
+{
+    m_twist = std::move(x.m_twist);
+    m_covariance = std::move(x.m_covariance);
+}
+
+geometry_msgs__TwistWithCovariance& geometry_msgs__TwistWithCovariance::operator =(
+        const geometry_msgs__TwistWithCovariance& x)
+{
+
+    m_twist = x.m_twist;
+    m_covariance = x.m_covariance;
+
+    return *this;
+}
+
+geometry_msgs__TwistWithCovariance& geometry_msgs__TwistWithCovariance::operator =(
+        geometry_msgs__TwistWithCovariance&& x)
+{
+
+    m_twist = std::move(x.m_twist);
+    m_covariance = std::move(x.m_covariance);
+
+    return *this;
+}
+
+bool geometry_msgs__TwistWithCovariance::operator ==(
+        const geometry_msgs__TwistWithCovariance& x) const
+{
+
+    return (m_twist == x.m_twist && m_covariance == x.m_covariance);
+}
+
+bool geometry_msgs__TwistWithCovariance::operator !=(
+        const geometry_msgs__TwistWithCovariance& x) const
+{
+    return !(*this == x);
+}
+
+size_t geometry_msgs__TwistWithCovariance::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += geometry_msgs__Twist::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += ((36) * 8) + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+
+    return current_alignment - initial_alignment;
+}
+
+size_t geometry_msgs__TwistWithCovariance::getCdrSerializedSize(
+        const geometry_msgs__TwistWithCovariance& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += geometry_msgs__Twist::getCdrSerializedSize(data.twist(), current_alignment);
+    if ((36) > 0)
+    {
+        current_alignment += ((36) * 8) + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+    }
+
+
+    return current_alignment - initial_alignment;
+}
+
+void geometry_msgs__TwistWithCovariance::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_twist;
+    scdr << m_covariance;
+
+
+}
+
+void geometry_msgs__TwistWithCovariance::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_twist;
+    dcdr >> m_covariance;
+
+}
+
+/*!
+ * @brief This function copies the value in member twist
+ * @param _twist New value to be copied in member twist
+ */
+void geometry_msgs__TwistWithCovariance::twist(
+        const geometry_msgs__Twist& _twist)
+{
+    m_twist = _twist;
+}
+
+/*!
+ * @brief This function moves the value in member twist
+ * @param _twist New value to be moved in member twist
+ */
+void geometry_msgs__TwistWithCovariance::twist(
+        geometry_msgs__Twist&& _twist)
+{
+    m_twist = std::move(_twist);
+}
+
+/*!
+ * @brief This function returns a constant reference to member twist
+ * @return Constant reference to member twist
+ */
+const geometry_msgs__Twist& geometry_msgs__TwistWithCovariance::twist() const
+{
+    return m_twist;
+}
+
+/*!
+ * @brief This function returns a reference to member twist
+ * @return Reference to member twist
+ */
+geometry_msgs__Twist& geometry_msgs__TwistWithCovariance::twist()
+{
+    return m_twist;
+}
+/*!
+ * @brief This function copies the value in member covariance
+ * @param _covariance New value to be copied in member covariance
+ */
+void geometry_msgs__TwistWithCovariance::covariance(
+        const std::array<double, 36>& _covariance)
+{
+    m_covariance = _covariance;
+}
+
+/*!
+ * @brief This function moves the value in member covariance
+ * @param _covariance New value to be moved in member covariance
+ */
+void geometry_msgs__TwistWithCovariance::covariance(
+        std::array<double, 36>&& _covariance)
+{
+    m_covariance = std::move(_covariance);
+}
+
+/*!
+ * @brief This function returns a constant reference to member covariance
+ * @return Constant reference to member covariance
+ */
+const std::array<double, 36>& geometry_msgs__TwistWithCovariance::covariance() const
+{
+    return m_covariance;
+}
+
+/*!
+ * @brief This function returns a reference to member covariance
+ * @return Reference to member covariance
+ */
+std::array<double, 36>& geometry_msgs__TwistWithCovariance::covariance()
+{
+    return m_covariance;
+}
+
+size_t geometry_msgs__TwistWithCovariance::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+
+
+    return current_align;
+}
+
+bool geometry_msgs__TwistWithCovariance::isKeyDefined()
+{
+    return false;
+}
+
+void geometry_msgs__TwistWithCovariance::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+      
+}
+
+geometry_msgs__TwistWithCovarianceStamped::geometry_msgs__TwistWithCovarianceStamped()
+{
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@314c508a
+
+    // m_twist com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@797badd3
+
+
+}
+
+geometry_msgs__TwistWithCovarianceStamped::~geometry_msgs__TwistWithCovarianceStamped()
+{
+
+
+}
+
+geometry_msgs__TwistWithCovarianceStamped::geometry_msgs__TwistWithCovarianceStamped(
+        const geometry_msgs__TwistWithCovarianceStamped& x)
+{
+    m_header = x.m_header;
+    m_twist = x.m_twist;
+}
+
+geometry_msgs__TwistWithCovarianceStamped::geometry_msgs__TwistWithCovarianceStamped(
+        geometry_msgs__TwistWithCovarianceStamped&& x)
+{
+    m_header = std::move(x.m_header);
+    m_twist = std::move(x.m_twist);
+}
+
+geometry_msgs__TwistWithCovarianceStamped& geometry_msgs__TwistWithCovarianceStamped::operator =(
+        const geometry_msgs__TwistWithCovarianceStamped& x)
+{
+
+    m_header = x.m_header;
+    m_twist = x.m_twist;
+
+    return *this;
+}
+
+geometry_msgs__TwistWithCovarianceStamped& geometry_msgs__TwistWithCovarianceStamped::operator =(
+        geometry_msgs__TwistWithCovarianceStamped&& x)
+{
+
+    m_header = std::move(x.m_header);
+    m_twist = std::move(x.m_twist);
+
+    return *this;
+}
+
+bool geometry_msgs__TwistWithCovarianceStamped::operator ==(
+        const geometry_msgs__TwistWithCovarianceStamped& x) const
+{
+
+    return (m_header == x.m_header && m_twist == x.m_twist);
+}
+
+bool geometry_msgs__TwistWithCovarianceStamped::operator !=(
+        const geometry_msgs__TwistWithCovarianceStamped& x) const
+{
+    return !(*this == x);
+}
+
+size_t geometry_msgs__TwistWithCovarianceStamped::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += std_msgs__Header::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += geometry_msgs__TwistWithCovariance::getMaxCdrSerializedSize(current_alignment);
+
+    return current_alignment - initial_alignment;
+}
+
+size_t geometry_msgs__TwistWithCovarianceStamped::getCdrSerializedSize(
+        const geometry_msgs__TwistWithCovarianceStamped& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += std_msgs__Header::getCdrSerializedSize(data.header(), current_alignment);
+    current_alignment += geometry_msgs__TwistWithCovariance::getCdrSerializedSize(data.twist(), current_alignment);
+
+    return current_alignment - initial_alignment;
+}
+
+void geometry_msgs__TwistWithCovarianceStamped::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_header;
+    scdr << m_twist;
+
+}
+
+void geometry_msgs__TwistWithCovarianceStamped::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_header;
+    dcdr >> m_twist;
+}
+
+/*!
+ * @brief This function copies the value in member header
+ * @param _header New value to be copied in member header
+ */
+void geometry_msgs__TwistWithCovarianceStamped::header(
+        const std_msgs__Header& _header)
+{
+    m_header = _header;
+}
+
+/*!
+ * @brief This function moves the value in member header
+ * @param _header New value to be moved in member header
+ */
+void geometry_msgs__TwistWithCovarianceStamped::header(
+        std_msgs__Header&& _header)
+{
+    m_header = std::move(_header);
+}
+
+/*!
+ * @brief This function returns a constant reference to member header
+ * @return Constant reference to member header
+ */
+const std_msgs__Header& geometry_msgs__TwistWithCovarianceStamped::header() const
+{
+    return m_header;
+}
+
+/*!
+ * @brief This function returns a reference to member header
+ * @return Reference to member header
+ */
+std_msgs__Header& geometry_msgs__TwistWithCovarianceStamped::header()
+{
+    return m_header;
+}
+/*!
+ * @brief This function copies the value in member twist
+ * @param _twist New value to be copied in member twist
+ */
+void geometry_msgs__TwistWithCovarianceStamped::twist(
+        const geometry_msgs__TwistWithCovariance& _twist)
+{
+    m_twist = _twist;
+}
+
+/*!
+ * @brief This function moves the value in member twist
+ * @param _twist New value to be moved in member twist
+ */
+void geometry_msgs__TwistWithCovarianceStamped::twist(
+        geometry_msgs__TwistWithCovariance&& _twist)
+{
+    m_twist = std::move(_twist);
+}
+
+/*!
+ * @brief This function returns a constant reference to member twist
+ * @return Constant reference to member twist
+ */
+const geometry_msgs__TwistWithCovariance& geometry_msgs__TwistWithCovarianceStamped::twist() const
+{
+    return m_twist;
+}
+
+/*!
+ * @brief This function returns a reference to member twist
+ * @return Reference to member twist
+ */
+geometry_msgs__TwistWithCovariance& geometry_msgs__TwistWithCovarianceStamped::twist()
+{
+    return m_twist;
+}
+
+size_t geometry_msgs__TwistWithCovarianceStamped::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+
+
+    return current_align;
+}
+
+bool geometry_msgs__TwistWithCovarianceStamped::isKeyDefined()
+{
+    return false;
+}
+
+void geometry_msgs__TwistWithCovarianceStamped::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+      
+}
+
+geometry_msgs__Pose::geometry_msgs__Pose()
+{
+    // m_position com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@dd3b207
+
+    // m_orientation com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@551bdc27
+
+
+}
+
+geometry_msgs__Pose::~geometry_msgs__Pose()
+{
+
+
+}
+
+geometry_msgs__Pose::geometry_msgs__Pose(
+        const geometry_msgs__Pose& x)
+{
+    m_position = x.m_position;
+    m_orientation = x.m_orientation;
+}
+
+geometry_msgs__Pose::geometry_msgs__Pose(
+        geometry_msgs__Pose&& x)
+{
+    m_position = std::move(x.m_position);
+    m_orientation = std::move(x.m_orientation);
+}
+
+geometry_msgs__Pose& geometry_msgs__Pose::operator =(
+        const geometry_msgs__Pose& x)
+{
+
+    m_position = x.m_position;
+    m_orientation = x.m_orientation;
+
+    return *this;
+}
+
+geometry_msgs__Pose& geometry_msgs__Pose::operator =(
+        geometry_msgs__Pose&& x)
+{
+
+    m_position = std::move(x.m_position);
+    m_orientation = std::move(x.m_orientation);
+
+    return *this;
+}
+
+bool geometry_msgs__Pose::operator ==(
+        const geometry_msgs__Pose& x) const
+{
+
+    return (m_position == x.m_position && m_orientation == x.m_orientation);
+}
+
+bool geometry_msgs__Pose::operator !=(
+        const geometry_msgs__Pose& x) const
+{
+    return !(*this == x);
+}
+
+size_t geometry_msgs__Pose::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += geometry_msgs__Point::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += geometry_msgs__Quaternion::getMaxCdrSerializedSize(current_alignment);
+
+    return current_alignment - initial_alignment;
+}
+
+size_t geometry_msgs__Pose::getCdrSerializedSize(
+        const geometry_msgs__Pose& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += geometry_msgs__Point::getCdrSerializedSize(data.position(), current_alignment);
+    current_alignment += geometry_msgs__Quaternion::getCdrSerializedSize(data.orientation(), current_alignment);
+
+    return current_alignment - initial_alignment;
+}
+
+void geometry_msgs__Pose::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_position;
+    scdr << m_orientation;
+
+}
+
+void geometry_msgs__Pose::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_position;
+    dcdr >> m_orientation;
+}
+
+/*!
+ * @brief This function copies the value in member position
+ * @param _position New value to be copied in member position
+ */
+void geometry_msgs__Pose::position(
+        const geometry_msgs__Point& _position)
+{
+    m_position = _position;
+}
+
+/*!
+ * @brief This function moves the value in member position
+ * @param _position New value to be moved in member position
+ */
+void geometry_msgs__Pose::position(
+        geometry_msgs__Point&& _position)
+{
+    m_position = std::move(_position);
+}
+
+/*!
+ * @brief This function returns a constant reference to member position
+ * @return Constant reference to member position
+ */
+const geometry_msgs__Point& geometry_msgs__Pose::position() const
+{
+    return m_position;
+}
+
+/*!
+ * @brief This function returns a reference to member position
+ * @return Reference to member position
+ */
+geometry_msgs__Point& geometry_msgs__Pose::position()
+{
+    return m_position;
+}
+/*!
+ * @brief This function copies the value in member orientation
+ * @param _orientation New value to be copied in member orientation
+ */
+void geometry_msgs__Pose::orientation(
+        const geometry_msgs__Quaternion& _orientation)
+{
+    m_orientation = _orientation;
+}
+
+/*!
+ * @brief This function moves the value in member orientation
+ * @param _orientation New value to be moved in member orientation
+ */
+void geometry_msgs__Pose::orientation(
+        geometry_msgs__Quaternion&& _orientation)
+{
+    m_orientation = std::move(_orientation);
+}
+
+/*!
+ * @brief This function returns a constant reference to member orientation
+ * @return Constant reference to member orientation
+ */
+const geometry_msgs__Quaternion& geometry_msgs__Pose::orientation() const
+{
+    return m_orientation;
+}
+
+/*!
+ * @brief This function returns a reference to member orientation
+ * @return Reference to member orientation
+ */
+geometry_msgs__Quaternion& geometry_msgs__Pose::orientation()
+{
+    return m_orientation;
+}
+
+size_t geometry_msgs__Pose::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+
+
+    return current_align;
+}
+
+bool geometry_msgs__Pose::isKeyDefined()
+{
+    return false;
+}
+
+void geometry_msgs__Pose::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+      
+}
+
+geometry_msgs__PoseStamped::geometry_msgs__PoseStamped()
+{
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@314c508a
+
+    // m_pose com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@58fdd99
+
+
+}
+
+geometry_msgs__PoseStamped::~geometry_msgs__PoseStamped()
+{
+
+
+}
+
+geometry_msgs__PoseStamped::geometry_msgs__PoseStamped(
+        const geometry_msgs__PoseStamped& x)
+{
+    m_header = x.m_header;
+    m_pose = x.m_pose;
+}
+
+geometry_msgs__PoseStamped::geometry_msgs__PoseStamped(
+        geometry_msgs__PoseStamped&& x)
+{
+    m_header = std::move(x.m_header);
+    m_pose = std::move(x.m_pose);
+}
+
+geometry_msgs__PoseStamped& geometry_msgs__PoseStamped::operator =(
+        const geometry_msgs__PoseStamped& x)
+{
+
+    m_header = x.m_header;
+    m_pose = x.m_pose;
+
+    return *this;
+}
+
+geometry_msgs__PoseStamped& geometry_msgs__PoseStamped::operator =(
+        geometry_msgs__PoseStamped&& x)
+{
+
+    m_header = std::move(x.m_header);
+    m_pose = std::move(x.m_pose);
+
+    return *this;
+}
+
+bool geometry_msgs__PoseStamped::operator ==(
+        const geometry_msgs__PoseStamped& x) const
+{
+
+    return (m_header == x.m_header && m_pose == x.m_pose);
+}
+
+bool geometry_msgs__PoseStamped::operator !=(
+        const geometry_msgs__PoseStamped& x) const
+{
+    return !(*this == x);
+}
+
+size_t geometry_msgs__PoseStamped::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += std_msgs__Header::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += geometry_msgs__Pose::getMaxCdrSerializedSize(current_alignment);
+
+    return current_alignment - initial_alignment;
+}
+
+size_t geometry_msgs__PoseStamped::getCdrSerializedSize(
+        const geometry_msgs__PoseStamped& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += std_msgs__Header::getCdrSerializedSize(data.header(), current_alignment);
+    current_alignment += geometry_msgs__Pose::getCdrSerializedSize(data.pose(), current_alignment);
+
+    return current_alignment - initial_alignment;
+}
+
+void geometry_msgs__PoseStamped::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_header;
+    scdr << m_pose;
+
+}
+
+void geometry_msgs__PoseStamped::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_header;
+    dcdr >> m_pose;
+}
+
+/*!
+ * @brief This function copies the value in member header
+ * @param _header New value to be copied in member header
+ */
+void geometry_msgs__PoseStamped::header(
+        const std_msgs__Header& _header)
+{
+    m_header = _header;
+}
+
+/*!
+ * @brief This function moves the value in member header
+ * @param _header New value to be moved in member header
+ */
+void geometry_msgs__PoseStamped::header(
+        std_msgs__Header&& _header)
+{
+    m_header = std::move(_header);
+}
+
+/*!
+ * @brief This function returns a constant reference to member header
+ * @return Constant reference to member header
+ */
+const std_msgs__Header& geometry_msgs__PoseStamped::header() const
+{
+    return m_header;
+}
+
+/*!
+ * @brief This function returns a reference to member header
+ * @return Reference to member header
+ */
+std_msgs__Header& geometry_msgs__PoseStamped::header()
+{
+    return m_header;
+}
+/*!
+ * @brief This function copies the value in member pose
+ * @param _pose New value to be copied in member pose
+ */
+void geometry_msgs__PoseStamped::pose(
+        const geometry_msgs__Pose& _pose)
+{
+    m_pose = _pose;
+}
+
+/*!
+ * @brief This function moves the value in member pose
+ * @param _pose New value to be moved in member pose
+ */
+void geometry_msgs__PoseStamped::pose(
+        geometry_msgs__Pose&& _pose)
+{
+    m_pose = std::move(_pose);
+}
+
+/*!
+ * @brief This function returns a constant reference to member pose
+ * @return Constant reference to member pose
+ */
+const geometry_msgs__Pose& geometry_msgs__PoseStamped::pose() const
+{
+    return m_pose;
+}
+
+/*!
+ * @brief This function returns a reference to member pose
+ * @return Reference to member pose
+ */
+geometry_msgs__Pose& geometry_msgs__PoseStamped::pose()
+{
+    return m_pose;
+}
+
+size_t geometry_msgs__PoseStamped::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+
+
+    return current_align;
+}
+
+bool geometry_msgs__PoseStamped::isKeyDefined()
+{
+    return false;
+}
+
+void geometry_msgs__PoseStamped::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+      
+}
+
+geometry_msgs__PoseWithCovariance::geometry_msgs__PoseWithCovariance()
+{
+    // m_pose com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@58fdd99
+
+    // m_covariance com.eprosima.idl.parser.typecode.ArrayTypeCode@709ba3fb
+    memset(&m_covariance, 0, (36) * 8);
+
+}
+
+geometry_msgs__PoseWithCovariance::~geometry_msgs__PoseWithCovariance()
+{
+
+
+}
+
+geometry_msgs__PoseWithCovariance::geometry_msgs__PoseWithCovariance(
+        const geometry_msgs__PoseWithCovariance& x)
+{
+    m_pose = x.m_pose;
+    m_covariance = x.m_covariance;
+}
+
+geometry_msgs__PoseWithCovariance::geometry_msgs__PoseWithCovariance(
+        geometry_msgs__PoseWithCovariance&& x)
+{
+    m_pose = std::move(x.m_pose);
+    m_covariance = std::move(x.m_covariance);
+}
+
+geometry_msgs__PoseWithCovariance& geometry_msgs__PoseWithCovariance::operator =(
+        const geometry_msgs__PoseWithCovariance& x)
+{
+
+    m_pose = x.m_pose;
+    m_covariance = x.m_covariance;
+
+    return *this;
+}
+
+geometry_msgs__PoseWithCovariance& geometry_msgs__PoseWithCovariance::operator =(
+        geometry_msgs__PoseWithCovariance&& x)
+{
+
+    m_pose = std::move(x.m_pose);
+    m_covariance = std::move(x.m_covariance);
+
+    return *this;
+}
+
+bool geometry_msgs__PoseWithCovariance::operator ==(
+        const geometry_msgs__PoseWithCovariance& x) const
+{
+
+    return (m_pose == x.m_pose && m_covariance == x.m_covariance);
+}
+
+bool geometry_msgs__PoseWithCovariance::operator !=(
+        const geometry_msgs__PoseWithCovariance& x) const
+{
+    return !(*this == x);
+}
+
+size_t geometry_msgs__PoseWithCovariance::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += geometry_msgs__Pose::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += ((36) * 8) + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+
+    return current_alignment - initial_alignment;
+}
+
+size_t geometry_msgs__PoseWithCovariance::getCdrSerializedSize(
+        const geometry_msgs__PoseWithCovariance& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += geometry_msgs__Pose::getCdrSerializedSize(data.pose(), current_alignment);
+    if ((36) > 0)
+    {
+        current_alignment += ((36) * 8) + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+    }
+
+
+    return current_alignment - initial_alignment;
+}
+
+void geometry_msgs__PoseWithCovariance::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_pose;
+    scdr << m_covariance;
+
+
+}
+
+void geometry_msgs__PoseWithCovariance::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_pose;
+    dcdr >> m_covariance;
+
+}
+
+/*!
+ * @brief This function copies the value in member pose
+ * @param _pose New value to be copied in member pose
+ */
+void geometry_msgs__PoseWithCovariance::pose(
+        const geometry_msgs__Pose& _pose)
+{
+    m_pose = _pose;
+}
+
+/*!
+ * @brief This function moves the value in member pose
+ * @param _pose New value to be moved in member pose
+ */
+void geometry_msgs__PoseWithCovariance::pose(
+        geometry_msgs__Pose&& _pose)
+{
+    m_pose = std::move(_pose);
+}
+
+/*!
+ * @brief This function returns a constant reference to member pose
+ * @return Constant reference to member pose
+ */
+const geometry_msgs__Pose& geometry_msgs__PoseWithCovariance::pose() const
+{
+    return m_pose;
+}
+
+/*!
+ * @brief This function returns a reference to member pose
+ * @return Reference to member pose
+ */
+geometry_msgs__Pose& geometry_msgs__PoseWithCovariance::pose()
+{
+    return m_pose;
+}
+/*!
+ * @brief This function copies the value in member covariance
+ * @param _covariance New value to be copied in member covariance
+ */
+void geometry_msgs__PoseWithCovariance::covariance(
+        const std::array<double, 36>& _covariance)
+{
+    m_covariance = _covariance;
+}
+
+/*!
+ * @brief This function moves the value in member covariance
+ * @param _covariance New value to be moved in member covariance
+ */
+void geometry_msgs__PoseWithCovariance::covariance(
+        std::array<double, 36>&& _covariance)
+{
+    m_covariance = std::move(_covariance);
+}
+
+/*!
+ * @brief This function returns a constant reference to member covariance
+ * @return Constant reference to member covariance
+ */
+const std::array<double, 36>& geometry_msgs__PoseWithCovariance::covariance() const
+{
+    return m_covariance;
+}
+
+/*!
+ * @brief This function returns a reference to member covariance
+ * @return Reference to member covariance
+ */
+std::array<double, 36>& geometry_msgs__PoseWithCovariance::covariance()
+{
+    return m_covariance;
+}
+
+size_t geometry_msgs__PoseWithCovariance::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+
+
+    return current_align;
+}
+
+bool geometry_msgs__PoseWithCovariance::isKeyDefined()
+{
+    return false;
+}
+
+void geometry_msgs__PoseWithCovariance::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+      
+}
+
+geometry_msgs__PoseWithCovarianceStamped::geometry_msgs__PoseWithCovarianceStamped()
+{
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@314c508a
+
+    // m_pose com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@3f200884
+
+
+}
+
+geometry_msgs__PoseWithCovarianceStamped::~geometry_msgs__PoseWithCovarianceStamped()
+{
+
+
+}
+
+geometry_msgs__PoseWithCovarianceStamped::geometry_msgs__PoseWithCovarianceStamped(
+        const geometry_msgs__PoseWithCovarianceStamped& x)
+{
+    m_header = x.m_header;
+    m_pose = x.m_pose;
+}
+
+geometry_msgs__PoseWithCovarianceStamped::geometry_msgs__PoseWithCovarianceStamped(
+        geometry_msgs__PoseWithCovarianceStamped&& x)
+{
+    m_header = std::move(x.m_header);
+    m_pose = std::move(x.m_pose);
+}
+
+geometry_msgs__PoseWithCovarianceStamped& geometry_msgs__PoseWithCovarianceStamped::operator =(
+        const geometry_msgs__PoseWithCovarianceStamped& x)
+{
+
+    m_header = x.m_header;
+    m_pose = x.m_pose;
+
+    return *this;
+}
+
+geometry_msgs__PoseWithCovarianceStamped& geometry_msgs__PoseWithCovarianceStamped::operator =(
+        geometry_msgs__PoseWithCovarianceStamped&& x)
+{
+
+    m_header = std::move(x.m_header);
+    m_pose = std::move(x.m_pose);
+
+    return *this;
+}
+
+bool geometry_msgs__PoseWithCovarianceStamped::operator ==(
+        const geometry_msgs__PoseWithCovarianceStamped& x) const
+{
+
+    return (m_header == x.m_header && m_pose == x.m_pose);
+}
+
+bool geometry_msgs__PoseWithCovarianceStamped::operator !=(
+        const geometry_msgs__PoseWithCovarianceStamped& x) const
+{
+    return !(*this == x);
+}
+
+size_t geometry_msgs__PoseWithCovarianceStamped::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += std_msgs__Header::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += geometry_msgs__PoseWithCovariance::getMaxCdrSerializedSize(current_alignment);
+
+    return current_alignment - initial_alignment;
+}
+
+size_t geometry_msgs__PoseWithCovarianceStamped::getCdrSerializedSize(
+        const geometry_msgs__PoseWithCovarianceStamped& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += std_msgs__Header::getCdrSerializedSize(data.header(), current_alignment);
+    current_alignment += geometry_msgs__PoseWithCovariance::getCdrSerializedSize(data.pose(), current_alignment);
+
+    return current_alignment - initial_alignment;
+}
+
+void geometry_msgs__PoseWithCovarianceStamped::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_header;
+    scdr << m_pose;
+
+}
+
+void geometry_msgs__PoseWithCovarianceStamped::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_header;
+    dcdr >> m_pose;
+}
+
+/*!
+ * @brief This function copies the value in member header
+ * @param _header New value to be copied in member header
+ */
+void geometry_msgs__PoseWithCovarianceStamped::header(
+        const std_msgs__Header& _header)
+{
+    m_header = _header;
+}
+
+/*!
+ * @brief This function moves the value in member header
+ * @param _header New value to be moved in member header
+ */
+void geometry_msgs__PoseWithCovarianceStamped::header(
+        std_msgs__Header&& _header)
+{
+    m_header = std::move(_header);
+}
+
+/*!
+ * @brief This function returns a constant reference to member header
+ * @return Constant reference to member header
+ */
+const std_msgs__Header& geometry_msgs__PoseWithCovarianceStamped::header() const
+{
+    return m_header;
+}
+
+/*!
+ * @brief This function returns a reference to member header
+ * @return Reference to member header
+ */
+std_msgs__Header& geometry_msgs__PoseWithCovarianceStamped::header()
+{
+    return m_header;
+}
+/*!
+ * @brief This function copies the value in member pose
+ * @param _pose New value to be copied in member pose
+ */
+void geometry_msgs__PoseWithCovarianceStamped::pose(
+        const geometry_msgs__PoseWithCovariance& _pose)
+{
+    m_pose = _pose;
+}
+
+/*!
+ * @brief This function moves the value in member pose
+ * @param _pose New value to be moved in member pose
+ */
+void geometry_msgs__PoseWithCovarianceStamped::pose(
+        geometry_msgs__PoseWithCovariance&& _pose)
+{
+    m_pose = std::move(_pose);
+}
+
+/*!
+ * @brief This function returns a constant reference to member pose
+ * @return Constant reference to member pose
+ */
+const geometry_msgs__PoseWithCovariance& geometry_msgs__PoseWithCovarianceStamped::pose() const
+{
+    return m_pose;
+}
+
+/*!
+ * @brief This function returns a reference to member pose
+ * @return Reference to member pose
+ */
+geometry_msgs__PoseWithCovariance& geometry_msgs__PoseWithCovarianceStamped::pose()
+{
+    return m_pose;
+}
+
+size_t geometry_msgs__PoseWithCovarianceStamped::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+
+
+    return current_align;
+}
+
+bool geometry_msgs__PoseWithCovarianceStamped::isKeyDefined()
+{
+    return false;
+}
+
+void geometry_msgs__PoseWithCovarianceStamped::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+      
+}
+
+sensor_msgs__Imu::sensor_msgs__Imu()
+{
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@314c508a
+
+    // m_orientation com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@551bdc27
+
+    // m_orientation_covariance com.eprosima.idl.parser.typecode.ArrayTypeCode@4d339552
+    memset(&m_orientation_covariance, 0, (9) * 8);
+    // m_angular_velocity com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@12405818
+
+    // m_angular_velocity_covariance com.eprosima.idl.parser.typecode.ArrayTypeCode@f0f2775
+    memset(&m_angular_velocity_covariance, 0, (9) * 8);
+    // m_linear_acceleration com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@12405818
+
+    // m_linear_acceleration_covariance com.eprosima.idl.parser.typecode.ArrayTypeCode@5a4aa2f2
+    memset(&m_linear_acceleration_covariance, 0, (9) * 8);
+
+}
+
+sensor_msgs__Imu::~sensor_msgs__Imu()
+{
+
+
+
+
+
+
+
+}
+
+sensor_msgs__Imu::sensor_msgs__Imu(
+        const sensor_msgs__Imu& x)
+{
+    m_header = x.m_header;
+    m_orientation = x.m_orientation;
+    m_orientation_covariance = x.m_orientation_covariance;
+    m_angular_velocity = x.m_angular_velocity;
+    m_angular_velocity_covariance = x.m_angular_velocity_covariance;
+    m_linear_acceleration = x.m_linear_acceleration;
+    m_linear_acceleration_covariance = x.m_linear_acceleration_covariance;
+}
+
+sensor_msgs__Imu::sensor_msgs__Imu(
+        sensor_msgs__Imu&& x)
+{
+    m_header = std::move(x.m_header);
+    m_orientation = std::move(x.m_orientation);
+    m_orientation_covariance = std::move(x.m_orientation_covariance);
+    m_angular_velocity = std::move(x.m_angular_velocity);
+    m_angular_velocity_covariance = std::move(x.m_angular_velocity_covariance);
+    m_linear_acceleration = std::move(x.m_linear_acceleration);
+    m_linear_acceleration_covariance = std::move(x.m_linear_acceleration_covariance);
+}
+
+sensor_msgs__Imu& sensor_msgs__Imu::operator =(
+        const sensor_msgs__Imu& x)
+{
+
+    m_header = x.m_header;
+    m_orientation = x.m_orientation;
+    m_orientation_covariance = x.m_orientation_covariance;
+    m_angular_velocity = x.m_angular_velocity;
+    m_angular_velocity_covariance = x.m_angular_velocity_covariance;
+    m_linear_acceleration = x.m_linear_acceleration;
+    m_linear_acceleration_covariance = x.m_linear_acceleration_covariance;
+
+    return *this;
+}
+
+sensor_msgs__Imu& sensor_msgs__Imu::operator =(
+        sensor_msgs__Imu&& x)
+{
+
+    m_header = std::move(x.m_header);
+    m_orientation = std::move(x.m_orientation);
+    m_orientation_covariance = std::move(x.m_orientation_covariance);
+    m_angular_velocity = std::move(x.m_angular_velocity);
+    m_angular_velocity_covariance = std::move(x.m_angular_velocity_covariance);
+    m_linear_acceleration = std::move(x.m_linear_acceleration);
+    m_linear_acceleration_covariance = std::move(x.m_linear_acceleration_covariance);
+
+    return *this;
+}
+
+bool sensor_msgs__Imu::operator ==(
+        const sensor_msgs__Imu& x) const
+{
+
+    return (m_header == x.m_header && m_orientation == x.m_orientation && m_orientation_covariance == x.m_orientation_covariance && m_angular_velocity == x.m_angular_velocity && m_angular_velocity_covariance == x.m_angular_velocity_covariance && m_linear_acceleration == x.m_linear_acceleration && m_linear_acceleration_covariance == x.m_linear_acceleration_covariance);
+}
+
+bool sensor_msgs__Imu::operator !=(
+        const sensor_msgs__Imu& x) const
+{
+    return !(*this == x);
+}
+
+size_t sensor_msgs__Imu::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += std_msgs__Header::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += geometry_msgs__Quaternion::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += ((9) * 8) + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += geometry_msgs__Vector3::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += ((9) * 8) + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+    current_alignment += geometry_msgs__Vector3::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += ((9) * 8) + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+
+
+
+    return current_alignment - initial_alignment;
+}
+
+size_t sensor_msgs__Imu::getCdrSerializedSize(
+        const sensor_msgs__Imu& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += std_msgs__Header::getCdrSerializedSize(data.header(), current_alignment);
+    current_alignment += geometry_msgs__Quaternion::getCdrSerializedSize(data.orientation(), current_alignment);
+    if ((9) > 0)
+    {
+        current_alignment += ((9) * 8) + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+    }
+
+    current_alignment += geometry_msgs__Vector3::getCdrSerializedSize(data.angular_velocity(), current_alignment);
+    if ((9) > 0)
+    {
+        current_alignment += ((9) * 8) + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+    }
+
+    current_alignment += geometry_msgs__Vector3::getCdrSerializedSize(data.linear_acceleration(), current_alignment);
+    if ((9) > 0)
+    {
+        current_alignment += ((9) * 8) + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
+    }
+
+
+    return current_alignment - initial_alignment;
+}
+
+void sensor_msgs__Imu::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_header;
+    scdr << m_orientation;
+    scdr << m_orientation_covariance;
+
+    scdr << m_angular_velocity;
+    scdr << m_angular_velocity_covariance;
+
+    scdr << m_linear_acceleration;
+    scdr << m_linear_acceleration_covariance;
+
+
+}
+
+void sensor_msgs__Imu::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_header;
+    dcdr >> m_orientation;
+    dcdr >> m_orientation_covariance;
+
+    dcdr >> m_angular_velocity;
+    dcdr >> m_angular_velocity_covariance;
+
+    dcdr >> m_linear_acceleration;
+    dcdr >> m_linear_acceleration_covariance;
+
+}
+
+/*!
+ * @brief This function copies the value in member header
+ * @param _header New value to be copied in member header
+ */
+void sensor_msgs__Imu::header(
+        const std_msgs__Header& _header)
+{
+    m_header = _header;
+}
+
+/*!
+ * @brief This function moves the value in member header
+ * @param _header New value to be moved in member header
+ */
+void sensor_msgs__Imu::header(
+        std_msgs__Header&& _header)
+{
+    m_header = std::move(_header);
+}
+
+/*!
+ * @brief This function returns a constant reference to member header
+ * @return Constant reference to member header
+ */
+const std_msgs__Header& sensor_msgs__Imu::header() const
+{
+    return m_header;
+}
+
+/*!
+ * @brief This function returns a reference to member header
+ * @return Reference to member header
+ */
+std_msgs__Header& sensor_msgs__Imu::header()
+{
+    return m_header;
+}
+/*!
+ * @brief This function copies the value in member orientation
+ * @param _orientation New value to be copied in member orientation
+ */
+void sensor_msgs__Imu::orientation(
+        const geometry_msgs__Quaternion& _orientation)
+{
+    m_orientation = _orientation;
+}
+
+/*!
+ * @brief This function moves the value in member orientation
+ * @param _orientation New value to be moved in member orientation
+ */
+void sensor_msgs__Imu::orientation(
+        geometry_msgs__Quaternion&& _orientation)
+{
+    m_orientation = std::move(_orientation);
+}
+
+/*!
+ * @brief This function returns a constant reference to member orientation
+ * @return Constant reference to member orientation
+ */
+const geometry_msgs__Quaternion& sensor_msgs__Imu::orientation() const
+{
+    return m_orientation;
+}
+
+/*!
+ * @brief This function returns a reference to member orientation
+ * @return Reference to member orientation
+ */
+geometry_msgs__Quaternion& sensor_msgs__Imu::orientation()
+{
+    return m_orientation;
+}
+/*!
+ * @brief This function copies the value in member orientation_covariance
+ * @param _orientation_covariance New value to be copied in member orientation_covariance
+ */
+void sensor_msgs__Imu::orientation_covariance(
+        const std::array<double, 9>& _orientation_covariance)
+{
+    m_orientation_covariance = _orientation_covariance;
+}
+
+/*!
+ * @brief This function moves the value in member orientation_covariance
+ * @param _orientation_covariance New value to be moved in member orientation_covariance
+ */
+void sensor_msgs__Imu::orientation_covariance(
+        std::array<double, 9>&& _orientation_covariance)
+{
+    m_orientation_covariance = std::move(_orientation_covariance);
+}
+
+/*!
+ * @brief This function returns a constant reference to member orientation_covariance
+ * @return Constant reference to member orientation_covariance
+ */
+const std::array<double, 9>& sensor_msgs__Imu::orientation_covariance() const
+{
+    return m_orientation_covariance;
+}
+
+/*!
+ * @brief This function returns a reference to member orientation_covariance
+ * @return Reference to member orientation_covariance
+ */
+std::array<double, 9>& sensor_msgs__Imu::orientation_covariance()
+{
+    return m_orientation_covariance;
+}
+/*!
+ * @brief This function copies the value in member angular_velocity
+ * @param _angular_velocity New value to be copied in member angular_velocity
+ */
+void sensor_msgs__Imu::angular_velocity(
+        const geometry_msgs__Vector3& _angular_velocity)
+{
+    m_angular_velocity = _angular_velocity;
+}
+
+/*!
+ * @brief This function moves the value in member angular_velocity
+ * @param _angular_velocity New value to be moved in member angular_velocity
+ */
+void sensor_msgs__Imu::angular_velocity(
+        geometry_msgs__Vector3&& _angular_velocity)
+{
+    m_angular_velocity = std::move(_angular_velocity);
+}
+
+/*!
+ * @brief This function returns a constant reference to member angular_velocity
+ * @return Constant reference to member angular_velocity
+ */
+const geometry_msgs__Vector3& sensor_msgs__Imu::angular_velocity() const
+{
+    return m_angular_velocity;
+}
+
+/*!
+ * @brief This function returns a reference to member angular_velocity
+ * @return Reference to member angular_velocity
+ */
+geometry_msgs__Vector3& sensor_msgs__Imu::angular_velocity()
+{
+    return m_angular_velocity;
+}
+/*!
+ * @brief This function copies the value in member angular_velocity_covariance
+ * @param _angular_velocity_covariance New value to be copied in member angular_velocity_covariance
+ */
+void sensor_msgs__Imu::angular_velocity_covariance(
+        const std::array<double, 9>& _angular_velocity_covariance)
+{
+    m_angular_velocity_covariance = _angular_velocity_covariance;
+}
+
+/*!
+ * @brief This function moves the value in member angular_velocity_covariance
+ * @param _angular_velocity_covariance New value to be moved in member angular_velocity_covariance
+ */
+void sensor_msgs__Imu::angular_velocity_covariance(
+        std::array<double, 9>&& _angular_velocity_covariance)
+{
+    m_angular_velocity_covariance = std::move(_angular_velocity_covariance);
+}
+
+/*!
+ * @brief This function returns a constant reference to member angular_velocity_covariance
+ * @return Constant reference to member angular_velocity_covariance
+ */
+const std::array<double, 9>& sensor_msgs__Imu::angular_velocity_covariance() const
+{
+    return m_angular_velocity_covariance;
+}
+
+/*!
+ * @brief This function returns a reference to member angular_velocity_covariance
+ * @return Reference to member angular_velocity_covariance
+ */
+std::array<double, 9>& sensor_msgs__Imu::angular_velocity_covariance()
+{
+    return m_angular_velocity_covariance;
+}
+/*!
+ * @brief This function copies the value in member linear_acceleration
+ * @param _linear_acceleration New value to be copied in member linear_acceleration
+ */
+void sensor_msgs__Imu::linear_acceleration(
+        const geometry_msgs__Vector3& _linear_acceleration)
+{
+    m_linear_acceleration = _linear_acceleration;
+}
+
+/*!
+ * @brief This function moves the value in member linear_acceleration
+ * @param _linear_acceleration New value to be moved in member linear_acceleration
+ */
+void sensor_msgs__Imu::linear_acceleration(
+        geometry_msgs__Vector3&& _linear_acceleration)
+{
+    m_linear_acceleration = std::move(_linear_acceleration);
+}
+
+/*!
+ * @brief This function returns a constant reference to member linear_acceleration
+ * @return Constant reference to member linear_acceleration
+ */
+const geometry_msgs__Vector3& sensor_msgs__Imu::linear_acceleration() const
+{
+    return m_linear_acceleration;
+}
+
+/*!
+ * @brief This function returns a reference to member linear_acceleration
+ * @return Reference to member linear_acceleration
+ */
+geometry_msgs__Vector3& sensor_msgs__Imu::linear_acceleration()
+{
+    return m_linear_acceleration;
+}
+/*!
+ * @brief This function copies the value in member linear_acceleration_covariance
+ * @param _linear_acceleration_covariance New value to be copied in member linear_acceleration_covariance
+ */
+void sensor_msgs__Imu::linear_acceleration_covariance(
+        const std::array<double, 9>& _linear_acceleration_covariance)
+{
+    m_linear_acceleration_covariance = _linear_acceleration_covariance;
+}
+
+/*!
+ * @brief This function moves the value in member linear_acceleration_covariance
+ * @param _linear_acceleration_covariance New value to be moved in member linear_acceleration_covariance
+ */
+void sensor_msgs__Imu::linear_acceleration_covariance(
+        std::array<double, 9>&& _linear_acceleration_covariance)
+{
+    m_linear_acceleration_covariance = std::move(_linear_acceleration_covariance);
+}
+
+/*!
+ * @brief This function returns a constant reference to member linear_acceleration_covariance
+ * @return Constant reference to member linear_acceleration_covariance
+ */
+const std::array<double, 9>& sensor_msgs__Imu::linear_acceleration_covariance() const
+{
+    return m_linear_acceleration_covariance;
+}
+
+/*!
+ * @brief This function returns a reference to member linear_acceleration_covariance
+ * @return Reference to member linear_acceleration_covariance
+ */
+std::array<double, 9>& sensor_msgs__Imu::linear_acceleration_covariance()
+{
+    return m_linear_acceleration_covariance;
+}
+
+size_t sensor_msgs__Imu::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+
+
+
+
+
+
+
+    return current_align;
+}
+
+bool sensor_msgs__Imu::isKeyDefined()
+{
+    return false;
+}
+
+void sensor_msgs__Imu::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+           
+}
+
 sensor_msgs__RegionOfInterest::sensor_msgs__RegionOfInterest()
 {
-    // m_x_offset com.eprosima.idl.parser.typecode.PrimitiveTypeCode@11e21d0e
+    // m_x_offset com.eprosima.idl.parser.typecode.PrimitiveTypeCode@7fe8ea47
     m_x_offset = 0;
-    // m_y_offset com.eprosima.idl.parser.typecode.PrimitiveTypeCode@1dd02175
+    // m_y_offset com.eprosima.idl.parser.typecode.PrimitiveTypeCode@226a82c4
     m_y_offset = 0;
-    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@31206beb
+    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@731f8236
     m_height = 0;
-    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@3e77a1ed
+    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@255b53dc
     m_width = 0;
-    // m_do_rectify com.eprosima.idl.parser.typecode.PrimitiveTypeCode@1176dcec
+    // m_do_rectify com.eprosima.idl.parser.typecode.PrimitiveTypeCode@1dd92fe2
     m_do_rectify = false;
 
 }
@@ -1384,27 +4409,27 @@ void sensor_msgs__RegionOfInterest::serializeKey(
 
 sensor_msgs__CameraInfo::sensor_msgs__CameraInfo()
 {
-    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@226a82c4
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@314c508a
 
-    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@731f8236
+    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@ca263c2
     m_height = 0;
-    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@6b53e23f
+    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@589b3632
     m_width = 0;
-    // m_distortion_model com.eprosima.idl.parser.typecode.StringTypeCode@4f9a3314
+    // m_distortion_model com.eprosima.idl.parser.typecode.StringTypeCode@45f45fa1
     m_distortion_model ="";
-    // m_D com.eprosima.idl.parser.typecode.SequenceTypeCode@3b2c72c2
+    // m_D com.eprosima.idl.parser.typecode.SequenceTypeCode@4c6e276e
 
-    // m_K com.eprosima.idl.parser.typecode.ArrayTypeCode@491666ad
+    // m_K com.eprosima.idl.parser.typecode.ArrayTypeCode@534df152
     memset(&m_K, 0, (9) * 8);
-    // m_R com.eprosima.idl.parser.typecode.ArrayTypeCode@176d53b2
+    // m_R com.eprosima.idl.parser.typecode.ArrayTypeCode@52e677af
     memset(&m_R, 0, (9) * 8);
-    // m_P com.eprosima.idl.parser.typecode.ArrayTypeCode@971d0d8
+    // m_P com.eprosima.idl.parser.typecode.ArrayTypeCode@35083305
     memset(&m_P, 0, (12) * 8);
-    // m_binning_x com.eprosima.idl.parser.typecode.PrimitiveTypeCode@51931956
+    // m_binning_x com.eprosima.idl.parser.typecode.PrimitiveTypeCode@8e0379d
     m_binning_x = 0;
-    // m_binning_y com.eprosima.idl.parser.typecode.PrimitiveTypeCode@2b4a2ec7
+    // m_binning_y com.eprosima.idl.parser.typecode.PrimitiveTypeCode@341b80b2
     m_binning_y = 0;
-    // m_roi com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@564718df
+    // m_roi com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@55a1c291
 
 
 }
@@ -2048,19 +5073,19 @@ void sensor_msgs__CameraInfo::serializeKey(
 
 sensor_msgs__Image::sensor_msgs__Image()
 {
-    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@226a82c4
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@314c508a
 
-    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@7f9fcf7f
+    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@482cd91f
     m_height = 0;
-    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@2357d90a
+    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@123f1134
     m_width = 0;
-    // m_encoding com.eprosima.idl.parser.typecode.StringTypeCode@6328d34a
+    // m_encoding com.eprosima.idl.parser.typecode.StringTypeCode@7d68ef40
     m_encoding ="";
-    // m_is_bigendian com.eprosima.idl.parser.typecode.PrimitiveTypeCode@145eaa29
+    // m_is_bigendian com.eprosima.idl.parser.typecode.PrimitiveTypeCode@5b0abc94
     m_is_bigendian = 0;
-    // m_step com.eprosima.idl.parser.typecode.PrimitiveTypeCode@15bb6bea
+    // m_step com.eprosima.idl.parser.typecode.PrimitiveTypeCode@75c072cb
     m_step = 0;
-    // m_data com.eprosima.idl.parser.typecode.SequenceTypeCode@8b96fde
+    // m_data com.eprosima.idl.parser.typecode.SequenceTypeCode@1f1c7bf6
 
 
 }
@@ -2492,11 +5517,11 @@ void sensor_msgs__Image::serializeKey(
 
 sensor_msgs__CompressedImage::sensor_msgs__CompressedImage()
 {
-    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@226a82c4
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@314c508a
 
-    // m_format com.eprosima.idl.parser.typecode.StringTypeCode@525f1e4e
+    // m_format com.eprosima.idl.parser.typecode.StringTypeCode@5d740a0f
     m_format ="";
-    // m_data com.eprosima.idl.parser.typecode.SequenceTypeCode@75f9eccc
+    // m_data com.eprosima.idl.parser.typecode.SequenceTypeCode@214b199c
 
 
 }
@@ -2760,13 +5785,13 @@ void sensor_msgs__CompressedImage::serializeKey(
 
 sensor_msgs__PointField::sensor_msgs__PointField()
 {
-    // m_name com.eprosima.idl.parser.typecode.StringTypeCode@4de5031f
+    // m_name com.eprosima.idl.parser.typecode.StringTypeCode@2893de87
     m_name ="";
-    // m_offset com.eprosima.idl.parser.typecode.PrimitiveTypeCode@67e2d983
+    // m_offset com.eprosima.idl.parser.typecode.PrimitiveTypeCode@55ca8de8
     m_offset = 0;
-    // m_datatype com.eprosima.idl.parser.typecode.PrimitiveTypeCode@5d47c63f
+    // m_datatype com.eprosima.idl.parser.typecode.PrimitiveTypeCode@2c34f934
     m_datatype = 0;
-    // m_count com.eprosima.idl.parser.typecode.PrimitiveTypeCode@5ea434c8
+    // m_count com.eprosima.idl.parser.typecode.PrimitiveTypeCode@12d3a4e9
     m_count = 0;
 
 }
@@ -3049,23 +6074,23 @@ void sensor_msgs__PointField::serializeKey(
 
 sensor_msgs__PointCloud2::sensor_msgs__PointCloud2()
 {
-    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@226a82c4
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@314c508a
 
-    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@3bbc39f8
+    // m_height com.eprosima.idl.parser.typecode.PrimitiveTypeCode@240237d2
     m_height = 0;
-    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@4ae3c1cd
+    // m_width com.eprosima.idl.parser.typecode.PrimitiveTypeCode@25a65b77
     m_width = 0;
-    // m_fields com.eprosima.idl.parser.typecode.SequenceTypeCode@29f69090
+    // m_fields com.eprosima.idl.parser.typecode.SequenceTypeCode@2ed0fbae
 
-    // m_is_bigendian com.eprosima.idl.parser.typecode.PrimitiveTypeCode@568bf312
+    // m_is_bigendian com.eprosima.idl.parser.typecode.PrimitiveTypeCode@212bf671
     m_is_bigendian = false;
-    // m_point_step com.eprosima.idl.parser.typecode.PrimitiveTypeCode@ca263c2
+    // m_point_step com.eprosima.idl.parser.typecode.PrimitiveTypeCode@14a2f921
     m_point_step = 0;
-    // m_row_step com.eprosima.idl.parser.typecode.PrimitiveTypeCode@589b3632
+    // m_row_step com.eprosima.idl.parser.typecode.PrimitiveTypeCode@3c87521
     m_row_step = 0;
-    // m_data com.eprosima.idl.parser.typecode.SequenceTypeCode@45f45fa1
+    // m_data com.eprosima.idl.parser.typecode.SequenceTypeCode@2aece37d
 
-    // m_is_dense com.eprosima.idl.parser.typecode.PrimitiveTypeCode@4c6e276e
+    // m_is_dense com.eprosima.idl.parser.typecode.PrimitiveTypeCode@548a102f
     m_is_dense = false;
 
 }
@@ -3589,271 +6614,33 @@ void sensor_msgs__PointCloud2::serializeKey(
              
 }
 
-geometry_msgs__Point::geometry_msgs__Point()
-{
-    // m_x com.eprosima.idl.parser.typecode.PrimitiveTypeCode@35083305
-    m_x = 0.0;
-    // m_y com.eprosima.idl.parser.typecode.PrimitiveTypeCode@8e0379d
-    m_y = 0.0;
-    // m_z com.eprosima.idl.parser.typecode.PrimitiveTypeCode@341b80b2
-    m_z = 0.0;
-
-}
-
-geometry_msgs__Point::~geometry_msgs__Point()
-{
-
-
-
-}
-
-geometry_msgs__Point::geometry_msgs__Point(
-        const geometry_msgs__Point& x)
-{
-    m_x = x.m_x;
-    m_y = x.m_y;
-    m_z = x.m_z;
-}
-
-geometry_msgs__Point::geometry_msgs__Point(
-        geometry_msgs__Point&& x)
-{
-    m_x = x.m_x;
-    m_y = x.m_y;
-    m_z = x.m_z;
-}
-
-geometry_msgs__Point& geometry_msgs__Point::operator =(
-        const geometry_msgs__Point& x)
-{
-
-    m_x = x.m_x;
-    m_y = x.m_y;
-    m_z = x.m_z;
-
-    return *this;
-}
-
-geometry_msgs__Point& geometry_msgs__Point::operator =(
-        geometry_msgs__Point&& x)
-{
-
-    m_x = x.m_x;
-    m_y = x.m_y;
-    m_z = x.m_z;
-
-    return *this;
-}
-
-bool geometry_msgs__Point::operator ==(
-        const geometry_msgs__Point& x) const
-{
-
-    return (m_x == x.m_x && m_y == x.m_y && m_z == x.m_z);
-}
-
-bool geometry_msgs__Point::operator !=(
-        const geometry_msgs__Point& x) const
-{
-    return !(*this == x);
-}
-
-size_t geometry_msgs__Point::getMaxCdrSerializedSize(
-        size_t current_alignment)
-{
-    size_t initial_alignment = current_alignment;
-
-
-    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
-
-
-    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
-
-
-    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
-
-
-
-    return current_alignment - initial_alignment;
-}
-
-size_t geometry_msgs__Point::getCdrSerializedSize(
-        const geometry_msgs__Point& data,
-        size_t current_alignment)
-{
-    (void)data;
-    size_t initial_alignment = current_alignment;
-
-
-    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
-
-
-    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
-
-
-    current_alignment += 8 + eprosima::fastcdr::Cdr::alignment(current_alignment, 8);
-
-
-
-    return current_alignment - initial_alignment;
-}
-
-void geometry_msgs__Point::serialize(
-        eprosima::fastcdr::Cdr& scdr) const
-{
-
-    scdr << m_x;
-    scdr << m_y;
-    scdr << m_z;
-
-}
-
-void geometry_msgs__Point::deserialize(
-        eprosima::fastcdr::Cdr& dcdr)
-{
-
-    dcdr >> m_x;
-    dcdr >> m_y;
-    dcdr >> m_z;
-}
-
-/*!
- * @brief This function sets a value in member x
- * @param _x New value for member x
- */
-void geometry_msgs__Point::x(
-        double _x)
-{
-    m_x = _x;
-}
-
-/*!
- * @brief This function returns the value of member x
- * @return Value of member x
- */
-double geometry_msgs__Point::x() const
-{
-    return m_x;
-}
-
-/*!
- * @brief This function returns a reference to member x
- * @return Reference to member x
- */
-double& geometry_msgs__Point::x()
-{
-    return m_x;
-}
-
-/*!
- * @brief This function sets a value in member y
- * @param _y New value for member y
- */
-void geometry_msgs__Point::y(
-        double _y)
-{
-    m_y = _y;
-}
-
-/*!
- * @brief This function returns the value of member y
- * @return Value of member y
- */
-double geometry_msgs__Point::y() const
-{
-    return m_y;
-}
-
-/*!
- * @brief This function returns a reference to member y
- * @return Reference to member y
- */
-double& geometry_msgs__Point::y()
-{
-    return m_y;
-}
-
-/*!
- * @brief This function sets a value in member z
- * @param _z New value for member z
- */
-void geometry_msgs__Point::z(
-        double _z)
-{
-    m_z = _z;
-}
-
-/*!
- * @brief This function returns the value of member z
- * @return Value of member z
- */
-double geometry_msgs__Point::z() const
-{
-    return m_z;
-}
-
-/*!
- * @brief This function returns a reference to member z
- * @return Reference to member z
- */
-double& geometry_msgs__Point::z()
-{
-    return m_z;
-}
-
-
-size_t geometry_msgs__Point::getKeyMaxCdrSerializedSize(
-        size_t current_alignment)
-{
-    size_t current_align = current_alignment;
-
-
-
-
-
-
-    return current_align;
-}
-
-bool geometry_msgs__Point::isKeyDefined()
-{
-    return false;
-}
-
-void geometry_msgs__Point::serializeKey(
-        eprosima::fastcdr::Cdr& scdr) const
-{
-    (void) scdr;
-       
-}
-
 visualization_msgs__ImageMarker::visualization_msgs__ImageMarker()
 {
-    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@226a82c4
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@314c508a
 
-    // m_ns com.eprosima.idl.parser.typecode.StringTypeCode@55a1c291
+    // m_ns com.eprosima.idl.parser.typecode.StringTypeCode@5af97850
     m_ns ="";
-    // m_id com.eprosima.idl.parser.typecode.PrimitiveTypeCode@2145433b
+    // m_id com.eprosima.idl.parser.typecode.PrimitiveTypeCode@5ef60048
     m_id = 0;
-    // m_type com.eprosima.idl.parser.typecode.PrimitiveTypeCode@2890c451
+    // m_type com.eprosima.idl.parser.typecode.PrimitiveTypeCode@1d548a08
     m_type = 0;
-    // m_action com.eprosima.idl.parser.typecode.PrimitiveTypeCode@40e6dfe1
+    // m_action com.eprosima.idl.parser.typecode.PrimitiveTypeCode@16aa0a0a
     m_action = 0;
-    // m_position com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@1b083826
+    // m_position com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@dd3b207
 
-    // m_scale com.eprosima.idl.parser.typecode.PrimitiveTypeCode@105fece7
+    // m_scale com.eprosima.idl.parser.typecode.PrimitiveTypeCode@780cb77
     m_scale = 0.0;
-    // m_outline_color com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@3ec300f1
+    // m_outline_color com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@691a7f8f
 
-    // m_filled com.eprosima.idl.parser.typecode.PrimitiveTypeCode@482cd91f
+    // m_filled com.eprosima.idl.parser.typecode.PrimitiveTypeCode@50a7bc6e
     m_filled = 0;
-    // m_fill_color com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@3ec300f1
+    // m_fill_color com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@691a7f8f
 
-    // m_lifetime com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@123f1134
+    // m_lifetime com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@161b062a
 
-    // m_points com.eprosima.idl.parser.typecode.SequenceTypeCode@7d68ef40
+    // m_points com.eprosima.idl.parser.typecode.SequenceTypeCode@17c1bced
 
-    // m_outline_colors com.eprosima.idl.parser.typecode.SequenceTypeCode@5b0abc94
+    // m_outline_colors com.eprosima.idl.parser.typecode.SequenceTypeCode@2d9d4f9d
 
 
 }
@@ -4573,7 +7360,7 @@ void visualization_msgs__ImageMarker::serializeKey(
 
 foxglove_msgs__ImageMarkerArray::foxglove_msgs__ImageMarkerArray()
 {
-    // m_markers com.eprosima.idl.parser.typecode.SequenceTypeCode@75c072cb
+    // m_markers com.eprosima.idl.parser.typecode.SequenceTypeCode@4034c28c
 
 
 }

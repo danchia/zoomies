@@ -24,6 +24,84 @@ struct std_msgs__Int32 {
   int32 data;
 };
 
+struct std_msgs__Float32 {
+  float data;
+};
+
+struct geometry_msgs__Vector3 {
+  double x;
+  double y;
+  double z;
+};
+
+struct geometry_msgs__Point {
+  double x;
+  double y;
+  double z;
+};
+
+struct geometry_msgs__Quaternion {
+  double x;
+  double y;
+  double z;
+  double w;
+};
+
+struct geometry_msgs__Twist {
+  geometry_msgs__Vector3 linear;
+  geometry_msgs__Vector3 angular;
+};
+
+struct geometry_msgs__TwistStamped {
+  std_msgs__Header header;
+  geometry_msgs__Twist twist;
+};
+
+struct geometry_msgs__TwistWithCovariance {
+  geometry_msgs__Twist twist;
+  // (x, y, z, rot_x, rot_y, rot_z)
+  double covariance[36];
+};
+
+struct geometry_msgs__TwistWithCovarianceStamped {
+  std_msgs__Header header;
+  geometry_msgs__TwistWithCovariance twist;
+};
+
+struct geometry_msgs__Pose {
+  geometry_msgs__Point position;
+  geometry_msgs__Quaternion orientation;
+};
+
+struct geometry_msgs__PoseStamped {
+  std_msgs__Header header;
+  geometry_msgs__Pose pose;
+};
+
+struct geometry_msgs__PoseWithCovariance {
+  geometry_msgs__Pose pose;
+  // (x, y, z, rot_x, rot_y, rot_z)
+  double covariance[36];
+};
+
+struct geometry_msgs__PoseWithCovarianceStamped {
+  std_msgs__Header header;
+  geometry_msgs__PoseWithCovariance pose;
+};
+
+struct sensor_msgs__Imu {
+  std_msgs__Header header;
+
+  geometry_msgs__Quaternion orientation;
+  double orientation_covariance[9];
+
+  geometry_msgs__Vector3 angular_velocity;
+  double angular_velocity_covariance[9];
+
+  geometry_msgs__Vector3 linear_acceleration;
+  double linear_acceleration_covariance[9];
+};
+
 struct sensor_msgs__RegionOfInterest {
   uint32 x_offset;
   uint32 y_offset;
@@ -104,12 +182,6 @@ struct sensor_msgs__PointCloud2 {
   sequence<octet> data;
 
   boolean is_dense;
-};
-
-struct geometry_msgs__Point {
-  double x;
-  double y;
-  double z;
 };
 
 struct visualization_msgs__ImageMarker {

@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include <linux/joystick.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "spdlog/spdlog.h"
 

@@ -22,9 +22,11 @@ void sCheck(int rc, std::string_view msg, sqlite3* db) {
 }
 
 constexpr const char* kSchema = R"(
-  PRAGMA journal_mode = WAL;
-  PRAGMA synchronous = normal;
-  PRAGMA wal_autocheckpoint = 0;
+  -- PRAGMA journal_mode = WAL;
+  -- PRAGMA synchronous = normal;
+  -- PRAGMA wal_autocheckpoint = 0;
+  PRAGMA journal_mode = MEMORY;
+  PRAGMA synchronous = off;
 
   CREATE TABLE topics(
     id INTEGER PRIMARY KEY,
@@ -78,9 +80,10 @@ RosWriter::RosWriter(std::string_view path) {
 RosWriter::~RosWriter() {
   sqlite3_finalize(insert_msg_stmt_);
   sqlite3_finalize(insert_topic_stmt_);
-  sqlite3_wal_checkpoint_v2(db_, nullptr, SQLITE_CHECKPOINT_FULL, nullptr,
-                            nullptr);
-  sqlite3_exec(db_, "pragma journal_mode=delete;", nullptr, nullptr, nullptr);
+  // sqlite3_wal_checkpoint_v2(db_, nullptr, SQLITE_CHECKPOINT_FULL, nullptr,
+  //                           nullptr);
+  // sqlite3_exec(db_, "pragma journal_mode=delete;", nullptr, nullptr,
+  // nullptr);
   sqlite3_close(db_);
 
   int64_t msg_count = 0;
