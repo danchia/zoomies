@@ -4898,6 +4898,179 @@ private:
     bool m_is_dense;
 };
 /*!
+ * @brief This class represents the structure nav_msgs__Path defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class nav_msgs__Path
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport nav_msgs__Path();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~nav_msgs__Path();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object nav_msgs__Path that will be copied.
+     */
+    eProsima_user_DllExport nav_msgs__Path(
+            const nav_msgs__Path& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object nav_msgs__Path that will be copied.
+     */
+    eProsima_user_DllExport nav_msgs__Path(
+            nav_msgs__Path&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object nav_msgs__Path that will be copied.
+     */
+    eProsima_user_DllExport nav_msgs__Path& operator =(
+            const nav_msgs__Path& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object nav_msgs__Path that will be copied.
+     */
+    eProsima_user_DllExport nav_msgs__Path& operator =(
+            nav_msgs__Path&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x nav_msgs__Path object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const nav_msgs__Path& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x nav_msgs__Path object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const nav_msgs__Path& x) const;
+
+    /*!
+     * @brief This function copies the value in member header
+     * @param _header New value to be copied in member header
+     */
+    eProsima_user_DllExport void header(
+            const std_msgs__Header& _header);
+
+    /*!
+     * @brief This function moves the value in member header
+     * @param _header New value to be moved in member header
+     */
+    eProsima_user_DllExport void header(
+            std_msgs__Header&& _header);
+
+    /*!
+     * @brief This function returns a constant reference to member header
+     * @return Constant reference to member header
+     */
+    eProsima_user_DllExport const std_msgs__Header& header() const;
+
+    /*!
+     * @brief This function returns a reference to member header
+     * @return Reference to member header
+     */
+    eProsima_user_DllExport std_msgs__Header& header();
+    /*!
+     * @brief This function copies the value in member poses
+     * @param _poses New value to be copied in member poses
+     */
+    eProsima_user_DllExport void poses(
+            const std::vector<geometry_msgs__PoseStamped>& _poses);
+
+    /*!
+     * @brief This function moves the value in member poses
+     * @param _poses New value to be moved in member poses
+     */
+    eProsima_user_DllExport void poses(
+            std::vector<geometry_msgs__PoseStamped>&& _poses);
+
+    /*!
+     * @brief This function returns a constant reference to member poses
+     * @return Constant reference to member poses
+     */
+    eProsima_user_DllExport const std::vector<geometry_msgs__PoseStamped>& poses() const;
+
+    /*!
+     * @brief This function returns a reference to member poses
+     * @return Reference to member poses
+     */
+    eProsima_user_DllExport std::vector<geometry_msgs__PoseStamped>& poses();
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const nav_msgs__Path& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    std_msgs__Header m_header;
+    std::vector<geometry_msgs__PoseStamped> m_poses;
+};
+/*!
  * @brief This class represents the structure visualization_msgs__ImageMarker defined by the user in the IDL file.
  * @ingroup ROS_TYPES
  */
@@ -5325,6 +5498,487 @@ private:
     builtins__Duration m_lifetime;
     std::vector<geometry_msgs__Point> m_points;
     std::vector<std_msgs__ColorRGBA> m_outline_colors;
+};
+/*!
+ * @brief This class represents the structure visualization_msgs__Marker defined by the user in the IDL file.
+ * @ingroup ROS_TYPES
+ */
+class visualization_msgs__Marker
+{
+public:
+
+    /*!
+     * @brief Default constructor.
+     */
+    eProsima_user_DllExport visualization_msgs__Marker();
+
+    /*!
+     * @brief Default destructor.
+     */
+    eProsima_user_DllExport ~visualization_msgs__Marker();
+
+    /*!
+     * @brief Copy constructor.
+     * @param x Reference to the object visualization_msgs__Marker that will be copied.
+     */
+    eProsima_user_DllExport visualization_msgs__Marker(
+            const visualization_msgs__Marker& x);
+
+    /*!
+     * @brief Move constructor.
+     * @param x Reference to the object visualization_msgs__Marker that will be copied.
+     */
+    eProsima_user_DllExport visualization_msgs__Marker(
+            visualization_msgs__Marker&& x);
+
+    /*!
+     * @brief Copy assignment.
+     * @param x Reference to the object visualization_msgs__Marker that will be copied.
+     */
+    eProsima_user_DllExport visualization_msgs__Marker& operator =(
+            const visualization_msgs__Marker& x);
+
+    /*!
+     * @brief Move assignment.
+     * @param x Reference to the object visualization_msgs__Marker that will be copied.
+     */
+    eProsima_user_DllExport visualization_msgs__Marker& operator =(
+            visualization_msgs__Marker&& x);
+
+    /*!
+     * @brief Comparison operator.
+     * @param x visualization_msgs__Marker object to compare.
+     */
+    eProsima_user_DllExport bool operator ==(
+            const visualization_msgs__Marker& x) const;
+
+    /*!
+     * @brief Comparison operator.
+     * @param x visualization_msgs__Marker object to compare.
+     */
+    eProsima_user_DllExport bool operator !=(
+            const visualization_msgs__Marker& x) const;
+
+    /*!
+     * @brief This function copies the value in member header
+     * @param _header New value to be copied in member header
+     */
+    eProsima_user_DllExport void header(
+            const std_msgs__Header& _header);
+
+    /*!
+     * @brief This function moves the value in member header
+     * @param _header New value to be moved in member header
+     */
+    eProsima_user_DllExport void header(
+            std_msgs__Header&& _header);
+
+    /*!
+     * @brief This function returns a constant reference to member header
+     * @return Constant reference to member header
+     */
+    eProsima_user_DllExport const std_msgs__Header& header() const;
+
+    /*!
+     * @brief This function returns a reference to member header
+     * @return Reference to member header
+     */
+    eProsima_user_DllExport std_msgs__Header& header();
+    /*!
+     * @brief This function copies the value in member ns
+     * @param _ns New value to be copied in member ns
+     */
+    eProsima_user_DllExport void ns(
+            const std::string& _ns);
+
+    /*!
+     * @brief This function moves the value in member ns
+     * @param _ns New value to be moved in member ns
+     */
+    eProsima_user_DllExport void ns(
+            std::string&& _ns);
+
+    /*!
+     * @brief This function returns a constant reference to member ns
+     * @return Constant reference to member ns
+     */
+    eProsima_user_DllExport const std::string& ns() const;
+
+    /*!
+     * @brief This function returns a reference to member ns
+     * @return Reference to member ns
+     */
+    eProsima_user_DllExport std::string& ns();
+    /*!
+     * @brief This function sets a value in member id
+     * @param _id New value for member id
+     */
+    eProsima_user_DllExport void id(
+            int32_t _id);
+
+    /*!
+     * @brief This function returns the value of member id
+     * @return Value of member id
+     */
+    eProsima_user_DllExport int32_t id() const;
+
+    /*!
+     * @brief This function returns a reference to member id
+     * @return Reference to member id
+     */
+    eProsima_user_DllExport int32_t& id();
+
+    /*!
+     * @brief This function sets a value in member type
+     * @param _type New value for member type
+     */
+    eProsima_user_DllExport void type(
+            int32_t _type);
+
+    /*!
+     * @brief This function returns the value of member type
+     * @return Value of member type
+     */
+    eProsima_user_DllExport int32_t type() const;
+
+    /*!
+     * @brief This function returns a reference to member type
+     * @return Reference to member type
+     */
+    eProsima_user_DllExport int32_t& type();
+
+    /*!
+     * @brief This function sets a value in member action
+     * @param _action New value for member action
+     */
+    eProsima_user_DllExport void action(
+            int32_t _action);
+
+    /*!
+     * @brief This function returns the value of member action
+     * @return Value of member action
+     */
+    eProsima_user_DllExport int32_t action() const;
+
+    /*!
+     * @brief This function returns a reference to member action
+     * @return Reference to member action
+     */
+    eProsima_user_DllExport int32_t& action();
+
+    /*!
+     * @brief This function copies the value in member pose
+     * @param _pose New value to be copied in member pose
+     */
+    eProsima_user_DllExport void pose(
+            const geometry_msgs__Pose& _pose);
+
+    /*!
+     * @brief This function moves the value in member pose
+     * @param _pose New value to be moved in member pose
+     */
+    eProsima_user_DllExport void pose(
+            geometry_msgs__Pose&& _pose);
+
+    /*!
+     * @brief This function returns a constant reference to member pose
+     * @return Constant reference to member pose
+     */
+    eProsima_user_DllExport const geometry_msgs__Pose& pose() const;
+
+    /*!
+     * @brief This function returns a reference to member pose
+     * @return Reference to member pose
+     */
+    eProsima_user_DllExport geometry_msgs__Pose& pose();
+    /*!
+     * @brief This function copies the value in member scale
+     * @param _scale New value to be copied in member scale
+     */
+    eProsima_user_DllExport void scale(
+            const geometry_msgs__Vector3& _scale);
+
+    /*!
+     * @brief This function moves the value in member scale
+     * @param _scale New value to be moved in member scale
+     */
+    eProsima_user_DllExport void scale(
+            geometry_msgs__Vector3&& _scale);
+
+    /*!
+     * @brief This function returns a constant reference to member scale
+     * @return Constant reference to member scale
+     */
+    eProsima_user_DllExport const geometry_msgs__Vector3& scale() const;
+
+    /*!
+     * @brief This function returns a reference to member scale
+     * @return Reference to member scale
+     */
+    eProsima_user_DllExport geometry_msgs__Vector3& scale();
+    /*!
+     * @brief This function copies the value in member color
+     * @param _color New value to be copied in member color
+     */
+    eProsima_user_DllExport void color(
+            const std_msgs__ColorRGBA& _color);
+
+    /*!
+     * @brief This function moves the value in member color
+     * @param _color New value to be moved in member color
+     */
+    eProsima_user_DllExport void color(
+            std_msgs__ColorRGBA&& _color);
+
+    /*!
+     * @brief This function returns a constant reference to member color
+     * @return Constant reference to member color
+     */
+    eProsima_user_DllExport const std_msgs__ColorRGBA& color() const;
+
+    /*!
+     * @brief This function returns a reference to member color
+     * @return Reference to member color
+     */
+    eProsima_user_DllExport std_msgs__ColorRGBA& color();
+    /*!
+     * @brief This function copies the value in member lifetime
+     * @param _lifetime New value to be copied in member lifetime
+     */
+    eProsima_user_DllExport void lifetime(
+            const builtins__Duration& _lifetime);
+
+    /*!
+     * @brief This function moves the value in member lifetime
+     * @param _lifetime New value to be moved in member lifetime
+     */
+    eProsima_user_DllExport void lifetime(
+            builtins__Duration&& _lifetime);
+
+    /*!
+     * @brief This function returns a constant reference to member lifetime
+     * @return Constant reference to member lifetime
+     */
+    eProsima_user_DllExport const builtins__Duration& lifetime() const;
+
+    /*!
+     * @brief This function returns a reference to member lifetime
+     * @return Reference to member lifetime
+     */
+    eProsima_user_DllExport builtins__Duration& lifetime();
+    /*!
+     * @brief This function sets a value in member frame_locked
+     * @param _frame_locked New value for member frame_locked
+     */
+    eProsima_user_DllExport void frame_locked(
+            bool _frame_locked);
+
+    /*!
+     * @brief This function returns the value of member frame_locked
+     * @return Value of member frame_locked
+     */
+    eProsima_user_DllExport bool frame_locked() const;
+
+    /*!
+     * @brief This function returns a reference to member frame_locked
+     * @return Reference to member frame_locked
+     */
+    eProsima_user_DllExport bool& frame_locked();
+
+    /*!
+     * @brief This function copies the value in member points
+     * @param _points New value to be copied in member points
+     */
+    eProsima_user_DllExport void points(
+            const std::vector<geometry_msgs__Point>& _points);
+
+    /*!
+     * @brief This function moves the value in member points
+     * @param _points New value to be moved in member points
+     */
+    eProsima_user_DllExport void points(
+            std::vector<geometry_msgs__Point>&& _points);
+
+    /*!
+     * @brief This function returns a constant reference to member points
+     * @return Constant reference to member points
+     */
+    eProsima_user_DllExport const std::vector<geometry_msgs__Point>& points() const;
+
+    /*!
+     * @brief This function returns a reference to member points
+     * @return Reference to member points
+     */
+    eProsima_user_DllExport std::vector<geometry_msgs__Point>& points();
+    /*!
+     * @brief This function copies the value in member colors
+     * @param _colors New value to be copied in member colors
+     */
+    eProsima_user_DllExport void colors(
+            const std::vector<std_msgs__ColorRGBA>& _colors);
+
+    /*!
+     * @brief This function moves the value in member colors
+     * @param _colors New value to be moved in member colors
+     */
+    eProsima_user_DllExport void colors(
+            std::vector<std_msgs__ColorRGBA>&& _colors);
+
+    /*!
+     * @brief This function returns a constant reference to member colors
+     * @return Constant reference to member colors
+     */
+    eProsima_user_DllExport const std::vector<std_msgs__ColorRGBA>& colors() const;
+
+    /*!
+     * @brief This function returns a reference to member colors
+     * @return Reference to member colors
+     */
+    eProsima_user_DllExport std::vector<std_msgs__ColorRGBA>& colors();
+    /*!
+     * @brief This function copies the value in member text
+     * @param _text New value to be copied in member text
+     */
+    eProsima_user_DllExport void text(
+            const std::string& _text);
+
+    /*!
+     * @brief This function moves the value in member text
+     * @param _text New value to be moved in member text
+     */
+    eProsima_user_DllExport void text(
+            std::string&& _text);
+
+    /*!
+     * @brief This function returns a constant reference to member text
+     * @return Constant reference to member text
+     */
+    eProsima_user_DllExport const std::string& text() const;
+
+    /*!
+     * @brief This function returns a reference to member text
+     * @return Reference to member text
+     */
+    eProsima_user_DllExport std::string& text();
+    /*!
+     * @brief This function copies the value in member mesh_resource
+     * @param _mesh_resource New value to be copied in member mesh_resource
+     */
+    eProsima_user_DllExport void mesh_resource(
+            const std::string& _mesh_resource);
+
+    /*!
+     * @brief This function moves the value in member mesh_resource
+     * @param _mesh_resource New value to be moved in member mesh_resource
+     */
+    eProsima_user_DllExport void mesh_resource(
+            std::string&& _mesh_resource);
+
+    /*!
+     * @brief This function returns a constant reference to member mesh_resource
+     * @return Constant reference to member mesh_resource
+     */
+    eProsima_user_DllExport const std::string& mesh_resource() const;
+
+    /*!
+     * @brief This function returns a reference to member mesh_resource
+     * @return Reference to member mesh_resource
+     */
+    eProsima_user_DllExport std::string& mesh_resource();
+    /*!
+     * @brief This function sets a value in member mesh_use_embedded_materials
+     * @param _mesh_use_embedded_materials New value for member mesh_use_embedded_materials
+     */
+    eProsima_user_DllExport void mesh_use_embedded_materials(
+            bool _mesh_use_embedded_materials);
+
+    /*!
+     * @brief This function returns the value of member mesh_use_embedded_materials
+     * @return Value of member mesh_use_embedded_materials
+     */
+    eProsima_user_DllExport bool mesh_use_embedded_materials() const;
+
+    /*!
+     * @brief This function returns a reference to member mesh_use_embedded_materials
+     * @return Reference to member mesh_use_embedded_materials
+     */
+    eProsima_user_DllExport bool& mesh_use_embedded_materials();
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function returns the serialized size of a data depending on the buffer alignment.
+     * @param data Data which is calculated its serialized size.
+     * @param current_alignment Buffer alignment.
+     * @return Serialized size.
+     */
+    eProsima_user_DllExport static size_t getCdrSerializedSize(
+            const visualization_msgs__Marker& data,
+            size_t current_alignment = 0);
+
+
+    /*!
+     * @brief This function serializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serialize(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+    /*!
+     * @brief This function deserializes an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void deserialize(
+            eprosima::fastcdr::Cdr& cdr);
+
+
+
+    /*!
+     * @brief This function returns the maximum serialized size of the Key of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
+    eProsima_user_DllExport static size_t getKeyMaxCdrSerializedSize(
+            size_t current_alignment = 0);
+
+    /*!
+     * @brief This function tells you if the Key has been defined for this type
+     */
+    eProsima_user_DllExport static bool isKeyDefined();
+
+    /*!
+     * @brief This function serializes the key members of an object using CDR serialization.
+     * @param cdr CDR serialization object.
+     */
+    eProsima_user_DllExport void serializeKey(
+            eprosima::fastcdr::Cdr& cdr) const;
+
+private:
+
+    std_msgs__Header m_header;
+    std::string m_ns;
+    int32_t m_id;
+    int32_t m_type;
+    int32_t m_action;
+    geometry_msgs__Pose m_pose;
+    geometry_msgs__Vector3 m_scale;
+    std_msgs__ColorRGBA m_color;
+    builtins__Duration m_lifetime;
+    bool m_frame_locked;
+    std::vector<geometry_msgs__Point> m_points;
+    std::vector<std_msgs__ColorRGBA> m_colors;
+    std::string m_text;
+    std::string m_mesh_resource;
+    bool m_mesh_use_embedded_materials;
 };
 /*!
  * @brief This class represents the structure foxglove_msgs__ImageMarkerArray defined by the user in the IDL file.

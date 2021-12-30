@@ -36,6 +36,7 @@ add_subdirectory(userland)
 include_directories(userland)
 
 add_subdirectory(common)
+add_subdirectory(track)
 add_subdirectory(ros)
 add_subdirectory(hw)
 add_subdirectory(slam)

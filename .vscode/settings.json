@@ -8,7 +8,10 @@
     "regex": "cpp",
     "iosfwd": "cpp",
     "string_view": "cpp",
-    "*.idl": "cpp"
+    "*.idl": "cpp",
+    "dense": "cpp",
+    "*.tcc": "cpp",
+    "fstream": "cpp"
   },
   "cmake.configureOnOpen": true
 }

@@ -2372,7 +2372,7 @@ geometry_msgs__TwistWithCovariance::geometry_msgs__TwistWithCovariance()
 {
     // m_twist com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@10b48321
 
-    // m_covariance com.eprosima.idl.parser.typecode.ArrayTypeCode@1e9e725a
+    // m_covariance com.eprosima.idl.parser.typecode.ArrayTypeCode@59717824
     memset(&m_covariance, 0, (36) * 8);
 
 }
@@ -2584,7 +2584,7 @@ geometry_msgs__TwistWithCovarianceStamped::geometry_msgs__TwistWithCovarianceSta
 {
     // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@314c508a
 
-    // m_twist com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@797badd3
+    // m_twist com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@3c0a50da
 
 
 }
@@ -6614,33 +6614,249 @@ void sensor_msgs__PointCloud2::serializeKey(
              
 }
 
+nav_msgs__Path::nav_msgs__Path()
+{
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@314c508a
+
+    // m_poses com.eprosima.idl.parser.typecode.SequenceTypeCode@5af97850
+
+
+}
+
+nav_msgs__Path::~nav_msgs__Path()
+{
+
+
+}
+
+nav_msgs__Path::nav_msgs__Path(
+        const nav_msgs__Path& x)
+{
+    m_header = x.m_header;
+    m_poses = x.m_poses;
+}
+
+nav_msgs__Path::nav_msgs__Path(
+        nav_msgs__Path&& x)
+{
+    m_header = std::move(x.m_header);
+    m_poses = std::move(x.m_poses);
+}
+
+nav_msgs__Path& nav_msgs__Path::operator =(
+        const nav_msgs__Path& x)
+{
+
+    m_header = x.m_header;
+    m_poses = x.m_poses;
+
+    return *this;
+}
+
+nav_msgs__Path& nav_msgs__Path::operator =(
+        nav_msgs__Path&& x)
+{
+
+    m_header = std::move(x.m_header);
+    m_poses = std::move(x.m_poses);
+
+    return *this;
+}
+
+bool nav_msgs__Path::operator ==(
+        const nav_msgs__Path& x) const
+{
+
+    return (m_header == x.m_header && m_poses == x.m_poses);
+}
+
+bool nav_msgs__Path::operator !=(
+        const nav_msgs__Path& x) const
+{
+    return !(*this == x);
+}
+
+size_t nav_msgs__Path::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += std_msgs__Header::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    for(size_t a = 0; a < 100; ++a)
+    {
+        current_alignment += geometry_msgs__PoseStamped::getMaxCdrSerializedSize(current_alignment);}
+
+
+    return current_alignment - initial_alignment;
+}
+
+size_t nav_msgs__Path::getCdrSerializedSize(
+        const nav_msgs__Path& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += std_msgs__Header::getCdrSerializedSize(data.header(), current_alignment);
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    for(size_t a = 0; a < data.poses().size(); ++a)
+    {
+        current_alignment += geometry_msgs__PoseStamped::getCdrSerializedSize(data.poses().at(a), current_alignment);}
+
+
+    return current_alignment - initial_alignment;
+}
+
+void nav_msgs__Path::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_header;
+    scdr << m_poses;
+
+}
+
+void nav_msgs__Path::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_header;
+    dcdr >> m_poses;
+}
+
+/*!
+ * @brief This function copies the value in member header
+ * @param _header New value to be copied in member header
+ */
+void nav_msgs__Path::header(
+        const std_msgs__Header& _header)
+{
+    m_header = _header;
+}
+
+/*!
+ * @brief This function moves the value in member header
+ * @param _header New value to be moved in member header
+ */
+void nav_msgs__Path::header(
+        std_msgs__Header&& _header)
+{
+    m_header = std::move(_header);
+}
+
+/*!
+ * @brief This function returns a constant reference to member header
+ * @return Constant reference to member header
+ */
+const std_msgs__Header& nav_msgs__Path::header() const
+{
+    return m_header;
+}
+
+/*!
+ * @brief This function returns a reference to member header
+ * @return Reference to member header
+ */
+std_msgs__Header& nav_msgs__Path::header()
+{
+    return m_header;
+}
+/*!
+ * @brief This function copies the value in member poses
+ * @param _poses New value to be copied in member poses
+ */
+void nav_msgs__Path::poses(
+        const std::vector<geometry_msgs__PoseStamped>& _poses)
+{
+    m_poses = _poses;
+}
+
+/*!
+ * @brief This function moves the value in member poses
+ * @param _poses New value to be moved in member poses
+ */
+void nav_msgs__Path::poses(
+        std::vector<geometry_msgs__PoseStamped>&& _poses)
+{
+    m_poses = std::move(_poses);
+}
+
+/*!
+ * @brief This function returns a constant reference to member poses
+ * @return Constant reference to member poses
+ */
+const std::vector<geometry_msgs__PoseStamped>& nav_msgs__Path::poses() const
+{
+    return m_poses;
+}
+
+/*!
+ * @brief This function returns a reference to member poses
+ * @return Reference to member poses
+ */
+std::vector<geometry_msgs__PoseStamped>& nav_msgs__Path::poses()
+{
+    return m_poses;
+}
+
+size_t nav_msgs__Path::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+
+
+    return current_align;
+}
+
+bool nav_msgs__Path::isKeyDefined()
+{
+    return false;
+}
+
+void nav_msgs__Path::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+      
+}
+
 visualization_msgs__ImageMarker::visualization_msgs__ImageMarker()
 {
     // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@314c508a
 
-    // m_ns com.eprosima.idl.parser.typecode.StringTypeCode@5af97850
+    // m_ns com.eprosima.idl.parser.typecode.StringTypeCode@5ef60048
     m_ns ="";
-    // m_id com.eprosima.idl.parser.typecode.PrimitiveTypeCode@5ef60048
+    // m_id com.eprosima.idl.parser.typecode.PrimitiveTypeCode@1d548a08
     m_id = 0;
-    // m_type com.eprosima.idl.parser.typecode.PrimitiveTypeCode@1d548a08
+    // m_type com.eprosima.idl.parser.typecode.PrimitiveTypeCode@16aa0a0a
     m_type = 0;
-    // m_action com.eprosima.idl.parser.typecode.PrimitiveTypeCode@16aa0a0a
+    // m_action com.eprosima.idl.parser.typecode.PrimitiveTypeCode@780cb77
     m_action = 0;
     // m_position com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@dd3b207
 
-    // m_scale com.eprosima.idl.parser.typecode.PrimitiveTypeCode@780cb77
+    // m_scale com.eprosima.idl.parser.typecode.PrimitiveTypeCode@691a7f8f
     m_scale = 0.0;
-    // m_outline_color com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@691a7f8f
+    // m_outline_color com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@50a7bc6e
 
-    // m_filled com.eprosima.idl.parser.typecode.PrimitiveTypeCode@50a7bc6e
+    // m_filled com.eprosima.idl.parser.typecode.PrimitiveTypeCode@161b062a
     m_filled = 0;
-    // m_fill_color com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@691a7f8f
+    // m_fill_color com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@50a7bc6e
 
-    // m_lifetime com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@161b062a
+    // m_lifetime com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@17c1bced
 
-    // m_points com.eprosima.idl.parser.typecode.SequenceTypeCode@17c1bced
+    // m_points com.eprosima.idl.parser.typecode.SequenceTypeCode@2d9d4f9d
 
-    // m_outline_colors com.eprosima.idl.parser.typecode.SequenceTypeCode@2d9d4f9d
+    // m_outline_colors com.eprosima.idl.parser.typecode.SequenceTypeCode@4034c28c
 
 
 }
@@ -7358,9 +7574,855 @@ void visualization_msgs__ImageMarker::serializeKey(
                  
 }
 
+visualization_msgs__Marker::visualization_msgs__Marker()
+{
+    // m_header com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@314c508a
+
+    // m_ns com.eprosima.idl.parser.typecode.StringTypeCode@e50a6f6
+    m_ns ="";
+    // m_id com.eprosima.idl.parser.typecode.PrimitiveTypeCode@14ec4505
+    m_id = 0;
+    // m_type com.eprosima.idl.parser.typecode.PrimitiveTypeCode@53ca01a2
+    m_type = 0;
+    // m_action com.eprosima.idl.parser.typecode.PrimitiveTypeCode@358c99f5
+    m_action = 0;
+    // m_pose com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@58fdd99
+
+    // m_scale com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@12405818
+
+    // m_color com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@50a7bc6e
+
+    // m_lifetime com.eprosima.fastdds.idl.parser.typecode.StructTypeCode@17c1bced
+
+    // m_frame_locked com.eprosima.idl.parser.typecode.PrimitiveTypeCode@3ee0fea4
+    m_frame_locked = false;
+    // m_points com.eprosima.idl.parser.typecode.SequenceTypeCode@48524010
+
+    // m_colors com.eprosima.idl.parser.typecode.SequenceTypeCode@4b168fa9
+
+    // m_text com.eprosima.idl.parser.typecode.StringTypeCode@1a84f40f
+    m_text ="";
+    // m_mesh_resource com.eprosima.idl.parser.typecode.StringTypeCode@23282c25
+    m_mesh_resource ="";
+    // m_mesh_use_embedded_materials com.eprosima.idl.parser.typecode.PrimitiveTypeCode@7920ba90
+    m_mesh_use_embedded_materials = false;
+
+}
+
+visualization_msgs__Marker::~visualization_msgs__Marker()
+{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+visualization_msgs__Marker::visualization_msgs__Marker(
+        const visualization_msgs__Marker& x)
+{
+    m_header = x.m_header;
+    m_ns = x.m_ns;
+    m_id = x.m_id;
+    m_type = x.m_type;
+    m_action = x.m_action;
+    m_pose = x.m_pose;
+    m_scale = x.m_scale;
+    m_color = x.m_color;
+    m_lifetime = x.m_lifetime;
+    m_frame_locked = x.m_frame_locked;
+    m_points = x.m_points;
+    m_colors = x.m_colors;
+    m_text = x.m_text;
+    m_mesh_resource = x.m_mesh_resource;
+    m_mesh_use_embedded_materials = x.m_mesh_use_embedded_materials;
+}
+
+visualization_msgs__Marker::visualization_msgs__Marker(
+        visualization_msgs__Marker&& x)
+{
+    m_header = std::move(x.m_header);
+    m_ns = std::move(x.m_ns);
+    m_id = x.m_id;
+    m_type = x.m_type;
+    m_action = x.m_action;
+    m_pose = std::move(x.m_pose);
+    m_scale = std::move(x.m_scale);
+    m_color = std::move(x.m_color);
+    m_lifetime = std::move(x.m_lifetime);
+    m_frame_locked = x.m_frame_locked;
+    m_points = std::move(x.m_points);
+    m_colors = std::move(x.m_colors);
+    m_text = std::move(x.m_text);
+    m_mesh_resource = std::move(x.m_mesh_resource);
+    m_mesh_use_embedded_materials = x.m_mesh_use_embedded_materials;
+}
+
+visualization_msgs__Marker& visualization_msgs__Marker::operator =(
+        const visualization_msgs__Marker& x)
+{
+
+    m_header = x.m_header;
+    m_ns = x.m_ns;
+    m_id = x.m_id;
+    m_type = x.m_type;
+    m_action = x.m_action;
+    m_pose = x.m_pose;
+    m_scale = x.m_scale;
+    m_color = x.m_color;
+    m_lifetime = x.m_lifetime;
+    m_frame_locked = x.m_frame_locked;
+    m_points = x.m_points;
+    m_colors = x.m_colors;
+    m_text = x.m_text;
+    m_mesh_resource = x.m_mesh_resource;
+    m_mesh_use_embedded_materials = x.m_mesh_use_embedded_materials;
+
+    return *this;
+}
+
+visualization_msgs__Marker& visualization_msgs__Marker::operator =(
+        visualization_msgs__Marker&& x)
+{
+
+    m_header = std::move(x.m_header);
+    m_ns = std::move(x.m_ns);
+    m_id = x.m_id;
+    m_type = x.m_type;
+    m_action = x.m_action;
+    m_pose = std::move(x.m_pose);
+    m_scale = std::move(x.m_scale);
+    m_color = std::move(x.m_color);
+    m_lifetime = std::move(x.m_lifetime);
+    m_frame_locked = x.m_frame_locked;
+    m_points = std::move(x.m_points);
+    m_colors = std::move(x.m_colors);
+    m_text = std::move(x.m_text);
+    m_mesh_resource = std::move(x.m_mesh_resource);
+    m_mesh_use_embedded_materials = x.m_mesh_use_embedded_materials;
+
+    return *this;
+}
+
+bool visualization_msgs__Marker::operator ==(
+        const visualization_msgs__Marker& x) const
+{
+
+    return (m_header == x.m_header && m_ns == x.m_ns && m_id == x.m_id && m_type == x.m_type && m_action == x.m_action && m_pose == x.m_pose && m_scale == x.m_scale && m_color == x.m_color && m_lifetime == x.m_lifetime && m_frame_locked == x.m_frame_locked && m_points == x.m_points && m_colors == x.m_colors && m_text == x.m_text && m_mesh_resource == x.m_mesh_resource && m_mesh_use_embedded_materials == x.m_mesh_use_embedded_materials);
+}
+
+bool visualization_msgs__Marker::operator !=(
+        const visualization_msgs__Marker& x) const
+{
+    return !(*this == x);
+}
+
+size_t visualization_msgs__Marker::getMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += std_msgs__Header::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4) + 255 + 1;
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    current_alignment += geometry_msgs__Pose::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += geometry_msgs__Vector3::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += std_msgs__ColorRGBA::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += builtins__Duration::getMaxCdrSerializedSize(current_alignment);
+    current_alignment += 1 + eprosima::fastcdr::Cdr::alignment(current_alignment, 1);
+
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    for(size_t a = 0; a < 100; ++a)
+    {
+        current_alignment += geometry_msgs__Point::getMaxCdrSerializedSize(current_alignment);}
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    for(size_t a = 0; a < 100; ++a)
+    {
+        current_alignment += std_msgs__ColorRGBA::getMaxCdrSerializedSize(current_alignment);}
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4) + 255 + 1;
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4) + 255 + 1;
+
+    current_alignment += 1 + eprosima::fastcdr::Cdr::alignment(current_alignment, 1);
+
+
+
+    return current_alignment - initial_alignment;
+}
+
+size_t visualization_msgs__Marker::getCdrSerializedSize(
+        const visualization_msgs__Marker& data,
+        size_t current_alignment)
+{
+    (void)data;
+    size_t initial_alignment = current_alignment;
+
+
+    current_alignment += std_msgs__Header::getCdrSerializedSize(data.header(), current_alignment);
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4) + data.ns().size() + 1;
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    current_alignment += geometry_msgs__Pose::getCdrSerializedSize(data.pose(), current_alignment);
+    current_alignment += geometry_msgs__Vector3::getCdrSerializedSize(data.scale(), current_alignment);
+    current_alignment += std_msgs__ColorRGBA::getCdrSerializedSize(data.color(), current_alignment);
+    current_alignment += builtins__Duration::getCdrSerializedSize(data.lifetime(), current_alignment);
+    current_alignment += 1 + eprosima::fastcdr::Cdr::alignment(current_alignment, 1);
+
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    for(size_t a = 0; a < data.points().size(); ++a)
+    {
+        current_alignment += geometry_msgs__Point::getCdrSerializedSize(data.points().at(a), current_alignment);}
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4);
+
+
+    for(size_t a = 0; a < data.colors().size(); ++a)
+    {
+        current_alignment += std_msgs__ColorRGBA::getCdrSerializedSize(data.colors().at(a), current_alignment);}
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4) + data.text().size() + 1;
+
+    current_alignment += 4 + eprosima::fastcdr::Cdr::alignment(current_alignment, 4) + data.mesh_resource().size() + 1;
+
+    current_alignment += 1 + eprosima::fastcdr::Cdr::alignment(current_alignment, 1);
+
+
+
+    return current_alignment - initial_alignment;
+}
+
+void visualization_msgs__Marker::serialize(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+
+    scdr << m_header;
+    scdr << m_ns;
+    scdr << m_id;
+    scdr << m_type;
+    scdr << m_action;
+    scdr << m_pose;
+    scdr << m_scale;
+    scdr << m_color;
+    scdr << m_lifetime;
+    scdr << m_frame_locked;
+    scdr << m_points;
+    scdr << m_colors;
+    scdr << m_text;
+    scdr << m_mesh_resource;
+    scdr << m_mesh_use_embedded_materials;
+
+}
+
+void visualization_msgs__Marker::deserialize(
+        eprosima::fastcdr::Cdr& dcdr)
+{
+
+    dcdr >> m_header;
+    dcdr >> m_ns;
+    dcdr >> m_id;
+    dcdr >> m_type;
+    dcdr >> m_action;
+    dcdr >> m_pose;
+    dcdr >> m_scale;
+    dcdr >> m_color;
+    dcdr >> m_lifetime;
+    dcdr >> m_frame_locked;
+    dcdr >> m_points;
+    dcdr >> m_colors;
+    dcdr >> m_text;
+    dcdr >> m_mesh_resource;
+    dcdr >> m_mesh_use_embedded_materials;
+}
+
+/*!
+ * @brief This function copies the value in member header
+ * @param _header New value to be copied in member header
+ */
+void visualization_msgs__Marker::header(
+        const std_msgs__Header& _header)
+{
+    m_header = _header;
+}
+
+/*!
+ * @brief This function moves the value in member header
+ * @param _header New value to be moved in member header
+ */
+void visualization_msgs__Marker::header(
+        std_msgs__Header&& _header)
+{
+    m_header = std::move(_header);
+}
+
+/*!
+ * @brief This function returns a constant reference to member header
+ * @return Constant reference to member header
+ */
+const std_msgs__Header& visualization_msgs__Marker::header() const
+{
+    return m_header;
+}
+
+/*!
+ * @brief This function returns a reference to member header
+ * @return Reference to member header
+ */
+std_msgs__Header& visualization_msgs__Marker::header()
+{
+    return m_header;
+}
+/*!
+ * @brief This function copies the value in member ns
+ * @param _ns New value to be copied in member ns
+ */
+void visualization_msgs__Marker::ns(
+        const std::string& _ns)
+{
+    m_ns = _ns;
+}
+
+/*!
+ * @brief This function moves the value in member ns
+ * @param _ns New value to be moved in member ns
+ */
+void visualization_msgs__Marker::ns(
+        std::string&& _ns)
+{
+    m_ns = std::move(_ns);
+}
+
+/*!
+ * @brief This function returns a constant reference to member ns
+ * @return Constant reference to member ns
+ */
+const std::string& visualization_msgs__Marker::ns() const
+{
+    return m_ns;
+}
+
+/*!
+ * @brief This function returns a reference to member ns
+ * @return Reference to member ns
+ */
+std::string& visualization_msgs__Marker::ns()
+{
+    return m_ns;
+}
+/*!
+ * @brief This function sets a value in member id
+ * @param _id New value for member id
+ */
+void visualization_msgs__Marker::id(
+        int32_t _id)
+{
+    m_id = _id;
+}
+
+/*!
+ * @brief This function returns the value of member id
+ * @return Value of member id
+ */
+int32_t visualization_msgs__Marker::id() const
+{
+    return m_id;
+}
+
+/*!
+ * @brief This function returns a reference to member id
+ * @return Reference to member id
+ */
+int32_t& visualization_msgs__Marker::id()
+{
+    return m_id;
+}
+
+/*!
+ * @brief This function sets a value in member type
+ * @param _type New value for member type
+ */
+void visualization_msgs__Marker::type(
+        int32_t _type)
+{
+    m_type = _type;
+}
+
+/*!
+ * @brief This function returns the value of member type
+ * @return Value of member type
+ */
+int32_t visualization_msgs__Marker::type() const
+{
+    return m_type;
+}
+
+/*!
+ * @brief This function returns a reference to member type
+ * @return Reference to member type
+ */
+int32_t& visualization_msgs__Marker::type()
+{
+    return m_type;
+}
+
+/*!
+ * @brief This function sets a value in member action
+ * @param _action New value for member action
+ */
+void visualization_msgs__Marker::action(
+        int32_t _action)
+{
+    m_action = _action;
+}
+
+/*!
+ * @brief This function returns the value of member action
+ * @return Value of member action
+ */
+int32_t visualization_msgs__Marker::action() const
+{
+    return m_action;
+}
+
+/*!
+ * @brief This function returns a reference to member action
+ * @return Reference to member action
+ */
+int32_t& visualization_msgs__Marker::action()
+{
+    return m_action;
+}
+
+/*!
+ * @brief This function copies the value in member pose
+ * @param _pose New value to be copied in member pose
+ */
+void visualization_msgs__Marker::pose(
+        const geometry_msgs__Pose& _pose)
+{
+    m_pose = _pose;
+}
+
+/*!
+ * @brief This function moves the value in member pose
+ * @param _pose New value to be moved in member pose
+ */
+void visualization_msgs__Marker::pose(
+        geometry_msgs__Pose&& _pose)
+{
+    m_pose = std::move(_pose);
+}
+
+/*!
+ * @brief This function returns a constant reference to member pose
+ * @return Constant reference to member pose
+ */
+const geometry_msgs__Pose& visualization_msgs__Marker::pose() const
+{
+    return m_pose;
+}
+
+/*!
+ * @brief This function returns a reference to member pose
+ * @return Reference to member pose
+ */
+geometry_msgs__Pose& visualization_msgs__Marker::pose()
+{
+    return m_pose;
+}
+/*!
+ * @brief This function copies the value in member scale
+ * @param _scale New value to be copied in member scale
+ */
+void visualization_msgs__Marker::scale(
+        const geometry_msgs__Vector3& _scale)
+{
+    m_scale = _scale;
+}
+
+/*!
+ * @brief This function moves the value in member scale
+ * @param _scale New value to be moved in member scale
+ */
+void visualization_msgs__Marker::scale(
+        geometry_msgs__Vector3&& _scale)
+{
+    m_scale = std::move(_scale);
+}
+
+/*!
+ * @brief This function returns a constant reference to member scale
+ * @return Constant reference to member scale
+ */
+const geometry_msgs__Vector3& visualization_msgs__Marker::scale() const
+{
+    return m_scale;
+}
+
+/*!
+ * @brief This function returns a reference to member scale
+ * @return Reference to member scale
+ */
+geometry_msgs__Vector3& visualization_msgs__Marker::scale()
+{
+    return m_scale;
+}
+/*!
+ * @brief This function copies the value in member color
+ * @param _color New value to be copied in member color
+ */
+void visualization_msgs__Marker::color(
+        const std_msgs__ColorRGBA& _color)
+{
+    m_color = _color;
+}
+
+/*!
+ * @brief This function moves the value in member color
+ * @param _color New value to be moved in member color
+ */
+void visualization_msgs__Marker::color(
+        std_msgs__ColorRGBA&& _color)
+{
+    m_color = std::move(_color);
+}
+
+/*!
+ * @brief This function returns a constant reference to member color
+ * @return Constant reference to member color
+ */
+const std_msgs__ColorRGBA& visualization_msgs__Marker::color() const
+{
+    return m_color;
+}
+
+/*!
+ * @brief This function returns a reference to member color
+ * @return Reference to member color
+ */
+std_msgs__ColorRGBA& visualization_msgs__Marker::color()
+{
+    return m_color;
+}
+/*!
+ * @brief This function copies the value in member lifetime
+ * @param _lifetime New value to be copied in member lifetime
+ */
+void visualization_msgs__Marker::lifetime(
+        const builtins__Duration& _lifetime)
+{
+    m_lifetime = _lifetime;
+}
+
+/*!
+ * @brief This function moves the value in member lifetime
+ * @param _lifetime New value to be moved in member lifetime
+ */
+void visualization_msgs__Marker::lifetime(
+        builtins__Duration&& _lifetime)
+{
+    m_lifetime = std::move(_lifetime);
+}
+
+/*!
+ * @brief This function returns a constant reference to member lifetime
+ * @return Constant reference to member lifetime
+ */
+const builtins__Duration& visualization_msgs__Marker::lifetime() const
+{
+    return m_lifetime;
+}
+
+/*!
+ * @brief This function returns a reference to member lifetime
+ * @return Reference to member lifetime
+ */
+builtins__Duration& visualization_msgs__Marker::lifetime()
+{
+    return m_lifetime;
+}
+/*!
+ * @brief This function sets a value in member frame_locked
+ * @param _frame_locked New value for member frame_locked
+ */
+void visualization_msgs__Marker::frame_locked(
+        bool _frame_locked)
+{
+    m_frame_locked = _frame_locked;
+}
+
+/*!
+ * @brief This function returns the value of member frame_locked
+ * @return Value of member frame_locked
+ */
+bool visualization_msgs__Marker::frame_locked() const
+{
+    return m_frame_locked;
+}
+
+/*!
+ * @brief This function returns a reference to member frame_locked
+ * @return Reference to member frame_locked
+ */
+bool& visualization_msgs__Marker::frame_locked()
+{
+    return m_frame_locked;
+}
+
+/*!
+ * @brief This function copies the value in member points
+ * @param _points New value to be copied in member points
+ */
+void visualization_msgs__Marker::points(
+        const std::vector<geometry_msgs__Point>& _points)
+{
+    m_points = _points;
+}
+
+/*!
+ * @brief This function moves the value in member points
+ * @param _points New value to be moved in member points
+ */
+void visualization_msgs__Marker::points(
+        std::vector<geometry_msgs__Point>&& _points)
+{
+    m_points = std::move(_points);
+}
+
+/*!
+ * @brief This function returns a constant reference to member points
+ * @return Constant reference to member points
+ */
+const std::vector<geometry_msgs__Point>& visualization_msgs__Marker::points() const
+{
+    return m_points;
+}
+
+/*!
+ * @brief This function returns a reference to member points
+ * @return Reference to member points
+ */
+std::vector<geometry_msgs__Point>& visualization_msgs__Marker::points()
+{
+    return m_points;
+}
+/*!
+ * @brief This function copies the value in member colors
+ * @param _colors New value to be copied in member colors
+ */
+void visualization_msgs__Marker::colors(
+        const std::vector<std_msgs__ColorRGBA>& _colors)
+{
+    m_colors = _colors;
+}
+
+/*!
+ * @brief This function moves the value in member colors
+ * @param _colors New value to be moved in member colors
+ */
+void visualization_msgs__Marker::colors(
+        std::vector<std_msgs__ColorRGBA>&& _colors)
+{
+    m_colors = std::move(_colors);
+}
+
+/*!
+ * @brief This function returns a constant reference to member colors
+ * @return Constant reference to member colors
+ */
+const std::vector<std_msgs__ColorRGBA>& visualization_msgs__Marker::colors() const
+{
+    return m_colors;
+}
+
+/*!
+ * @brief This function returns a reference to member colors
+ * @return Reference to member colors
+ */
+std::vector<std_msgs__ColorRGBA>& visualization_msgs__Marker::colors()
+{
+    return m_colors;
+}
+/*!
+ * @brief This function copies the value in member text
+ * @param _text New value to be copied in member text
+ */
+void visualization_msgs__Marker::text(
+        const std::string& _text)
+{
+    m_text = _text;
+}
+
+/*!
+ * @brief This function moves the value in member text
+ * @param _text New value to be moved in member text
+ */
+void visualization_msgs__Marker::text(
+        std::string&& _text)
+{
+    m_text = std::move(_text);
+}
+
+/*!
+ * @brief This function returns a constant reference to member text
+ * @return Constant reference to member text
+ */
+const std::string& visualization_msgs__Marker::text() const
+{
+    return m_text;
+}
+
+/*!
+ * @brief This function returns a reference to member text
+ * @return Reference to member text
+ */
+std::string& visualization_msgs__Marker::text()
+{
+    return m_text;
+}
+/*!
+ * @brief This function copies the value in member mesh_resource
+ * @param _mesh_resource New value to be copied in member mesh_resource
+ */
+void visualization_msgs__Marker::mesh_resource(
+        const std::string& _mesh_resource)
+{
+    m_mesh_resource = _mesh_resource;
+}
+
+/*!
+ * @brief This function moves the value in member mesh_resource
+ * @param _mesh_resource New value to be moved in member mesh_resource
+ */
+void visualization_msgs__Marker::mesh_resource(
+        std::string&& _mesh_resource)
+{
+    m_mesh_resource = std::move(_mesh_resource);
+}
+
+/*!
+ * @brief This function returns a constant reference to member mesh_resource
+ * @return Constant reference to member mesh_resource
+ */
+const std::string& visualization_msgs__Marker::mesh_resource() const
+{
+    return m_mesh_resource;
+}
+
+/*!
+ * @brief This function returns a reference to member mesh_resource
+ * @return Reference to member mesh_resource
+ */
+std::string& visualization_msgs__Marker::mesh_resource()
+{
+    return m_mesh_resource;
+}
+/*!
+ * @brief This function sets a value in member mesh_use_embedded_materials
+ * @param _mesh_use_embedded_materials New value for member mesh_use_embedded_materials
+ */
+void visualization_msgs__Marker::mesh_use_embedded_materials(
+        bool _mesh_use_embedded_materials)
+{
+    m_mesh_use_embedded_materials = _mesh_use_embedded_materials;
+}
+
+/*!
+ * @brief This function returns the value of member mesh_use_embedded_materials
+ * @return Value of member mesh_use_embedded_materials
+ */
+bool visualization_msgs__Marker::mesh_use_embedded_materials() const
+{
+    return m_mesh_use_embedded_materials;
+}
+
+/*!
+ * @brief This function returns a reference to member mesh_use_embedded_materials
+ * @return Reference to member mesh_use_embedded_materials
+ */
+bool& visualization_msgs__Marker::mesh_use_embedded_materials()
+{
+    return m_mesh_use_embedded_materials;
+}
+
+
+size_t visualization_msgs__Marker::getKeyMaxCdrSerializedSize(
+        size_t current_alignment)
+{
+    size_t current_align = current_alignment;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return current_align;
+}
+
+bool visualization_msgs__Marker::isKeyDefined()
+{
+    return false;
+}
+
+void visualization_msgs__Marker::serializeKey(
+        eprosima::fastcdr::Cdr& scdr) const
+{
+    (void) scdr;
+                   
+}
+
 foxglove_msgs__ImageMarkerArray::foxglove_msgs__ImageMarkerArray()
 {
-    // m_markers com.eprosima.idl.parser.typecode.SequenceTypeCode@4034c28c
+    // m_markers com.eprosima.idl.parser.typecode.SequenceTypeCode@3d299e3
 
 
 }
