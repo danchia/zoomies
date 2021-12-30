@@ -166,7 +166,7 @@ void Driver::DoFollowRacingPath(int64_t t_us, State& state) {
   state.racing_path_dist_ = path_info.s;
   state.desired_fwd_vel_ = path_info.velocity;
 
-  constexpr float lane_gain = 1.0f;
+  constexpr float lane_gain = 4.0f;
   float delta_heading = path_info.heading - state.heading;
   float lane =
       atan2f32(lane_gain * path_info.dist_to_closest, state.desired_fwd_vel_);
@@ -199,7 +199,7 @@ float Driver::CalculateLongitudinalControl(State& state) {
   float e = state.desired_fwd_vel_ - state.fwd_vel;
   fwd_vel_accel_e_i_ = 0.8f * fwd_vel_accel_e_i_ + e;
   fwd_vel_decel_e_i_ = 0.0f;
-  float feedforward = state.desired_fwd_vel_ * 0.108f;
+  float feedforward = state.desired_fwd_vel_ * 0.11f;
   if (state.desired_fwd_vel_ > 0.0f) feedforward += 0.042f;
   float esc = feedforward + e * 0.149f + fwd_vel_accel_e_i_ * 0.030f -
               0.01f * (state.fwd_vel - prev_state_.fwd_vel);
