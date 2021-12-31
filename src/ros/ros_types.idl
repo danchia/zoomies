@@ -184,6 +184,12 @@ struct sensor_msgs__PointCloud2 {
   boolean is_dense;
 };
 
+struct nav_msgs__Path {
+  std_msgs__Header header;
+
+  sequence<geometry_msgs__PoseStamped> poses;
+};
+
 struct visualization_msgs__ImageMarker {
   std_msgs__Header header;
 
@@ -209,6 +215,46 @@ struct visualization_msgs__ImageMarker {
 
   sequence<geometry_msgs__Point> points;
   sequence<std_msgs__ColorRGBA> outline_colors;
+};
+
+struct visualization_msgs__Marker {
+  std_msgs__Header header;
+  string ns;
+  int32 id;
+  /*
+  uint8 ARROW=0
+  uint8 CUBE=1
+  uint8 SPHERE=2
+  uint8 CYLINDER=3
+  uint8 LINE_STRIP=4
+  uint8 LINE_LIST=5
+  uint8 CUBE_LIST=6
+  uint8 SPHERE_LIST=7
+  uint8 POINTS=8
+  uint8 TEXT_VIEW_FACING=9
+  uint8 MESH_RESOURCE=10
+  uint8 TRIANGLE_LIST=11
+  uint8 ADD=0
+  uint8 MODIFY=0
+  uint8 DELETE=2
+  uint8 DELETEALL=3
+  */
+  int32 type;
+  int32 action;
+
+  geometry_msgs__Pose pose;
+  geometry_msgs__Vector3 scale;
+
+  std_msgs__ColorRGBA color;
+
+  builtins__Duration lifetime;
+  boolean frame_locked;
+
+  sequence<geometry_msgs__Point> points;
+  sequence<std_msgs__ColorRGBA> colors;
+  string text;
+  string mesh_resource;
+  boolean mesh_use_embedded_materials;
 };
 
 struct foxglove_msgs__ImageMarkerArray {

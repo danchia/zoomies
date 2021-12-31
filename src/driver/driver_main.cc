@@ -8,6 +8,7 @@
 #include "hw/hw.h"
 #include "hw/js.h"
 #include "spdlog/spdlog.h"
+#include "track/track.h"
 
 namespace {
 
@@ -21,7 +22,8 @@ int main() {
   spdlog::info("Initializing...\n");
   HW hw;
   Datalogger datalogger("datalog");
-  Driver driver(datalogger);
+  RacingPath racing_path("track.bin");
+  Driver driver(datalogger, racing_path);
   JS js;
   Clock clock;
   Camera cam(640, 480, 30);

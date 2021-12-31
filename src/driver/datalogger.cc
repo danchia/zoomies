@@ -3,6 +3,18 @@
 #include "ros/ros_types.h"
 #include "ros/ros_util.h"
 
+namespace {
+geometry_msgs__Quaternion HeadingToQuat(float theta) {
+  // Rotation about z-axis.
+  geometry_msgs__Quaternion q;
+  q.w(std::cos(0.5 * theta));
+  q.x(0);
+  q.y(0);
+  q.z(std::sin(0.5 * theta));
+  return q;
+}
+}  // namespace
+
 Datalogger::Datalogger(std::string_view path) : ros_writer_(path) {
   img_topic_ =
       ros_writer_.AddConnection("/camera1/raw", "sensor_msgs/msg/Image");
@@ -15,6 +27,10 @@ Datalogger::Datalogger(std::string_view path) : ros_writer_(path) {
       "/global_pose/pose_only", "geometry_msgs/msg/PoseStamped");
   esc_topic_ = ros_writer_.AddConnection("/hw/esc", "std_msgs/msg/Float32");
   steer_topic_ = ros_writer_.AddConnection("/hw/steer", "std_msgs/msg/Float32");
+  racing_path_topic_ =
+      ros_writer_.AddConnection("/motion_planner/path", "nav_msgs/msg/Path");
+  racing_path_closet_pt_topic_ = ros_writer_.AddConnection(
+      "/motion_planner/closest_point", "visualization_msgs/msg/Marker");
 }
 
 void Datalogger::LogVideoFrame(int64_t t_us, int width, int height,
@@ -88,16 +104,12 @@ void Datalogger::LogGlobalPose(int64_t t_us, float x, float y, float theta) {
   geometry_msgs__PoseStamped m;
 
   m.header().stamp() = MicrosToRos(t_us);
-  m.header().frame_id("/base_link");
+  m.header().frame_id("/map");
 
   m.pose().position().x(x);
   m.pose().position().y(y);
 
-  // Rotation about z-axis.
-  m.pose().orientation().w(std::cos(0.5 * theta));
-  m.pose().orientation().x(0);
-  m.pose().orientation().y(0);
-  m.pose().orientation().z(std::sin(0.5 * theta));
+  m.pose().orientation(HeadingToQuat(theta));
 
   std::lock_guard<std::mutex> l(mu_);
   ros_writer_.Write(global_pose_topic_, t_us, m);
@@ -111,4 +123,63 @@ void Datalogger::LogEscSteer(int64_t t_us, float esc, float steer) {
   std::lock_guard<std::mutex> l(mu_);
   ros_writer_.Write(esc_topic_, t_us, esc_m);
   ros_writer_.Write(steer_topic_, t_us, steer_m);
+}
+
+void Datalogger::LogRacingPath(int64_t t_us,
+                               const std::vector<RacingPath::PathPoint>& path) {
+  nav_msgs__Path m;
+  m.header().stamp() = MicrosToRos(t_us);
+  m.header().frame_id("/map");
+
+  for (const auto& p : path) {
+    auto& pose = m.poses().emplace_back();
+    auto& pos = pose.pose().position();
+    pos.x(p.x);
+    pos.y(p.y);
+    pose.pose().orientation(HeadingToQuat(p.heading));
+  }
+
+  std::lock_guard<std::mutex> l(mu_);
+  ros_writer_.Write(racing_path_topic_, t_us, m);
+}
+
+void Datalogger::LogRacingPathClosestPt(int64_t t_us, float car_x, float car_y,
+                                        float px, float py, bool is_right) {
+  visualization_msgs__Marker m;
+  m.header().stamp() = MicrosToRos(t_us);
+  m.header().frame_id("/map");
+
+  m.ns("motion_plan");
+  m.id(0);
+
+  m.type(4);  // line strip
+  m.action(0);
+
+  m.scale().x(0.1);
+  m.scale().y(0.1);
+  m.scale().z(0.1);
+
+  std_msgs__ColorRGBA color;
+  color.a(1.0f);
+  if (is_right) {
+    color.r(1.0f);
+  } else {
+    color.g(1.0f);
+  }
+  {
+    auto& car = m.points().emplace_back();
+    m.colors().push_back(color);
+    car.x(car_x);
+    car.y(car_y);
+  }
+
+  {
+    auto& p = m.points().emplace_back();
+    m.colors().push_back(color);
+    p.x(px);
+    p.y(py);
+  }
+
+  std::lock_guard<std::mutex> l(mu_);
+  ros_writer_.Write(racing_path_closet_pt_topic_, t_us, m);
 }

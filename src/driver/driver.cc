@@ -17,6 +17,9 @@ constexpr int64_t kLoopPeriodMicros = 10000;
 // pi * 62.7e-3 (wheel diameter) * 0.5 (belt ratio, 17t) * 25/90 / 3 =
 constexpr float kMetersPerTick = 0.00911934534f;
 
+constexpr float kCGtoFrontAxle = 0.137f;
+constexpr float kFrontToRearLength = 0.265f;
+
 constexpr int kVideoWidth = 640;
 constexpr int kVideoHeight = 480;
 
@@ -29,7 +32,8 @@ float MotorTickPeriodToMetersPerSecond(uint16_t p) {
 
 }  // namespace
 
-Driver::Driver(Datalogger& datalogger) : datalogger_(datalogger) {
+Driver::Driver(Datalogger& datalogger, RacingPath& racing_path)
+    : datalogger_(datalogger), racing_path_(racing_path) {
   assert(std::atomic_is_lock_free(&ticks_));
 
   ticks_.store(0, std::memory_order_relaxed);
@@ -55,18 +59,22 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   int64_t loop_tick = ticks_.fetch_add(1, std::memory_order_relaxed) + 1;
 
   if (loop_tick == 1) {
+    datalogger_.LogRacingPath(t_us, racing_path_.path_points());
     prev_reading_ = reading;
+  }
+  if (loop_tick % 100 == 0) {
+    datalogger_.LogRacingPath(t_us, racing_path_.path_points());
   }
 
   uint16_t wheel_delta = reading.motor_ticks - prev_reading_.motor_ticks;
-  float dist_delta = wheel_delta * kMetersPerTick;
 
   State state;
   state.t_micros = t_us;
+  state.dist_delta = wheel_delta * kMetersPerTick;
   state.fwd_vel = MotorTickPeriodToMetersPerSecond(reading.motor_period);
   if (state.fwd_vel > 50.0) state.fwd_vel = prev_state_.fwd_vel;
   state.angular_vel = reading.gyro.z();
-  state.total_distance = prev_state_.total_distance + dist_delta;
+  state.total_distance = prev_state_.total_distance + state.dist_delta;
 
   float dt = (state.t_micros - prev_state_.t_micros) * 1e-6;
   state.heading = prev_state_.heading + state.angular_vel * dt;
@@ -87,22 +95,32 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   //   return Done();
   // }
 
-  if (loop_tick < 15) {
-    state.desired_fwd_vel_ += 0.07f;
-  } else if (loop_tick < 30) {
-    state.desired_fwd_vel_ = 1.05f;
-  } else if (loop_tick < 70) {
-    state.desired_fwd_vel_ = 1.05f;
-    state.desired_angular_vel_ = 1.1f;
-  } else if (loop_tick < 140) {
-    state.desired_fwd_vel_ = 1.05f;
-    state.desired_angular_vel_ = 1.5f;
-  } else {
+  // if (loop_tick < 15) {
+  //   state.desired_fwd_vel_ += 0.07f;
+  // } else if (loop_tick < 30) {
+  //   state.desired_fwd_vel_ = 1.05f;
+  // } else if (loop_tick < 70) {
+  //   state.desired_fwd_vel_ = 1.05f;
+  //   state.desired_angular_vel_ = 1.1f;
+  // } else if (loop_tick < 140) {
+  //   state.desired_fwd_vel_ = 1.05f;
+  //   state.desired_angular_vel_ = 1.5f;
+  // } else {
+  //   return Done();
+  // }
+
+  if (loop_tick > 500) {
     return Done();
   }
 
   if (kManualDrive) {
     state.desired_fwd_vel_ = js_state.accel > 0 ? js_state.accel * 1.5f : 0.0f;
+  } else {
+    if (prev_state_.racing_path_dist_ + state.dist_delta >
+        racing_path_.total_length()) {
+      return Done();
+    }
+    DoFollowRacingPath(t_us, state);
   }
 
   float esc = CalculateLongitudinalControl(state);
@@ -130,6 +148,34 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
       .esc = esc,
       .steer = steer,
   };
+}
+
+void Driver::DoFollowRacingPath(int64_t t_us, State& state) {
+  float s_guess = prev_state_.racing_path_dist_ + state.dist_delta;
+
+  // For the Stanley controller, have to translate CG coordinates into front
+  // wheel coordinates. We'll just use the for speed profile too, out of
+  // convenience.
+  float fx = state.x + cos(state.heading) * kCGtoFrontAxle;
+  float fy = state.y + sin(state.heading) * kCGtoFrontAxle;
+  auto path_info = racing_path_.GetPathInfo(s_guess, fx, fy);
+  datalogger_.LogRacingPathClosestPt(t_us, fx, fy, path_info.closest_x,
+                                     path_info.closest_y,
+                                     path_info.dist_to_closest >= 0.0f);
+
+  state.racing_path_dist_ = path_info.s;
+  state.desired_fwd_vel_ = path_info.velocity;
+
+  constexpr float lane_gain = 1.0f;
+  float delta_heading = path_info.heading - state.heading;
+  float lane =
+      atan2f32(lane_gain * path_info.dist_to_closest, state.desired_fwd_vel_);
+  float delta = delta_heading + lane;
+
+  // tan delta = L/R = L*w / V
+  // w = (tan delta)*V/L
+  state.desired_angular_vel_ =
+      tanf32(delta) * state.desired_fwd_vel_ / kFrontToRearLength;
 }
 
 float Driver::CalculateLongitudinalControl(State& state) {
@@ -164,7 +210,6 @@ float Driver::CalculateLateralControl(State& state) {
   float e = state.desired_angular_vel_ - state.angular_vel;
   angular_vel_e_i_ = 0.8f * angular_vel_e_i_ + e;
 
-  // tan delta = L/R = L*w / V
   // Fitted data gives: 3E-03 + 0.516x + -0.0673x^2
   float ov = (state.desired_fwd_vel_ > 0.1f)
                  ? state.desired_angular_vel_ / state.desired_fwd_vel_
