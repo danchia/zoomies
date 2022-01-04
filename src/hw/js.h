@@ -8,6 +8,7 @@ class JS {
     float accel;
     float steer;
     bool a_btn;
+    bool y_btn;
   };
 
   JS();
@@ -20,4 +21,5 @@ class JS {
   float accel_ = 0.0f;
   float steer_ = 0.0f;
   bool a_btn_ = false;
+  bool y_btn_ = false;
 };

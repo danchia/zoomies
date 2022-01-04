@@ -109,9 +109,9 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   //   return Done();
   // }
 
-  if (loop_tick > 500) {
-    return Done();
-  }
+  // if (loop_tick > 500) {
+  //   return Done();
+  // }
 
   if (kManualDrive) {
     state.desired_fwd_vel_ = js_state.accel > 0 ? js_state.accel * 1.5f : 0.0f;
