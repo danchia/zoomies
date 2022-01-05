@@ -1,4 +1,5 @@
 build/
+build_rel/
 build_rpi3/
 venv/
 __pycache__/

@@ -16,3 +16,9 @@
 [submodule "src/Fast-CDR"]
 	path = src/Fast-CDR
 	url = https://github.com/eProsima/Fast-CDR
+[submodule "src/stats"]
+	path = src/stats
+	url = https://github.com/kthohr/stats
+[submodule "src/gcem"]
+	path = src/gcem
+	url = https://github.com/kthohr/gcem
