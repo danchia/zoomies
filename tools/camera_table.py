@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 
+CAMERA_OFFSET = 0.116  # camera is in front of CG along x.
+
 K = np.load('../data/calib/camera_K.npy')
 D = np.load('../data/calib/camera_D.npy')
 
@@ -22,7 +24,10 @@ pts = pts / np.absolute(pts[:, 2][:, None])
 np.save('../data/calib/camera_lut.npy', pts, False)
 
 lut = pts[:, 0:2]
-lut_1d = lut.reshape(480*640*2).astype(np.float32)
+
+lut_offset = np.copy(lut)
+lut_offset[:, 0] += CAMERA_OFFSET
+lut_1d = lut_offset.reshape(480*640*2).astype(np.float32)
 f = open('../data/calib/camera_lut.bin', 'wb')
 f.write(lut_1d.tobytes())
 f.close()
@@ -35,5 +40,13 @@ ceil_mask[(pts[:, 2] > 0) & (np.sum(
     pts_cam**2, axis=1) < 100) & (np.sum(lut**2, axis=1) < 2.8**2)] = 255
 
 f = open('../data/calib/ceil_mask.bin', 'wb')
+f.write(ceil_mask.reshape(480*640).tobytes())
+f.close()
+
+floor_mask = np.zeros(480*640, dtype=np.uint8)
+floor_mask[(pts[:, 2] < 0) & (np.sum(
+    pts_cam**2, axis=1) < 100) & (np.sum(lut**2, axis=1) < 10**2)] = 255
+
+f = open('../data/calib/floor_mask.bin', 'wb')
 f.write(ceil_mask.reshape(480*640).tobytes())
 f.close()
