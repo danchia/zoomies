@@ -30,7 +30,7 @@ float normAngle(float x);
 class CameraModel {
  public:
   CameraModel(int width, int height, std::string_view lut_file);
-  Eigen::Vector2f Lookup(int u, int v) {
+  Eigen::Vector2f Lookup(int u, int v) const {
     int idx = u + v * width_;
     return Eigen::Vector2f{camera_lut_[idx * 2], camera_lut_[idx * 2 + 1]};
   }
@@ -52,7 +52,9 @@ class LightFinder {
               std::string_view ceil_mask_file);
 
   // NOTE: modifies img.
-  std::vector<Light> Find(uint8_t* img);
+  std::vector<Light> Find(
+      uint8_t* img,
+      std::vector<Eigen::Vector2f>* thresholded_positions = nullptr);
 
  private:
   int width_, height_;
@@ -61,4 +63,4 @@ class LightFinder {
   int min_area_;
   const CameraModel& camera_model_;
   std::vector<uint8_t> ceil_mask_;
-}
+};

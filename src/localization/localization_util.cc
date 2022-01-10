@@ -6,6 +6,9 @@
 #include <limits>
 
 namespace {
+
+constexpr int kImageNoisePixels = 10;
+
 struct ImgPoint {
   int u = 0;
   int v = 0;
@@ -147,7 +150,52 @@ LightFinder::LightFinder(const CameraModel& camera_model, int width, int height,
   f.close();
 }
 
-std::vector<LightFinder::Light> LightFinder::Find(uint8_t* img) {
+std::vector<LightFinder::Light> LightFinder::Find(
+    uint8_t* img, std::vector<Eigen::Vector2f>* thresholded_positions) {
+  int size = width_ * height_;
+  for (int i = 0; i < size; ++i) {
+    img[i] &= ceil_mask_[i];
+  }
+
+  if (thresholded_positions != nullptr) {
+    thresholded_positions->clear();
+
+    for (int v = 0; v < height_; ++v) {
+      for (int u = 0; u < width_; ++u) {
+        if (img[v * width_ + u] > pix_thres_) {
+          thresholded_positions->push_back(camera_model_.Lookup(u, v) *
+                                           ceiling_height_);
+        }
+      }
+    }
+  }
+
   auto rects = FindRect(width_, height_, img, pix_thres_, min_area_);
-  return {};
+
+  std::vector<Light> lights;
+  lights.reserve(rects.size());
+  for (const auto& rect : rects) {
+    int u = rect.x + rect.width / 2;
+    int v = rect.y + rect.height / 2;
+    Light& l = lights.emplace_back();
+    l.u = u;
+    l.v = v;
+    l.pos = camera_model_.Lookup(u, v) * ceiling_height_;
+    float d = 0.1f;
+    for (int u_p = -kImageNoisePixels; u_p <= kImageNoisePixels;
+         u_p += kImageNoisePixels) {
+      for (int v_p = -kImageNoisePixels; v_p <= kImageNoisePixels;
+           v_p += kImageNoisePixels) {
+        if (u_p == 0 && v_p == 0) continue;
+        int nu = std::clamp(u + u_p, 0, width_ - 1);
+        int nv = std::clamp(v + v_p, 0, height_ - 1);
+        auto pt = camera_model_.Lookup(nu, nv);
+        float d_cand = (pt - l.pos).norm();
+        if (d_cand > d) d = d_cand;
+      }
+    }
+    l.pos_variance = d * d;
+  }
+
+  return lights;
 }
