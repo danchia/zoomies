@@ -11,7 +11,8 @@
     "*.idl": "cpp",
     "dense": "cpp",
     "*.tcc": "cpp",
-    "fstream": "cpp"
+    "fstream": "cpp",
+    "*.ipp": "cpp"
   },
   "cmake.configureOnOpen": true
 }

@@ -1,7 +1,8 @@
-#include "slam/slam_util.h"
+#include "localization/localization_util.h"
 
 #include <math.h>
 
+#include <fstream>
 #include <limits>
 
 namespace {
@@ -114,4 +115,39 @@ std::ostream& operator<<(std::ostream& os, const Rect& rect) {
   os << "{" << rect.x << "," << rect.y << "," << rect.width << ","
      << rect.height << "}";
   return os;
+}
+
+CameraModel::CameraModel(int width, int height, std::string_view lut_file)
+    : width_(width), height_(height) {
+  camera_lut_.resize(width_ * height_ * 2);
+  std::ifstream f("../data/calib/camera_lut.bin",
+                  std::ios::in | std::ios::binary);
+  if (!f.good()) throw std::runtime_error("error opening lut");
+  f.read(reinterpret_cast<char*>(camera_lut_.data()), width_ * height_ * 2 * 4);
+  if (!f) throw std::runtime_error("error while reading lut");
+  f.close();
+}
+
+LightFinder::LightFinder(const CameraModel& camera_model, int width, int height,
+                         float ceiling_height, uint8_t pix_thres, int min_area,
+                         std::string_view ceil_mask_file)
+    : width_(width),
+      height_(height),
+      ceiling_height_(ceiling_height),
+      pix_thres_(pix_thres),
+      min_area_(min_area),
+      camera_model_(camera_model) {
+  ceil_mask_.resize(width_ * height_);
+
+  std::ifstream f("../data/calib/ceil_mask.bin",
+                  std::ios::in | std::ios::binary);
+  if (!f.good()) throw std::runtime_error("error opening ceil_mask");
+  f.read(reinterpret_cast<char*>(ceil_mask_.data()), width_ * height_);
+  if (!f) throw std::runtime_error("error while reading lut");
+  f.close();
+}
+
+std::vector<LightFinder::Light> LightFinder::Find(uint8_t* img) {
+  auto rects = FindRect(width_, height_, img, pix_thres_, min_area_);
+  return {};
 }
