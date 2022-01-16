@@ -6,6 +6,9 @@ add_library(localization_util localization_util.cc)
 add_executable(slam slam.cc)
 target_link_libraries(slam ros_compat localization_util sqlite3 core types_slam2d spdlog)
 
+add_executable(pf_main pf_main.cc)
+target_link_libraries(pf_main pf ros_compat localization_util sqlite3 spdlog)
+
 enable_testing()
 
 add_executable(localization_util_test localization_util_test.cc)
