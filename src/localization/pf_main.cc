@@ -167,7 +167,7 @@ void Localizer::InitViz() {
 }
 
 void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
-  spdlog::info("vid frame t:{}", t_us);
+  spdlog::info("vid frame t:{}. motions: {}", t_us, motions_.size());
 
   // only extract the Y component
   std::vector<uint8_t> img_copy(img.begin(),
