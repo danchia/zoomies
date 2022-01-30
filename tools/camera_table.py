@@ -48,5 +48,5 @@ floor_mask[(pts[:, 2] < 0) & (np.sum(
     pts_cam**2, axis=1) < 100) & (np.sum(lut**2, axis=1) < 10**2)] = 255
 
 f = open('../data/calib/floor_mask.bin', 'wb')
-f.write(ceil_mask.reshape(480*640).tobytes())
+f.write(floor_mask.reshape(480*640).tobytes())
 f.close()
