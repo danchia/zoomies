@@ -6,6 +6,7 @@
 #include <optional>
 #include <string_view>
 
+#include "common/color.h"
 #include "localization/localization_util.h"
 #include "localization/pf.h"
 #include "ros/ros_types.h"
@@ -22,6 +23,7 @@ constexpr int kImageWidth = 640;
 constexpr int kImageHeight = 480;
 constexpr float kCeilHeight = 2.5f;
 constexpr int kNumParticles = 300;
+constexpr float kCameraHeight = 0.095f;
 
 void sCheck(int rc, std::string_view msg, sqlite3* db) {
   if (rc) {
@@ -117,6 +119,96 @@ class DataIter {
   Row row_;
 };
 
+class MapMaker {
+ public:
+  MapMaker(const CameraModel& camera_model, const std::string& floor_mask_file,
+           int cam_width, int cam_height, float resolution, float min_x,
+           float min_y, float max_x, float max_y)
+      : camera_model_(camera_model),
+        cam_height_(cam_height),
+        cam_width_(cam_width),
+        resolution_(resolution),
+        min_x_(min_x),
+        min_y_(min_y),
+        max_x_(max_x),
+        max_y_(max_y),
+        map_width_((max_x - min_x) / resolution + 1),
+        map_height_((max_y - min_y) / resolution + 1),
+        map_(map_width_ * map_height_ * 3) {
+    floor_mask_.resize(cam_width_ * cam_height_);
+
+    std::ifstream f(floor_mask_file, std::ios::in | std::ios::binary);
+    if (!f.good()) throw std::runtime_error("error opening floor_mask");
+    f.read(reinterpret_cast<char*>(floor_mask_.data()),
+           cam_width_ * cam_height_);
+    if (!f) throw std::runtime_error("error while reading lut");
+    f.close();
+  }
+
+  void Update(const Eigen::Vector3f& pose, const std::vector<uint8_t> img) {
+    Eigen::Transform t =
+        Eigen::Translation2f(pose.x(), pose.y()) * Eigen::Rotation2D(pose.z());
+
+    for (int v = 0; v < cam_height_; ++v) {
+      for (int u = 0; u < cam_width_; ++u) {
+        if (floor_mask_[v * kImageWidth + u] == 0) continue;
+
+        int img_idx = (v * kImageWidth + u) * 3;
+        uint8_t ir = img[img_idx];
+        uint8_t ig = img[img_idx + 1];
+        uint8_t ib = img[img_idx + 2];
+
+        Eigen::Vector2f floor_pos = camera_model_.Lookup(u, v) * kCameraHeight;
+        floor_pos = t * floor_pos;
+        int idx = index(floor_pos.x(), floor_pos.y());
+        auto& r = map_[idx];
+        auto& g = map_[idx + 1];
+        auto& b = map_[idx + 2];
+
+        if (r == 0 && g == 0 && b == 0) {
+          r = ir;
+          g = ig;
+          b = ib;
+          continue;
+        }
+
+        r = 0.9 * ir + 0.1 * r;
+        g = 0.9 * ig + 0.1 * g;
+        b = 0.9 * ib + 0.1 * b;
+      }
+    }
+  }
+
+  int height() { return map_height_; }
+  int width() { return map_width_; }
+  const std::vector<uint8_t>& map() { return map_; }
+
+ private:
+  int index(float x, float y) const {
+    x = std::clamp(x, min_x_, max_x_ - 1e-6f);
+    y = std::clamp(y, min_y_, max_y_ - 1e-6f);
+    int ix = (x - min_x_) / resolution_;
+    // Flip y since images have y down, but world coord is y up.
+    int iy = map_height_ - ((y - min_y_) / resolution_) - 1;
+    return (iy * map_width_ + ix) * 3;
+  }
+
+  const CameraModel& camera_model_;
+  std::vector<uint8_t> floor_mask_;
+  int cam_width_;
+  int cam_height_;
+
+  float resolution_;
+  float min_x_;
+  float min_y_;
+  float max_x_;
+  float max_y_;
+  int map_width_;
+  int map_height_;
+
+  std::vector<uint8_t> map_;
+};
+
 class Localizer {
  public:
   Localizer();
@@ -130,12 +222,17 @@ class Localizer {
   CameraModel camera_model_;
   LightFinder light_finder_;
   ParticleFilter pf_;
+  MapMaker map_maker_;
 
   std::vector<ParticleFilter::Motion> motions_;
+
+  int64_t last_floormap_us_ = 0;
 
   // Viz
   std::optional<RosWriter> ros_writer_;
   int img_topic_;
+  int img_rgb_topic_;
+  int floor_map_topic_;
   int landmark_img_overlay_topic_;
   int pf_topic_;
   int map_topic_;
@@ -146,7 +243,9 @@ Localizer::Localizer()
     : camera_model_(kImageWidth, kImageHeight, "../data/calib/camera_lut.bin"),
       light_finder_(camera_model_, kImageWidth, kImageHeight, kCeilHeight, 220,
                     300, "../data/calib/ceil_mask.bin"),
-      pf_(kNumParticles, "../data/map/map.txt") {
+      pf_(kNumParticles, "../data/map/map.txt"),
+      map_maker_(camera_model_, "../data/calib/floor_mask.bin", kImageWidth,
+                 kImageHeight, 0.02f, -10.0f, -10.0f, 10.0f, 10.0f) {
   InitViz();
 
   pf_.SeedLocation({-0.3f, -0.3f, -0.4f}, {0.3f, 0.3f, 0.4f});
@@ -156,6 +255,8 @@ void Localizer::InitViz() {
   ros_writer_.emplace("/tmp/pfviz");
   img_topic_ =
       ros_writer_->AddConnection("/camera1/image", "sensor_msgs/msg/Image");
+  img_rgb_topic_ =
+      ros_writer_->AddConnection("/camera1/rgb_image", "sensor_msgs/msg/Image");
   pf_topic_ = ros_writer_->AddConnection("/localization/pf_cloud",
                                          "sensor_msgs/msg/PointCloud2");
   landmark_img_overlay_topic_ = ros_writer_->AddConnection(
@@ -164,6 +265,8 @@ void Localizer::InitViz() {
                                           "sensor_msgs/msg/PointCloud2");
   landmark_detected_topic_ = ros_writer_->AddConnection(
       "/landmarks/detected", "sensor_msgs/msg/PointCloud2");
+  floor_map_topic_ =
+      ros_writer_->AddConnection("/floormap", "sensor_msgs/msg/Image");
 }
 
 void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
@@ -173,6 +276,9 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
   std::vector<uint8_t> img_copy(img.begin(),
                                 img.begin() + (kImageWidth * kImageHeight));
   auto lights = light_finder_.Find(img_copy.data());
+
+  std::vector<uint8_t> rgb_img(kImageWidth * kImageHeight * 3);
+  YUV420ToRGB(kImageWidth, kImageHeight, img.data(), rgb_img.data());
 
   std::vector<ParticleFilter::Landmark> landmarks;
   landmarks.reserve(lights.size());
@@ -187,6 +293,8 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
   spdlog::info("PF loc: {} {} {}, var: {} {} {}", pf_result.pose.x(),
                pf_result.pose.y(), pf_result.pose.z(), pf_result.variance.x(),
                pf_result.variance.y(), pf_result.variance.z());
+
+  map_maker_.Update(pf_result.pose, rgb_img);
 
   // Update visuals
   auto [particles_r, weights] = pf_.pose_particles();
@@ -203,16 +311,45 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
         expf(weights[i] - max_w),
     });
   }
-  sensor_msgs__Image ros_img;
-  ros_img.header().stamp() = MicrosToRos(t_us);
-  ros_img.header().frame_id("/camera-frame");
-  ros_img.height(kImageHeight);
-  ros_img.width(kImageWidth);
-  ros_img.encoding("mono8");
-  ros_img.is_bigendian(false);
-  ros_img.step(kImageWidth);
-  ros_img.data(img);
-  ros_writer_->Write(img_topic_, t_us, ros_img);
+  {
+    sensor_msgs__Image ros_img;
+    ros_img.header().stamp() = MicrosToRos(t_us);
+    ros_img.header().frame_id("/camera-frame");
+    ros_img.height(kImageHeight);
+    ros_img.width(kImageWidth);
+    ros_img.encoding("mono8");
+    ros_img.is_bigendian(false);
+    ros_img.step(kImageWidth);
+    ros_img.data(img);
+    ros_writer_->Write(img_topic_, t_us, ros_img);
+  }
+  {
+    sensor_msgs__Image ros_img;
+    ros_img.header().stamp() = MicrosToRos(t_us);
+    ros_img.header().frame_id("/camera-frame");
+    ros_img.height(kImageHeight);
+    ros_img.width(kImageWidth);
+    ros_img.encoding("rgb8");
+    ros_img.is_bigendian(false);
+    ros_img.step(kImageWidth * 3);
+    ros_img.data(rgb_img);
+    ros_writer_->Write(img_rgb_topic_, t_us, ros_img);
+  }
+
+  if (t_us > last_floormap_us_ + 100000) {
+    last_floormap_us_ = t_us;
+
+    sensor_msgs__Image ros_img;
+    ros_img.header().stamp() = MicrosToRos(t_us);
+    ros_img.header().frame_id("/world");
+    ros_img.height(map_maker_.height());
+    ros_img.width(map_maker_.width());
+    ros_img.encoding("rgb8");
+    ros_img.is_bigendian(false);
+    ros_img.step(map_maker_.width() * 3);
+    ros_img.data(map_maker_.map());
+    ros_writer_->Write(floor_map_topic_, t_us, ros_img);
+  }
 
   {
     sensor_msgs__PointCloud2 pt_cloud;
