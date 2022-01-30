@@ -66,6 +66,10 @@ int main() {
       continue;
     }
     auto js_state = js.Poll();
+    if (js_state.y_btn) {
+      spdlog::warn("Detected e-stop.\n");
+      break;
+    }
 
     auto control_out = driver.OnControlTick(now, reading, js_state);
 

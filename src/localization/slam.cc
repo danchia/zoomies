@@ -14,22 +14,22 @@
 #include "g2o/types/slam2d/edge_se2_pointxy.h"
 #include "g2o/types/slam2d/vertex_point_xy.h"
 #include "g2o/types/slam2d/vertex_se2.h"
+#include "localization/localization_util.h"
 #include "ros/ros_types.h"
 #include "ros/ros_util.h"
 #include "ros/ros_writer.h"
-#include "slam_util.h"
 #include "spdlog/cfg/env.h"
 #include "spdlog/fmt/ostr.h"
 #include "spdlog/spdlog.h"
 #include "sqlite/sqlite3.h"
+
+namespace {
 
 constexpr float kCeilHeight = 2.5f;
 constexpr float kLightAssocDist = 0.5f;
 constexpr int kImageWidth = 640;
 constexpr int kImageHeight = 480;
 constexpr int kImageNoisePixels = 10;
-
-namespace {
 
 void sCheck(int rc, std::string_view msg, sqlite3* db) {
   if (rc) {
@@ -144,23 +144,21 @@ class SLAM {
   };
 
   Eigen::Vector2f camera_lookup(int u, int v) {
-    int idx = u + v * kImageWidth;
-    return Eigen::Vector2f{camera_lut_[idx][0], camera_lut_[idx][1]} *
-           kCeilHeight;
+    return camera_model_.Lookup(u, v) * kCeilHeight;
   }
 
   void InitViz();
 
   void AddObservation(int pose_id, int landmark_id, Eigen::Vector2f measure,
-                      int u, int v);
+                      float variance);
   int next_id() { return next_id_++; }
 
   float x_ = 0.0f;
   float y_ = 0.0f;
   float heading_ = 0.0f;
 
-  float camera_lut_[kImageWidth * kImageHeight][2];
-  uint8_t ceil_mask_[kImageWidth * kImageHeight];
+  CameraModel camera_model_;
+  LightFinder light_finder_;
 
   std::vector<Landmark> landmarks_;
   std::vector<Landmark> landmark_candidates_;
@@ -231,44 +229,28 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
     last_pose_id_ = pose_id;
   }
 
+  auto cam_to_world_rot = Eigen::Rotation2Df(heading_);
   // only extract the Y component
   std::vector<uint8_t> img_copy(img.begin(),
                                 img.begin() + (kImageWidth * kImageHeight));
-  {
-    int size = img_copy.size();
-    for (int i = 0; i < size; ++i) {
-      img_copy[i] &= ceil_mask_[i];
-    }
-  }
 
-  auto cam_to_world_rot = Eigen::Rotation2Df(heading_);
-
+  std::vector<Eigen::Vector2f> thresholded_positions_xy;
+  auto lights = light_finder_.Find(img_copy.data(), &thresholded_positions_xy);
   std::vector<Eigen::Vector3f> thresholded_positions;
-  for (int v = 0; v < kImageHeight; ++v) {
-    for (int u = 0; u < kImageWidth; ++u) {
-      if (img_copy[v * kImageWidth + u] > 220) {
-        Eigen::Vector2f pos_cam = camera_lookup(u, v);
-        Eigen::Vector2f pos_world =
-            cam_to_world_rot * pos_cam + Eigen::Vector2f{x_, y_};
-        thresholded_positions.push_back(
-            {pos_world.x(), pos_world.y(), kCeilHeight});
-      }
-    }
-  }
 
-  auto rects = FindRect(kImageWidth, kImageHeight, img_copy.data(), 220, 300);
+  for (const auto& pos : thresholded_positions_xy) {
+    Eigen::Vector2f p = cam_to_world_rot * pos + Eigen::Vector2f{x_, y_};
+    thresholded_positions.push_back({p.x(), p.y(), kCeilHeight});
+  }
 
   std::vector<Eigen::Vector2i> landmark_overlay;
   std::vector<Eigen::Vector3f> light_positions;
 
-  for (const auto& rect : rects) {
-    int u = rect.x + rect.width / 2;
-    int v = rect.y + rect.height / 2;
-    Eigen::Vector2f pos_cam = camera_lookup(u, v);
+  for (const auto& light : lights) {
     Eigen::Vector2f pos_world =
-        cam_to_world_rot * pos_cam + Eigen::Vector2f{x_, y_};
+        cam_to_world_rot * light.pos + Eigen::Vector2f{x_, y_};
 
-    landmark_overlay.push_back(Eigen::Vector2i{u, v});
+    landmark_overlay.push_back(Eigen::Vector2i{light.u, light.v});
 
     light_positions.push_back({pos_world.x(), pos_world.y(), kCeilHeight});
 
@@ -287,12 +269,9 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
         landmark_idx = i;
       }
     }
-    spdlog::trace("best landmark fit {}. my pos {} {} {} {}", best_dist, u, v,
-                  pos_world.x(), pos_world.y());
     if (landmark_idx != -1) {
-      // spdlog::info("  their pos {} {}", landmarks_[landmark_idx].pos.x(),
-      //              landmarks_[landmark_idx].pos.y());
-      AddObservation(pose_id, landmarks_[landmark_idx].id, pos_cam, u, v);
+      AddObservation(pose_id, landmarks_[landmark_idx].id, light.pos,
+                     light.pos_variance);
       continue;
     }
 
@@ -315,7 +294,7 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
       landmark_v->setId(id);
       landmark_v->setEstimate({lm.pos.x(), lm.pos.y()});
       optimizer_.addVertex(landmark_v);
-      AddObservation(pose_id, id, pos_cam, u, v);
+      AddObservation(pose_id, id, light.pos, light.pos_variance);
 
       landmarks_.push_back(lm);
       landmark_candidates_.erase(landmark_candidates_.begin() + landmark_idx);
@@ -422,7 +401,8 @@ void SLAM::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
   std::vector<Eigen::Vector3f> landmarks;
   for (const auto& lm : landmarks_) {
     auto* l = static_cast<g2o::VertexPointXY*>(optimizer_.vertex(lm.id));
-    landmarks.push_back({l->estimate().x(), l->estimate().y(), kCeilHeight});
+    landmarks.push_back({static_cast<float>(l->estimate().x()),
+                         static_cast<float>(l->estimate().y()), kCeilHeight});
   }
   pt_cloud.width(landmarks.size());
   nbytes = 12 * landmarks.size();
@@ -471,26 +451,11 @@ void SLAM::OdoFrame(int64_t t_us, float odo_dist_delta, float odo_heading_delta,
   // covariance?
 }
 
-SLAM::SLAM() {
+SLAM::SLAM()
+    : camera_model_(kImageWidth, kImageHeight, "../data/calib/camera_lut.bin"),
+      light_finder_(camera_model_, kImageWidth, kImageHeight, kCeilHeight, 220,
+                    300, "../data/calib/ceil_mask.bin") {
   InitViz();
-  {
-    std::ifstream f("../data/calib/camera_lut.bin",
-                    std::ios::in | std::ios::binary);
-    if (!f.good()) throw std::runtime_error("error opening lut");
-    f.read(reinterpret_cast<char*>(camera_lut_),
-           kImageWidth * kImageHeight * 2 * 4);
-    if (!f) throw std::runtime_error("error while reading lut");
-    f.close();
-  }
-
-  {
-    std::ifstream f("../data/calib/ceil_mask.bin",
-                    std::ios::in | std::ios::binary);
-    if (!f.good()) throw std::runtime_error("error opening ceil_mask");
-    f.read(reinterpret_cast<char*>(ceil_mask_), kImageWidth * kImageHeight);
-    if (!f) throw std::runtime_error("error while reading lut");
-    f.close();
-  }
 
   using SlamBlockSolver = g2o::BlockSolver<g2o::BlockSolverTraits<-1, 1>>;
   using SlamLinearSolver =
@@ -516,31 +481,14 @@ SLAM::SLAM() {
 }
 
 void SLAM::AddObservation(int pose_id, int landmark_id, Eigen::Vector2f measure,
-                          int u, int v) {
+                          float variance) {
   auto* e = new g2o::EdgeSE2PointXY();
   e->vertices()[0] = optimizer_.vertex(pose_id);
   e->vertices()[1] = optimizer_.vertex(landmark_id);
   e->setMeasurement({measure.x(), measure.y()});
-  float d = 0.1f;
-  auto center = camera_lookup(u, v);
-  for (int u_p = -kImageNoisePixels; u_p <= kImageNoisePixels;
-       u_p += kImageNoisePixels) {
-    for (int v_p = -kImageNoisePixels; v_p <= kImageNoisePixels;
-         v_p += kImageNoisePixels) {
-      if (u_p == 0 && v_p == 0) continue;
-      int nu = std::clamp(u + u_p, 0, kImageWidth - 1);
-      int nv = std::clamp(v + v_p, 0, kImageHeight - 1);
-      auto pt = camera_lookup(nu, nv);
-      float d_cand = (pt - center).norm();
-      if (d_cand > d) d = d_cand;
-    }
-  }
-  Eigen::Matrix2d cov = (d * d) * Eigen::Matrix2d::Identity();
+  Eigen::Matrix2d cov = variance * Eigen::Matrix2d::Identity();
   e->setInformation(cov.inverse());
   optimizer_.addEdge(e);
-
-  spdlog::trace("added observation u,v {},{} measure: {} {} stddev: {}", u, v,
-                measure.x(), measure.y(), d);
 }
 
 SLAM::Result SLAM::Finish() {
