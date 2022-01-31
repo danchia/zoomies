@@ -33,11 +33,10 @@ ParticleFilter::UpdateResult ParticleFilter::Update(
   for (int i = 0; i < states_.size(); ++i) {
     const auto& state = states_[i];
     float log_p = 0.0f;
-    // Eigen::Transform t = Eigen::Translation2f(state.x(), state.y()) *
-    //                      Eigen::Rotation2D(state.z());
+    Eigen::Transform t = Eigen::Translation2f(state.x(), state.y()) *
+                         Eigen::Rotation2D(state.z());
     for (const auto& lm : landmarks) {
-      Eigen::Vector2f world_pos = Eigen::Rotation2D(state.z()) * lm.pos +
-                                  Eigen::Vector2f{state.x(), state.y()};
+      Eigen::Vector2f world_pos = t * lm.pos;
       float dist = 1e10;
       for (const auto& real_light : map_) {
         float c_dist = (real_light - world_pos).squaredNorm();

@@ -133,7 +133,7 @@ CameraModel::CameraModel(int width, int height, std::string_view lut_file)
 
 LightFinder::LightFinder(const CameraModel& camera_model, int width, int height,
                          float ceiling_height, uint8_t pix_thres, int min_area,
-                         std::string_view ceil_mask_file)
+                         const std::string& ceil_mask_file)
     : width_(width),
       height_(height),
       ceiling_height_(ceiling_height),
@@ -142,8 +142,7 @@ LightFinder::LightFinder(const CameraModel& camera_model, int width, int height,
       camera_model_(camera_model) {
   ceil_mask_.resize(width_ * height_);
 
-  std::ifstream f("../data/calib/ceil_mask.bin",
-                  std::ios::in | std::ios::binary);
+  std::ifstream f(ceil_mask_file, std::ios::in | std::ios::binary);
   if (!f.good()) throw std::runtime_error("error opening ceil_mask");
   f.read(reinterpret_cast<char*>(ceil_mask_.data()), width_ * height_);
   if (!f) throw std::runtime_error("error while reading lut");

@@ -49,7 +49,7 @@ class LightFinder {
   };
   LightFinder(const CameraModel& camera_model, int width, int height,
               float ceiling_height, uint8_t pix_thres, int min_area,
-              std::string_view ceil_mask_file);
+              const std::string& ceil_mask_file);
 
   // NOTE: modifies img.
   std::vector<Light> Find(
