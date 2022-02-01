@@ -134,7 +134,8 @@ class MapMaker {
         max_y_(max_y),
         map_width_((max_x - min_x) / resolution + 1),
         map_height_((max_y - min_y) / resolution + 1),
-        map_(map_width_ * map_height_ * 3) {
+        map_(map_width_ * map_height_ * 3),
+        dist_(map_width_ * map_height_, 100.0f) {
     floor_mask_.resize(cam_width_ * cam_height_);
 
     std::ifstream f(floor_mask_file, std::ios::in | std::ios::binary);
@@ -159,6 +160,7 @@ class MapMaker {
         uint8_t ib = img[img_idx + 2];
 
         Eigen::Vector2f floor_pos = camera_model_.Lookup(u, v) * kCameraHeight;
+        float nd = floor_pos.norm();
         floor_pos = t * floor_pos;
         int idx = index(floor_pos.x(), floor_pos.y());
         auto& r = map_[idx];
@@ -172,9 +174,12 @@ class MapMaker {
           continue;
         }
 
-        r = 0.9 * ir + 0.1 * r;
-        g = 0.9 * ig + 0.1 * g;
-        b = 0.9 * ib + 0.1 * b;
+        float& dist = dist_[idx / 3];
+        float od = dist;
+        r = (od * ir + nd * r) / (od + nd);
+        g = (od * ig + nd * g) / (od + nd);
+        b = (od * ib + nd * b) / (od + nd);
+        dist = (2 * od * nd) / (od + nd);
       }
     }
   }
@@ -207,6 +212,7 @@ class MapMaker {
   int map_height_;
 
   std::vector<uint8_t> map_;
+  std::vector<float> dist_;
 };
 
 class Localizer {
