@@ -9,8 +9,9 @@
 #include "spdlog/spdlog.h"
 
 namespace {
+const float kMaxLightDist = 1.2f;
 const float kNoDetectionProb = logf(0.1f);
-}
+}  // namespace
 
 ParticleFilter::UpdateResult ParticleFilter::Update(
     const std::vector<Motion>& motion, const std::vector<Landmark>& landmarks) {
@@ -43,8 +44,11 @@ ParticleFilter::UpdateResult ParticleFilter::Update(
         if (c_dist < dist) dist = c_dist;
       }
       dist = sqrtf(dist);
-      log_p +=
-          std::max(kNoDetectionProb, logf(stats::dnorm(dist, 0.0f, lm.stddev)));
+      if (dist >= kMaxLightDist) {
+        log_p += kNoDetectionProb;
+      } else {
+        log_p += stats::dnorm(dist, 0.0f, lm.stddev, /*log_form=*/true);
+      }
     }
     weights_[i] = log_p;
   }

@@ -336,7 +336,7 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
     ros_writer_->Write(img_rgb_topic_, t_us, ros_img);
   }
 
-  if (t_us > last_floormap_us_ + 100000) {
+  if (t_us > last_floormap_us_ + 500000) {
     last_floormap_us_ = t_us;
 
     sensor_msgs__Image ros_img;
