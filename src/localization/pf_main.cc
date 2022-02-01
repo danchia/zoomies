@@ -471,14 +471,14 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
 
 void Localizer::OdoFrame(int64_t t_us, float odo_dist_delta,
                          float odo_heading_delta, float imu_rot_z) {
-  spdlog::debug("odo frame t:{} dist_d:{} heading_d:{}", t_us, odo_dist_delta,
-                odo_heading_delta);
+  spdlog::info("odo frame t:{} dist_d:{} heading_d:{}", t_us, odo_dist_delta,
+               odo_heading_delta);
 
   motions_.push_back({
       .delta_dist = odo_dist_delta,
       .delta_heading = odo_heading_delta,
       .stddev_dist = std::max(0.1f * odo_dist_delta, 0.03f * 0.01f),
-      .stddev_heading = std::max(0.2f * odo_heading_delta, 0.1f * 0.01f),
+      .stddev_heading = std::max(fabsf(0.3f * odo_heading_delta), 0.1f * 0.01f),
   });
 }
 
