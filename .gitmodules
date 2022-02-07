@@ -22,3 +22,6 @@
 [submodule "src/gcem"]
 	path = src/gcem
 	url = https://github.com/kthohr/gcem
+[submodule "src/mcap/mcap"]
+	path = src/mcap/mcap
+	url = https://github.com/foxglove/mcap.git

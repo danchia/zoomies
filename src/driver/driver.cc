@@ -12,7 +12,7 @@
 
 namespace {
 
-constexpr bool kManualDrive = false;
+constexpr bool kManualDrive = true;
 constexpr int64_t kLoopPeriodMicros = 10000;
 // pi * 62.7e-3 (wheel diameter) * 0.5 (belt ratio, 17t) * 25/90 / 3 =
 constexpr float kMetersPerTick = 0.00911934534f;

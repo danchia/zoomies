@@ -1,0 +1,7 @@
+[requires]
+lz4/1.9.3
+zstd/1.5.1
+protobuf/3.19.2
+
+[generators]
+cmake
