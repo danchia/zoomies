@@ -8,6 +8,7 @@
 #include "driver/datalogger.h"
 #include "hw/hw.h"
 #include "hw/js.h"
+#include "localization/localizer.h"
 #include "track/track.h"
 
 class Driver {
@@ -20,7 +21,7 @@ class Driver {
     float steer;
   };
 
-  Driver(Datalogger& datalogger, RacingPath& racing_path);
+  Driver(Datalogger& datalogger, RacingPath& racing_path, Localizer& localizer);
   ~Driver();
 
   ControlOutput OnControlTick(int64_t t_us, const HWSensorReading& reading,
@@ -56,6 +57,7 @@ class Driver {
   std::atomic<int64_t> ticks_;
   Datalogger& datalogger_;
   RacingPath& racing_path_;
+  Localizer& localizer_;
 
   HWSensorReading prev_reading_;
   State prev_state_;

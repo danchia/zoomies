@@ -12,6 +12,10 @@
 
 namespace {
 
+constexpr int kImageWidth = 640;
+constexpr int kImageHeight = 480;
+constexpr float kCeilHeight = 2.5f;
+
 constexpr float kSteerTrim = 0.0f;
 constexpr bool kSkipWaitJs = true;
 constexpr int64_t kLoopPeriodMicros = 10000;
@@ -23,7 +27,15 @@ int main() {
   HW hw;
   Datalogger datalogger("datalog");
   RacingPath racing_path("track.bin");
-  Driver driver(datalogger, racing_path);
+  Localizer localizer({
+      .img_width = kImageWidth,
+      .img_height = kImageHeight,
+      .ceil_height = kCeilHeight,
+      .camera_model_path = "camera_lut.bin",
+      .ceil_mask_path = "ceil_mask.bin",
+      .map_path = "map.txt",
+  });
+  Driver driver(datalogger, racing_path, localizer);
   JS js;
   Clock clock;
   Camera cam(640, 480, 30);

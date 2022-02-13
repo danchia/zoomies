@@ -1,5 +1,5 @@
-add_library(pf pf.cc)
-target_link_libraries(pf localization_util spdlog)
+add_library(localizer localizer.cc pf.cc)
+target_link_libraries(localizer localization_util spdlog)
 
 add_library(localization_util localization_util.cc)
 
@@ -7,7 +7,7 @@ add_executable(slam slam.cc)
 target_link_libraries(slam ros_compat localization_util sqlite3 core types_slam2d spdlog)
 
 add_executable(pf_main pf_main.cc)
-target_link_libraries(pf_main pf common ros_compat localization_util sqlite3 spdlog)
+target_link_libraries(pf_main localizer common ros_compat localization_util sqlite3 spdlog)
 
 enable_testing()
 

@@ -32,8 +32,11 @@ float MotorTickPeriodToMetersPerSecond(uint16_t p) {
 
 }  // namespace
 
-Driver::Driver(Datalogger& datalogger, RacingPath& racing_path)
-    : datalogger_(datalogger), racing_path_(racing_path) {
+Driver::Driver(Datalogger& datalogger, RacingPath& racing_path,
+               Localizer& localizer)
+    : datalogger_(datalogger),
+      racing_path_(racing_path),
+      localizer_(localizer) {
   assert(std::atomic_is_lock_free(&ticks_));
 
   ticks_.store(0, std::memory_order_relaxed);
@@ -49,6 +52,7 @@ void Driver::OnCameraTick(int64_t t_us, uint8_t* buf, int len) {
   if (kLogVideo) {
     datalogger_.LogVideoFrame(t_us, kVideoWidth, kVideoHeight, buf, len);
   }
+  localizer_.OnVideoFrame(t_us, buf);
 }
 
 Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
@@ -77,41 +81,25 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   state.total_distance = prev_state_.total_distance + state.dist_delta;
 
   float dt = (state.t_micros - prev_state_.t_micros) * 1e-6;
-  state.heading = prev_state_.heading + state.angular_vel * dt;
+  float heading_delta = state.angular_vel * dt;
+  state.heading = prev_state_.heading + (heading_delta / 2.0f);
   state.x = prev_state_.x + cos(state.heading) * state.fwd_vel * dt;
   state.y = prev_state_.y + sin(state.heading) * state.fwd_vel * dt;
+  state.heading += (heading_delta / 2.0f);
 
-  // longitudinal PID test prog
-  // constexpr float tspeed = 2.5f;
-  // if (loop_tick < 75) {
-  //   state.desired_fwd_vel_ = (tspeed * loop_tick) / 75;
-  // } else if (loop_tick < 150) {
-  //   state.desired_fwd_vel_ = tspeed;
-  // } else if (loop_tick < 225) {
-  //   state.desired_fwd_vel_ = tspeed - ((tspeed * (loop_tick - 150)) / 75);
-  // } else if (loop_tick < 400) {
-  //   state.desired_fwd_vel_ = 0.0f;
-  // } else {
-  //   return Done();
-  // }
+  float stddev_dist = std::max(0.1f * state.dist_delta, 0.03f * 0.01f);
+  float stddev_heading = std::max(fabsf(0.3f * heading_delta), 0.1f * 0.01f);
+  std::optional<Localizer::SyncResult> localizer_result =
+      localizer_.ControlSync(
+          t_us, Eigen::Vector3f{state.x, state.y, state.heading},
+          state.dist_delta, heading_delta, stddev_dist, stddev_heading);
 
-  // if (loop_tick < 15) {
-  //   state.desired_fwd_vel_ += 0.07f;
-  // } else if (loop_tick < 30) {
-  //   state.desired_fwd_vel_ = 1.05f;
-  // } else if (loop_tick < 70) {
-  //   state.desired_fwd_vel_ = 1.05f;
-  //   state.desired_angular_vel_ = 1.1f;
-  // } else if (loop_tick < 140) {
-  //   state.desired_fwd_vel_ = 1.05f;
-  //   state.desired_angular_vel_ = 1.5f;
-  // } else {
-  //   return Done();
-  // }
-
-  // if (loop_tick > 500) {
-  //   return Done();
-  // }
+  if (localizer_result.has_value()) {
+    state.x += localizer_result->correction.x();
+    state.y += localizer_result->correction.y();
+    state.heading += localizer_result->correction.z();
+  }
+  state.heading = normAngle(state.heading);
 
   if (kManualDrive) {
     state.desired_fwd_vel_ = js_state.accel > 0 ? js_state.accel * 1.5f : 0.0f;

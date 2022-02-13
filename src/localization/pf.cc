@@ -15,10 +15,6 @@ const float kNoDetectionProb = logf(0.1f);
 
 ParticleFilter::UpdateResult ParticleFilter::Update(
     const std::vector<Motion>& motion, const std::vector<Landmark>& landmarks) {
-  // TODO: our heading representation isn't canonicalized right now.
-  // If the robot rotates enough times around in one direction, we'll loose
-  // precision. Fixing is not simple though - we have to fix how we're averaging
-  // heading.
   for (const auto& m : motion) {
     for (auto& state : states_) {
       float dist_delta = stats::rnorm(m.delta_dist, m.stddev_dist, rand_gen_);
