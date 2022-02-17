@@ -34,8 +34,6 @@ include_directories(googletest/googlemock/include)
 add_subdirectory(googletest)
 
 add_subdirectory(sqlite)
-add_subdirectory(spdlog)
-include_directories(spdlog/include)
 
 set(LIBRARY_TYPE STATIC)
 add_subdirectory(userland)

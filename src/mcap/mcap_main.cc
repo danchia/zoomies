@@ -1,42 +1,52 @@
 #include <chrono>
+#include <cstring>
 #include <fstream>
+#include <iostream>
+#include <mcap/mcap.hpp>
 
-#include "mcap/mcap.hpp"
-
+// Returns the system time in nanoseconds. std::chrono is used here, but any
+// high resolution clock API (such as clock_gettime) can be used.
 mcap::Timestamp now() {
-  const auto timestamp = std::chrono::duration_cast<std::chrono::nanoseconds>(
-      std::chrono::system_clock::now().time_since_epoch());
-  return mcap::Timestamp(timestamp.count());
+  return mcap::Timestamp(
+      std::chrono::duration_cast<std::chrono::nanoseconds>(
+          std::chrono::system_clock::now().time_since_epoch())
+          .count());
 }
 
 int main() {
+  // Open an output file stream. Other output interfaces can be used as well,
+  // including providing your own mcap::IWritable implementation
+  std::ofstream out("output.mcap", std::ios::binary);
+
+  // Initialize an MCAP writer with the "ros1" profile and write the file header
   mcap::McapWriter writer;
+  writer.open(out, mcap::McapWriterOptions("ros1"));
 
-  auto options = mcap::McapWriterOptions("proto");
-  options.compression = mcap::Compression::Zstd;
+  // Register a Schema
+  mcap::Schema stdMsgsString("std_msgs/String", "ros1msg", "string data");
+  writer.addSchema(stdMsgsString);
 
-  std::ofstream out("/tmp/test.mcap", std::ios::binary);
-  writer.open(out, options);
+  // Register a Channel
+  mcap::Channel chatterPublisher("/chatter", "ros1", stdMsgsString.id);
+  writer.addChannel(chatterPublisher);
 
-  mcap::ChannelInfo topic("/chatter", "protobuf", "std_msgs/String",
-                          "string data");
-  writer.addChannel(topic);
+  // Create a message payload. This would typically be done by your own
+  // serialiation library. In this example, we manually create ROS1 binary data
+  std::array<std::byte, 4 + 13> payload;
+  const uint32_t length = 13;
+  std::memcpy(payload.data(), &length, 4);
+  std::memcpy(payload.data() + 4, "Hello, world!", 13);
 
+  // Write our message
   mcap::Message msg;
-  msg.channelId = topic.channelId;
-  msg.sequence = 0;
-  msg.publishTime = now();
-  msg.recordTime = msg.publishTime;
-  msg.dataSize = 0;
+  msg.channelId = chatterPublisher.id;
+  msg.sequence = 1;               // Optional
+  msg.logTime = now();            // Required nanosecond timestamp
+  msg.publishTime = msg.logTime;  // Set to logTime if not available
+  msg.data = payload.data();
+  msg.dataSize = payload.size();
+  writer.write(msg);
 
-  auto s = writer.write(msg);
-  if (!s.ok()) {
-    writer.terminate();
-    out.close();
-    std::remove("output.mcap");
-    return 1;
-  }
-
+  // Finish writing the file
   writer.close();
-  return 0;
 }
