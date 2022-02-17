@@ -39,6 +39,8 @@ set(LIBRARY_TYPE STATIC)
 add_subdirectory(userland)
 include_directories(userland)
 
+include_directories(proto/generated)
+add_subdirectory(proto)
 add_subdirectory(common)
 add_subdirectory(mcap)
 add_subdirectory(track)

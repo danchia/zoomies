@@ -25,3 +25,6 @@
 [submodule "src/mcap/mcap"]
 	path = src/mcap/mcap
 	url = https://github.com/foxglove/mcap.git
+[submodule "src/proto/ros-message-schemas"]
+	path = src/proto/ros-message-schemas
+	url = https://github.com/foxglove/ros-message-schemas

@@ -4,6 +4,9 @@
 #include <iostream>
 #include <mcap/mcap.hpp>
 
+#include "google/protobuf/descriptor.pb.h"
+#include "ros/std_msgs/String.pb.h"
+
 // Returns the system time in nanoseconds. std::chrono is used here, but any
 // high resolution clock API (such as clock_gettime) can be used.
 mcap::Timestamp now() {
@@ -13,29 +16,43 @@ mcap::Timestamp now() {
           .count());
 }
 
+void fdSetInternal(google::protobuf::FileDescriptorSet& fd_set,
+                   const google::protobuf::FileDescriptor* fd) {
+  for (int i = 0; i < fd->dependency_count(); ++i) {
+    fdSetInternal(fd_set, fd->dependency(i));
+  }
+  fd->CopyTo(fd_set.add_file());
+}
+
+std::string fdSet(const google::protobuf::Descriptor* d) {
+  std::string res;
+  google::protobuf::FileDescriptorSet fd_set;
+  fdSetInternal(fd_set, d->file());
+  return fd_set.SerializeAsString();
+}
+
 int main() {
   // Open an output file stream. Other output interfaces can be used as well,
   // including providing your own mcap::IWritable implementation
-  std::ofstream out("output.mcap", std::ios::binary);
+  std::ofstream out("/tmp/output.mcap", std::ios::binary);
 
   // Initialize an MCAP writer with the "ros1" profile and write the file header
   mcap::McapWriter writer;
-  writer.open(out, mcap::McapWriterOptions("ros1"));
+  writer.open(out, mcap::McapWriterOptions("protobuf"));
 
   // Register a Schema
-  mcap::Schema stdMsgsString("std_msgs/String", "ros1msg", "string data");
+  mcap::Schema stdMsgsString("ros.std_msgs.String", "proto",
+                             fdSet(ros::std_msgs::String::descriptor()));
   writer.addSchema(stdMsgsString);
 
   // Register a Channel
-  mcap::Channel chatterPublisher("/chatter", "ros1", stdMsgsString.id);
+  mcap::Channel chatterPublisher("/chatter", "protobuf", stdMsgsString.id);
   writer.addChannel(chatterPublisher);
 
-  // Create a message payload. This would typically be done by your own
-  // serialiation library. In this example, we manually create ROS1 binary data
-  std::array<std::byte, 4 + 13> payload;
-  const uint32_t length = 13;
-  std::memcpy(payload.data(), &length, 4);
-  std::memcpy(payload.data() + 4, "Hello, world!", 13);
+  ros::std_msgs::String s;
+  s.set_data("foo");
+
+  std::string payload = s.SerializeAsString();
 
   // Write our message
   mcap::Message msg;
@@ -43,7 +60,7 @@ int main() {
   msg.sequence = 1;               // Optional
   msg.logTime = now();            // Required nanosecond timestamp
   msg.publishTime = msg.logTime;  // Set to logTime if not available
-  msg.data = payload.data();
+  msg.data = reinterpret_cast<std::byte*>(payload.data());
   msg.dataSize = payload.size();
   writer.write(msg);
 
