@@ -153,6 +153,24 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   driver_log.set_angular_velocity(state.angular_vel);
   driver_log.set_desired_linear_velocity(state.desired_fwd_vel_);
   driver_log.set_desired_angular_velocity(state.desired_angular_vel_);
+  driver_log.set_heading(state.heading);
+  driver_log.set_x(state.x);
+  driver_log.set_y(state.y);
+  driver_log.set_total_distance(state.total_distance);
+  driver_log.set_racing_path_dist(state.racing_path_dist_);
+  driver_log.set_dist_delta(state.dist_delta);
+  driver_log.set_heading_delta(heading_delta);
+  driver_log.set_dist_stddev(stddev_dist);
+  driver_log.set_heading_stddev(stddev_heading);
+  driver_log.set_esc(esc);
+  driver_log.set_steer(steer);
+  driver_log.mutable_imu_accel()->set_x(reading.accel.x());
+  driver_log.mutable_imu_accel()->set_y(reading.accel.y());
+  driver_log.mutable_imu_accel()->set_z(reading.accel.z());
+  driver_log.mutable_imu_rotation()->set_x(reading.gyro.x());
+  driver_log.mutable_imu_rotation()->set_y(reading.gyro.y());
+  driver_log.mutable_imu_rotation()->set_z(reading.gyro.z());
+  datalogger_.LogDriverLog(t_us, driver_log);
 
   return ControlOutput{
       .done = false,

@@ -32,6 +32,8 @@ Datalogger::Datalogger(const std::string& path)
   racing_path_closet_pt_topic_ =
       writer_->AddChannel("/motion_planner/closest_point",
                           ros::visualization_msgs::ImageMarker::descriptor());
+  driver_log_topic_ =
+      writer_->AddChannel("/driver/state", zoomies::DriverLog::descriptor());
 }
 
 void Datalogger::LogVideoFrame(int64_t t_us, const ros::sensor_msgs::Image& m) {
@@ -41,6 +43,11 @@ void Datalogger::LogVideoFrame(int64_t t_us, const ros::sensor_msgs::Image& m) {
 
 void Datalogger::LogGlobalPose(int64_t t_us,
                                const ros::geometry_msgs::PoseStamped& m) {
+  std::lock_guard<std::mutex> l(mu_);
+  writer_->Write(global_pose_topic_, t_us, m);
+}
+
+void Datalogger::LogDriverLog(int64_t t_us, const zoomies::DriverLog& m) {
   std::lock_guard<std::mutex> l(mu_);
   writer_->Write(global_pose_topic_, t_us, m);
 }
