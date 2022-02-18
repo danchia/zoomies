@@ -8,7 +8,9 @@
 
 #include "common/clock.h"
 #include "hw/hw.h"
+#include "ros/geometry_msgs/PoseStamped.pb.h"
 #include "spdlog/spdlog.h"
+#include "zoomies/zoomies.pb.h"
 
 namespace {
 
@@ -23,7 +25,7 @@ constexpr float kFrontToRearLength = 0.265f;
 constexpr int kVideoWidth = 640;
 constexpr int kVideoHeight = 480;
 
-constexpr bool kLogVideo = false;
+constexpr bool kLogVideo = true;
 
 float MotorTickPeriodToMetersPerSecond(uint16_t p) {
   if (p == 0) return 0.0f;
@@ -50,7 +52,20 @@ void Driver::OnCameraTick(int64_t t_us, uint8_t* buf, int len) {
   if (loop_tick <= 0) return;
 
   if (kLogVideo) {
-    datalogger_.LogVideoFrame(t_us, kVideoWidth, kVideoHeight, buf, len);
+    img_msg_.Clear();
+    // A bit hacky, but we'll send the whole YUV420 image which technically
+    // isn't supported, but we'll advertise it as a smaller mono8 image.
+    // sensor_msgs__Image ros_img;
+    *img_msg_.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+    img_msg_.mutable_header()->set_frame_id("/camera");
+    img_msg_.set_height(kVideoHeight);
+    img_msg_.set_width(kVideoWidth);
+    img_msg_.set_encoding("mono8");
+    img_msg_.set_is_bigendian(false);
+    img_msg_.set_step(kVideoWidth);
+    img_msg_.mutable_data()->resize(len);
+    memcpy(img_msg_.mutable_data()->data(), buf, len);  // unfortunate copy
+    datalogger_.LogVideoFrame(t_us, img_msg_);
   }
   localizer_.OnVideoFrame(t_us, buf);
 }
@@ -87,8 +102,9 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   state.y = prev_state_.y + sin(state.heading) * state.fwd_vel * dt;
   state.heading += (heading_delta / 2.0f);
 
-  float stddev_dist = std::max(0.1f * state.dist_delta, 0.03f * 0.01f);
-  float stddev_heading = std::max(fabsf(0.3f * heading_delta), 0.1f * 0.01f);
+  const float stddev_dist = std::max(0.1f * state.dist_delta, 0.03f * 0.01f);
+  const float stddev_heading =
+      std::max(fabsf(0.3f * heading_delta), 0.1f * 0.01f);
   std::optional<Localizer::SyncResult> localizer_result =
       localizer_.ControlSync(
           t_us, Eigen::Vector3f{state.x, state.y, state.heading},
@@ -123,12 +139,20 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   prev_state_ = state;
 
   // Log all ze things...
-  datalogger_.LogIMU(t_us, reading.accel, reading.gyro);
-  datalogger_.LogDesiredTwist(t_us, state.desired_fwd_vel_,
-                              state.desired_angular_vel_);
-  datalogger_.LogActualTwist(t_us, state.fwd_vel, state.angular_vel);
-  datalogger_.LogEscSteer(t_us, esc, steer);
-  datalogger_.LogGlobalPose(t_us, state.x, state.y, state.heading);
+  ros::geometry_msgs::PoseStamped pose;
+  *pose.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+  pose.mutable_header()->set_frame_id("/map");
+  pose.mutable_pose()->mutable_position()->set_x(state.x);
+  pose.mutable_pose()->mutable_position()->set_y(state.y);
+  *pose.mutable_pose()->mutable_orientation() = HeadingToQuat(state.heading);
+  datalogger_.LogGlobalPose(t_us, pose);
+
+  zoomies::DriverLog driver_log;
+  driver_log.set_t_us(t_us);
+  driver_log.set_linear_velocity(state.fwd_vel);
+  driver_log.set_angular_velocity(state.angular_vel);
+  driver_log.set_desired_linear_velocity(state.desired_fwd_vel_);
+  driver_log.set_desired_angular_velocity(state.desired_angular_vel_);
 
   return ControlOutput{
       .done = false,

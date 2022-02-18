@@ -9,6 +9,7 @@
 #include "hw/hw.h"
 #include "hw/js.h"
 #include "localization/localizer.h"
+#include "ros/sensor_msgs/Image.pb.h"
 #include "track/track.h"
 
 class Driver {
@@ -58,6 +59,8 @@ class Driver {
   Datalogger& datalogger_;
   RacingPath& racing_path_;
   Localizer& localizer_;
+
+  ros::sensor_msgs::Image img_msg_;
 
   HWSensorReading prev_reading_;
   State prev_state_;

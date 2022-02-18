@@ -42,6 +42,8 @@ include_directories(userland)
 include_directories(proto/generated)
 add_subdirectory(proto)
 add_subdirectory(common)
+
+include_directories(mcap/mcap/cpp/mcap/include)
 add_subdirectory(mcap)
 add_subdirectory(track)
 add_subdirectory(ros)

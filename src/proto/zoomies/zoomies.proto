@@ -1,4 +1,33 @@
 syntax = "proto3";
 
+import "ros/geometry_msgs/Vector3.proto";
+
 package zoomies;
 
+message DriverLog {
+  fixed64 t_us = 1;
+  float linear_velocity = 2;
+  float angular_velocity = 3;
+
+  float desired_linear_velocity = 4;
+  float desired_angular_velocity = 5;
+
+  float heading = 6;
+  float x = 7;
+  float y = 8;
+
+  float total_distance = 9;
+  float racing_path_dist = 10;
+
+  float dist_delta = 11;
+  float heading_delta = 12;
+  float dist_stddev = 13;
+  float heading_stddev = 14;
+
+  float esc = 15;
+  float steer = 16;
+
+  // IMU
+  ros.geometry_msgs.Vector3 imu_accel = 17;
+  ros.geometry_msgs.Vector3 imu_rotation = 18;
+}

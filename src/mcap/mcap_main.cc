@@ -51,7 +51,7 @@ int main() {
 
   {
     // Register a Schema
-    mcap::Schema stdMsgsString("ros.std_msgs.String", "proto",
+    mcap::Schema stdMsgsString("ros.std_msgs.String", "protobuf",
                                fdSet(ros::std_msgs::String::descriptor()));
     writer.addSchema(stdMsgsString);
 
@@ -77,7 +77,7 @@ int main() {
 
   {
     // Register a Schema
-    mcap::Schema schema("ros.geometry_msgs.PointStamped", "proto",
+    mcap::Schema schema("ros.geometry_msgs.PointStamped", "protobuf",
                         fdSet(ros::geometry_msgs::PointStamped::descriptor()));
     writer.addSchema(schema);
 
