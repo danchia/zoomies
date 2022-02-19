@@ -7,7 +7,7 @@ add_executable(slam slam.cc)
 target_link_libraries(slam ros_compat localization_util sqlite3 core types_slam2d mcap CONAN_PKG::spdlog)
 
 add_executable(pf_main pf_main.cc)
-target_link_libraries(pf_main localizer common ros_compat localization_util sqlite3 CONAN_PKG::spdlog)
+target_link_libraries(pf_main localizer common ros_compat localization_util sqlite3 mcap CONAN_PKG::spdlog)
 
 enable_testing()
 
