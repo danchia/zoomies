@@ -7,9 +7,6 @@
 [submodule "src/googletest"]
 	path = src/googletest
 	url = https://github.com/google/googletest
-[submodule "src/spdlog"]
-	path = src/spdlog
-	url = https://github.com/gabime/spdlog
 [submodule "src/g2o"]
 	path = src/g2o
 	url = https://github.com/RainerKuemmerle/g2o.git
