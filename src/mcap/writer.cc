@@ -38,7 +38,7 @@ McapLogWriterImpl::McapLogWriterImpl(const std::string& path)
 namespace {
 
 void fdSetInternal(google::protobuf::FileDescriptorSet& fd_set,
-                   std::unordered_set<std::string> files,
+                   std::unordered_set<std::string>& files,
                    const google::protobuf::FileDescriptor* fd) {
   for (int i = 0; i < fd->dependency_count(); ++i) {
     const auto* dep = fd->dependency(i);
@@ -67,9 +67,10 @@ int McapLogWriterImpl::AddChannel(const std::string& topic,
   if (it != schema_ids_.end()) {
     schema_id = it->second;
   } else {
-    mcap::Schema schema("ros.std_msgs.String", "proto", fdSet(d));
+    mcap::Schema schema(msg_name, "protobuf", fdSet(d));
     mcap_.addSchema(schema);
     schema_ids_[msg_name] = schema.id;
+    schema_id = schema.id;
   }
 
   mcap::Channel chan(topic, "protobuf", schema_id);

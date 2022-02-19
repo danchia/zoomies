@@ -21,6 +21,8 @@ constexpr DriverLog::DriverLog(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : imu_accel_(nullptr)
   , imu_rotation_(nullptr)
+  , localizer_correction_(nullptr)
+  , localizer_variance_(nullptr)
   , t_us_(uint64_t{0u})
   , linear_velocity_(0)
   , angular_velocity_(0)
@@ -76,6 +78,8 @@ const uint32_t TableStruct_zoomies_2fzoomies_2eproto::offsets[] PROTOBUF_SECTION
   PROTOBUF_FIELD_OFFSET(::zoomies::DriverLog, steer_),
   PROTOBUF_FIELD_OFFSET(::zoomies::DriverLog, imu_accel_),
   PROTOBUF_FIELD_OFFSET(::zoomies::DriverLog, imu_rotation_),
+  PROTOBUF_FIELD_OFFSET(::zoomies::DriverLog, localizer_correction_),
+  PROTOBUF_FIELD_OFFSET(::zoomies::DriverLog, localizer_variance_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::zoomies::DriverLog)},
@@ -87,7 +91,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_zoomies_2fzoomies_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\025zoomies/zoomies.proto\022\007zoomies\032\037ros/ge"
-  "ometry_msgs/Vector3.proto\"\275\003\n\tDriverLog\022"
+  "ometry_msgs/Vector3.proto\"\257\004\n\tDriverLog\022"
   "\014\n\004t_us\030\001 \001(\006\022\027\n\017linear_velocity\030\002 \001(\002\022\030"
   "\n\020angular_velocity\030\003 \001(\002\022\037\n\027desired_line"
   "ar_velocity\030\004 \001(\002\022 \n\030desired_angular_vel"
@@ -98,15 +102,17 @@ const char descriptor_table_protodef_zoomies_2fzoomies_2eproto[] PROTOBUF_SECTIO
   " \001(\002\022\026\n\016heading_stddev\030\016 \001(\002\022\013\n\003esc\030\017 \001("
   "\002\022\r\n\005steer\030\020 \001(\002\022-\n\timu_accel\030\021 \001(\0132\032.ro"
   "s.geometry_msgs.Vector3\0220\n\014imu_rotation\030"
-  "\022 \001(\0132\032.ros.geometry_msgs.Vector3b\006proto"
-  "3"
+  "\022 \001(\0132\032.ros.geometry_msgs.Vector3\0228\n\024loc"
+  "alizer_correction\030\023 \001(\0132\032.ros.geometry_m"
+  "sgs.Vector3\0226\n\022localizer_variance\030\024 \001(\0132"
+  "\032.ros.geometry_msgs.Vector3b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_zoomies_2fzoomies_2eproto_deps[1] = {
   &::descriptor_table_ros_2fgeometry_5fmsgs_2fVector3_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_zoomies_2fzoomies_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_zoomies_2fzoomies_2eproto = {
-  false, false, 521, descriptor_table_protodef_zoomies_2fzoomies_2eproto, "zoomies/zoomies.proto", 
+  false, false, 635, descriptor_table_protodef_zoomies_2fzoomies_2eproto, "zoomies/zoomies.proto", 
   &descriptor_table_zoomies_2fzoomies_2eproto_once, descriptor_table_zoomies_2fzoomies_2eproto_deps, 1, 1,
   schemas, file_default_instances, TableStruct_zoomies_2fzoomies_2eproto::offsets,
   file_level_metadata_zoomies_2fzoomies_2eproto, file_level_enum_descriptors_zoomies_2fzoomies_2eproto, file_level_service_descriptors_zoomies_2fzoomies_2eproto,
@@ -125,6 +131,8 @@ class DriverLog::_Internal {
  public:
   static const ::ros::geometry_msgs::Vector3& imu_accel(const DriverLog* msg);
   static const ::ros::geometry_msgs::Vector3& imu_rotation(const DriverLog* msg);
+  static const ::ros::geometry_msgs::Vector3& localizer_correction(const DriverLog* msg);
+  static const ::ros::geometry_msgs::Vector3& localizer_variance(const DriverLog* msg);
 };
 
 const ::ros::geometry_msgs::Vector3&
@@ -134,6 +142,14 @@ DriverLog::_Internal::imu_accel(const DriverLog* msg) {
 const ::ros::geometry_msgs::Vector3&
 DriverLog::_Internal::imu_rotation(const DriverLog* msg) {
   return *msg->imu_rotation_;
+}
+const ::ros::geometry_msgs::Vector3&
+DriverLog::_Internal::localizer_correction(const DriverLog* msg) {
+  return *msg->localizer_correction_;
+}
+const ::ros::geometry_msgs::Vector3&
+DriverLog::_Internal::localizer_variance(const DriverLog* msg) {
+  return *msg->localizer_variance_;
 }
 void DriverLog::clear_imu_accel() {
   if (GetArenaForAllocation() == nullptr && imu_accel_ != nullptr) {
@@ -146,6 +162,18 @@ void DriverLog::clear_imu_rotation() {
     delete imu_rotation_;
   }
   imu_rotation_ = nullptr;
+}
+void DriverLog::clear_localizer_correction() {
+  if (GetArenaForAllocation() == nullptr && localizer_correction_ != nullptr) {
+    delete localizer_correction_;
+  }
+  localizer_correction_ = nullptr;
+}
+void DriverLog::clear_localizer_variance() {
+  if (GetArenaForAllocation() == nullptr && localizer_variance_ != nullptr) {
+    delete localizer_variance_;
+  }
+  localizer_variance_ = nullptr;
 }
 DriverLog::DriverLog(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
@@ -168,6 +196,16 @@ DriverLog::DriverLog(const DriverLog& from)
     imu_rotation_ = new ::ros::geometry_msgs::Vector3(*from.imu_rotation_);
   } else {
     imu_rotation_ = nullptr;
+  }
+  if (from._internal_has_localizer_correction()) {
+    localizer_correction_ = new ::ros::geometry_msgs::Vector3(*from.localizer_correction_);
+  } else {
+    localizer_correction_ = nullptr;
+  }
+  if (from._internal_has_localizer_variance()) {
+    localizer_variance_ = new ::ros::geometry_msgs::Vector3(*from.localizer_variance_);
+  } else {
+    localizer_variance_ = nullptr;
   }
   ::memcpy(&t_us_, &from.t_us_,
     static_cast<size_t>(reinterpret_cast<char*>(&steer_) -
@@ -193,6 +231,8 @@ inline void DriverLog::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete imu_accel_;
   if (this != internal_default_instance()) delete imu_rotation_;
+  if (this != internal_default_instance()) delete localizer_correction_;
+  if (this != internal_default_instance()) delete localizer_variance_;
 }
 
 void DriverLog::ArenaDtor(void* object) {
@@ -219,6 +259,14 @@ void DriverLog::Clear() {
     delete imu_rotation_;
   }
   imu_rotation_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && localizer_correction_ != nullptr) {
+    delete localizer_correction_;
+  }
+  localizer_correction_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && localizer_variance_ != nullptr) {
+    delete localizer_variance_;
+  }
+  localizer_variance_ = nullptr;
   ::memset(&t_us_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&steer_) -
       reinterpret_cast<char*>(&t_us_)) + sizeof(steer_));
@@ -371,6 +419,22 @@ const char* DriverLog::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
       case 18:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 146)) {
           ptr = ctx->ParseMessage(_internal_mutable_imu_rotation(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .ros.geometry_msgs.Vector3 localizer_correction = 19;
+      case 19:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 154)) {
+          ptr = ctx->ParseMessage(_internal_mutable_localizer_correction(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .ros.geometry_msgs.Vector3 localizer_variance = 20;
+      case 20:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 162)) {
+          ptr = ctx->ParseMessage(_internal_mutable_localizer_variance(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -576,6 +640,22 @@ uint8_t* DriverLog::_InternalSerialize(
         18, _Internal::imu_rotation(this), target, stream);
   }
 
+  // .ros.geometry_msgs.Vector3 localizer_correction = 19;
+  if (this->_internal_has_localizer_correction()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        19, _Internal::localizer_correction(this), target, stream);
+  }
+
+  // .ros.geometry_msgs.Vector3 localizer_variance = 20;
+  if (this->_internal_has_localizer_variance()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        20, _Internal::localizer_variance(this), target, stream);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -604,6 +684,20 @@ size_t DriverLog::ByteSizeLong() const {
     total_size += 2 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *imu_rotation_);
+  }
+
+  // .ros.geometry_msgs.Vector3 localizer_correction = 19;
+  if (this->_internal_has_localizer_correction()) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *localizer_correction_);
+  }
+
+  // .ros.geometry_msgs.Vector3 localizer_variance = 20;
+  if (this->_internal_has_localizer_variance()) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *localizer_variance_);
   }
 
   // fixed64 t_us = 1;
@@ -773,6 +867,12 @@ void DriverLog::MergeFrom(const DriverLog& from) {
   }
   if (from._internal_has_imu_rotation()) {
     _internal_mutable_imu_rotation()->::ros::geometry_msgs::Vector3::MergeFrom(from._internal_imu_rotation());
+  }
+  if (from._internal_has_localizer_correction()) {
+    _internal_mutable_localizer_correction()->::ros::geometry_msgs::Vector3::MergeFrom(from._internal_localizer_correction());
+  }
+  if (from._internal_has_localizer_variance()) {
+    _internal_mutable_localizer_variance()->::ros::geometry_msgs::Vector3::MergeFrom(from._internal_localizer_variance());
   }
   if (from._internal_t_us() != 0) {
     _internal_set_t_us(from._internal_t_us());

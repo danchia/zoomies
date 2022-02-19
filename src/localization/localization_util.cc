@@ -121,11 +121,10 @@ std::ostream& operator<<(std::ostream& os, const Rect& rect) {
   return os;
 }
 
-CameraModel::CameraModel(int width, int height, std::string_view lut_file)
+CameraModel::CameraModel(int width, int height, const std::string& lut_file)
     : width_(width), height_(height) {
   camera_lut_.resize(width_ * height_ * 2);
-  std::ifstream f("../data/calib/camera_lut.bin",
-                  std::ios::in | std::ios::binary);
+  std::ifstream f(lut_file, std::ios::in | std::ios::binary);
   if (!f.good()) throw std::runtime_error("error opening lut");
   f.read(reinterpret_cast<char*>(camera_lut_.data()), width_ * height_ * 2 * 4);
   if (!f) throw std::runtime_error("error while reading lut");

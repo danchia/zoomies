@@ -190,6 +190,8 @@ class DriverLog final :
   enum : int {
     kImuAccelFieldNumber = 17,
     kImuRotationFieldNumber = 18,
+    kLocalizerCorrectionFieldNumber = 19,
+    kLocalizerVarianceFieldNumber = 20,
     kTUsFieldNumber = 1,
     kLinearVelocityFieldNumber = 2,
     kAngularVelocityFieldNumber = 3,
@@ -242,6 +244,42 @@ class DriverLog final :
   void unsafe_arena_set_allocated_imu_rotation(
       ::ros::geometry_msgs::Vector3* imu_rotation);
   ::ros::geometry_msgs::Vector3* unsafe_arena_release_imu_rotation();
+
+  // .ros.geometry_msgs.Vector3 localizer_correction = 19;
+  bool has_localizer_correction() const;
+  private:
+  bool _internal_has_localizer_correction() const;
+  public:
+  void clear_localizer_correction();
+  const ::ros::geometry_msgs::Vector3& localizer_correction() const;
+  PROTOBUF_NODISCARD ::ros::geometry_msgs::Vector3* release_localizer_correction();
+  ::ros::geometry_msgs::Vector3* mutable_localizer_correction();
+  void set_allocated_localizer_correction(::ros::geometry_msgs::Vector3* localizer_correction);
+  private:
+  const ::ros::geometry_msgs::Vector3& _internal_localizer_correction() const;
+  ::ros::geometry_msgs::Vector3* _internal_mutable_localizer_correction();
+  public:
+  void unsafe_arena_set_allocated_localizer_correction(
+      ::ros::geometry_msgs::Vector3* localizer_correction);
+  ::ros::geometry_msgs::Vector3* unsafe_arena_release_localizer_correction();
+
+  // .ros.geometry_msgs.Vector3 localizer_variance = 20;
+  bool has_localizer_variance() const;
+  private:
+  bool _internal_has_localizer_variance() const;
+  public:
+  void clear_localizer_variance();
+  const ::ros::geometry_msgs::Vector3& localizer_variance() const;
+  PROTOBUF_NODISCARD ::ros::geometry_msgs::Vector3* release_localizer_variance();
+  ::ros::geometry_msgs::Vector3* mutable_localizer_variance();
+  void set_allocated_localizer_variance(::ros::geometry_msgs::Vector3* localizer_variance);
+  private:
+  const ::ros::geometry_msgs::Vector3& _internal_localizer_variance() const;
+  ::ros::geometry_msgs::Vector3* _internal_mutable_localizer_variance();
+  public:
+  void unsafe_arena_set_allocated_localizer_variance(
+      ::ros::geometry_msgs::Vector3* localizer_variance);
+  ::ros::geometry_msgs::Vector3* unsafe_arena_release_localizer_variance();
 
   // fixed64 t_us = 1;
   void clear_t_us();
@@ -396,6 +434,8 @@ class DriverLog final :
   typedef void DestructorSkippable_;
   ::ros::geometry_msgs::Vector3* imu_accel_;
   ::ros::geometry_msgs::Vector3* imu_rotation_;
+  ::ros::geometry_msgs::Vector3* localizer_correction_;
+  ::ros::geometry_msgs::Vector3* localizer_variance_;
   uint64_t t_us_;
   float linear_velocity_;
   float angular_velocity_;
@@ -916,6 +956,178 @@ inline void DriverLog::set_allocated_imu_rotation(::ros::geometry_msgs::Vector3*
   }
   imu_rotation_ = imu_rotation;
   // @@protoc_insertion_point(field_set_allocated:zoomies.DriverLog.imu_rotation)
+}
+
+// .ros.geometry_msgs.Vector3 localizer_correction = 19;
+inline bool DriverLog::_internal_has_localizer_correction() const {
+  return this != internal_default_instance() && localizer_correction_ != nullptr;
+}
+inline bool DriverLog::has_localizer_correction() const {
+  return _internal_has_localizer_correction();
+}
+inline const ::ros::geometry_msgs::Vector3& DriverLog::_internal_localizer_correction() const {
+  const ::ros::geometry_msgs::Vector3* p = localizer_correction_;
+  return p != nullptr ? *p : reinterpret_cast<const ::ros::geometry_msgs::Vector3&>(
+      ::ros::geometry_msgs::_Vector3_default_instance_);
+}
+inline const ::ros::geometry_msgs::Vector3& DriverLog::localizer_correction() const {
+  // @@protoc_insertion_point(field_get:zoomies.DriverLog.localizer_correction)
+  return _internal_localizer_correction();
+}
+inline void DriverLog::unsafe_arena_set_allocated_localizer_correction(
+    ::ros::geometry_msgs::Vector3* localizer_correction) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(localizer_correction_);
+  }
+  localizer_correction_ = localizer_correction;
+  if (localizer_correction) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:zoomies.DriverLog.localizer_correction)
+}
+inline ::ros::geometry_msgs::Vector3* DriverLog::release_localizer_correction() {
+  
+  ::ros::geometry_msgs::Vector3* temp = localizer_correction_;
+  localizer_correction_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::ros::geometry_msgs::Vector3* DriverLog::unsafe_arena_release_localizer_correction() {
+  // @@protoc_insertion_point(field_release:zoomies.DriverLog.localizer_correction)
+  
+  ::ros::geometry_msgs::Vector3* temp = localizer_correction_;
+  localizer_correction_ = nullptr;
+  return temp;
+}
+inline ::ros::geometry_msgs::Vector3* DriverLog::_internal_mutable_localizer_correction() {
+  
+  if (localizer_correction_ == nullptr) {
+    auto* p = CreateMaybeMessage<::ros::geometry_msgs::Vector3>(GetArenaForAllocation());
+    localizer_correction_ = p;
+  }
+  return localizer_correction_;
+}
+inline ::ros::geometry_msgs::Vector3* DriverLog::mutable_localizer_correction() {
+  ::ros::geometry_msgs::Vector3* _msg = _internal_mutable_localizer_correction();
+  // @@protoc_insertion_point(field_mutable:zoomies.DriverLog.localizer_correction)
+  return _msg;
+}
+inline void DriverLog::set_allocated_localizer_correction(::ros::geometry_msgs::Vector3* localizer_correction) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(localizer_correction_);
+  }
+  if (localizer_correction) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<
+            ::PROTOBUF_NAMESPACE_ID::MessageLite>::GetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(localizer_correction));
+    if (message_arena != submessage_arena) {
+      localizer_correction = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, localizer_correction, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  localizer_correction_ = localizer_correction;
+  // @@protoc_insertion_point(field_set_allocated:zoomies.DriverLog.localizer_correction)
+}
+
+// .ros.geometry_msgs.Vector3 localizer_variance = 20;
+inline bool DriverLog::_internal_has_localizer_variance() const {
+  return this != internal_default_instance() && localizer_variance_ != nullptr;
+}
+inline bool DriverLog::has_localizer_variance() const {
+  return _internal_has_localizer_variance();
+}
+inline const ::ros::geometry_msgs::Vector3& DriverLog::_internal_localizer_variance() const {
+  const ::ros::geometry_msgs::Vector3* p = localizer_variance_;
+  return p != nullptr ? *p : reinterpret_cast<const ::ros::geometry_msgs::Vector3&>(
+      ::ros::geometry_msgs::_Vector3_default_instance_);
+}
+inline const ::ros::geometry_msgs::Vector3& DriverLog::localizer_variance() const {
+  // @@protoc_insertion_point(field_get:zoomies.DriverLog.localizer_variance)
+  return _internal_localizer_variance();
+}
+inline void DriverLog::unsafe_arena_set_allocated_localizer_variance(
+    ::ros::geometry_msgs::Vector3* localizer_variance) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(localizer_variance_);
+  }
+  localizer_variance_ = localizer_variance;
+  if (localizer_variance) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:zoomies.DriverLog.localizer_variance)
+}
+inline ::ros::geometry_msgs::Vector3* DriverLog::release_localizer_variance() {
+  
+  ::ros::geometry_msgs::Vector3* temp = localizer_variance_;
+  localizer_variance_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::ros::geometry_msgs::Vector3* DriverLog::unsafe_arena_release_localizer_variance() {
+  // @@protoc_insertion_point(field_release:zoomies.DriverLog.localizer_variance)
+  
+  ::ros::geometry_msgs::Vector3* temp = localizer_variance_;
+  localizer_variance_ = nullptr;
+  return temp;
+}
+inline ::ros::geometry_msgs::Vector3* DriverLog::_internal_mutable_localizer_variance() {
+  
+  if (localizer_variance_ == nullptr) {
+    auto* p = CreateMaybeMessage<::ros::geometry_msgs::Vector3>(GetArenaForAllocation());
+    localizer_variance_ = p;
+  }
+  return localizer_variance_;
+}
+inline ::ros::geometry_msgs::Vector3* DriverLog::mutable_localizer_variance() {
+  ::ros::geometry_msgs::Vector3* _msg = _internal_mutable_localizer_variance();
+  // @@protoc_insertion_point(field_mutable:zoomies.DriverLog.localizer_variance)
+  return _msg;
+}
+inline void DriverLog::set_allocated_localizer_variance(::ros::geometry_msgs::Vector3* localizer_variance) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(localizer_variance_);
+  }
+  if (localizer_variance) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<
+            ::PROTOBUF_NAMESPACE_ID::MessageLite>::GetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(localizer_variance));
+    if (message_arena != submessage_arena) {
+      localizer_variance = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, localizer_variance, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  localizer_variance_ = localizer_variance;
+  // @@protoc_insertion_point(field_set_allocated:zoomies.DriverLog.localizer_variance)
 }
 
 #ifdef __GNUC__

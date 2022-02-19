@@ -30,4 +30,8 @@ message DriverLog {
   // IMU
   ros.geometry_msgs.Vector3 imu_accel = 17;
   ros.geometry_msgs.Vector3 imu_rotation = 18;
+
+  // Localizer
+  ros.geometry_msgs.Vector3 localizer_correction = 19;
+  ros.geometry_msgs.Vector3 localizer_variance = 20;
 }

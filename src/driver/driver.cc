@@ -170,6 +170,20 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   driver_log.mutable_imu_rotation()->set_x(reading.gyro.x());
   driver_log.mutable_imu_rotation()->set_y(reading.gyro.y());
   driver_log.mutable_imu_rotation()->set_z(reading.gyro.z());
+  if (localizer_result.has_value()) {
+    driver_log.mutable_localizer_correction()->set_x(
+        localizer_result->correction.x());
+    driver_log.mutable_localizer_correction()->set_y(
+        localizer_result->correction.y());
+    driver_log.mutable_localizer_correction()->set_z(
+        localizer_result->correction.z());
+    driver_log.mutable_localizer_variance()->set_x(
+        localizer_result->variance.x());
+    driver_log.mutable_localizer_variance()->set_y(
+        localizer_result->variance.y());
+    driver_log.mutable_localizer_variance()->set_z(
+        localizer_result->variance.z());
+  }
   datalogger_.LogDriverLog(t_us, driver_log);
 
   return ControlOutput{

@@ -17,7 +17,7 @@ constexpr int kImageHeight = 480;
 constexpr float kCeilHeight = 2.5f;
 
 constexpr float kSteerTrim = 0.0f;
-constexpr bool kSkipWaitJs = true;
+constexpr bool kSkipWaitJs = false;
 constexpr int64_t kLoopPeriodMicros = 10000;
 
 }  // namespace
@@ -25,7 +25,7 @@ constexpr int64_t kLoopPeriodMicros = 10000;
 int main() {
   spdlog::info("Initializing...\n");
   HW hw;
-  Datalogger datalogger("datalog");
+  Datalogger datalogger("log.mcap");
   RacingPath racing_path("track.bin");
   Localizer localizer({
       .img_width = kImageWidth,
@@ -93,6 +93,8 @@ int main() {
   }
 
   spdlog::info("Stopping car\n");
+
+  cam.Stop();
 
   // Stop the car.
   for (int i = 0; i < 200; ++i) {

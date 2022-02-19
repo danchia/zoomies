@@ -10,6 +10,8 @@
 
 class McapLogWriter {
  public:
+  virtual ~McapLogWriter() {}
+
   static std::unique_ptr<McapLogWriter> Make(const std::string& path);
 
   virtual int AddChannel(const std::string& topic,

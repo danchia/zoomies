@@ -6,7 +6,9 @@ Localizer::Localizer(const Options& options)
       light_finder_(camera_model_, options.img_width, options.img_height,
                     options.ceil_height, options.pix_thres, options.min_area,
                     options.ceil_mask_path),
-      pf_(options.num_particles, options.map_path) {}
+      pf_(options.num_particles, options.map_path) {
+  pf_.SeedLocation({-0.3f, -0.3f, -0.4f}, {0.3f, 0.3f, 0.4f});
+}
 
 void Localizer::OnVideoFrame(int64_t t_us, uint8_t* img) {
   // NOTE: below alters img

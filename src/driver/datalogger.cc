@@ -49,7 +49,7 @@ void Datalogger::LogGlobalPose(int64_t t_us,
 
 void Datalogger::LogDriverLog(int64_t t_us, const zoomies::DriverLog& m) {
   std::lock_guard<std::mutex> l(mu_);
-  writer_->Write(global_pose_topic_, t_us, m);
+  writer_->Write(driver_log_topic_, t_us, m);
 }
 
 void Datalogger::LogRacingPath(int64_t t_us,
