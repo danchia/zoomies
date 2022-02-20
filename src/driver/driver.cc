@@ -14,7 +14,7 @@
 
 namespace {
 
-constexpr bool kManualDrive = true;
+constexpr bool kManualDrive = false;
 constexpr int64_t kLoopPeriodMicros = 10000;
 // pi * 62.7e-3 (wheel diameter) * 0.5 (belt ratio, 17t) * 25/90 / 3 =
 constexpr float kMetersPerTick = 0.00911934534f;
@@ -51,7 +51,7 @@ void Driver::OnCameraTick(int64_t t_us, uint8_t* buf, int len) {
   int64_t loop_tick = ticks_.load(std::memory_order_relaxed);
   if (loop_tick <= 0) return;
 
-  if (kLogVideo) {
+  if (kLogVideo && loop_tick % 10 == 0) {
     img_msg_.Clear();
     // A bit hacky, but we'll send the whole YUV420 image which technically
     // isn't supported, but we'll advertise it as a smaller mono8 image.

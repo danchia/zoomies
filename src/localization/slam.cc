@@ -447,6 +447,9 @@ int main() {
       int64_t t_us = msgView.message.publishTime;
       t_us /= int64_t{1000};
       slam.VideoFrame(t_us, img);
+
+      if (t_us > 30000000) break;
+
       ++images;
     } else if (channel.topic == "/driver/state") {
       zoomies::DriverLog m;

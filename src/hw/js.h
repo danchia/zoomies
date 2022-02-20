@@ -2,24 +2,30 @@
 
 #include <fcntl.h>
 
+#include <atomic>
+#include <mutex>
+#include <thread>
+
 class JS {
  public:
   struct State {
-    float accel;
-    float steer;
-    bool a_btn;
-    bool y_btn;
+    float accel = 0.0f;
+    float steer = 0.0f;
+    bool a_btn = false;
+    bool y_btn = false;
   };
 
   JS();
   ~JS();
 
   State Poll();
+  void ReadLoop();
 
  private:
+  std::thread reader_;
   int fd_ = 0;
-  float accel_ = 0.0f;
-  float steer_ = 0.0f;
-  bool a_btn_ = false;
-  bool y_btn_ = false;
+  std::atomic<bool> done_ = false;
+
+  std::mutex mu_;
+  State s_;
 };
