@@ -208,6 +208,7 @@ class DriverLog final :
     kHeadingStddevFieldNumber = 14,
     kEscFieldNumber = 15,
     kSteerFieldNumber = 16,
+    kDeltaTSFieldNumber = 21,
   };
   // .ros.geometry_msgs.Vector3 imu_accel = 17;
   bool has_imu_accel() const;
@@ -425,6 +426,15 @@ class DriverLog final :
   void _internal_set_steer(float value);
   public:
 
+  // float delta_t_s = 21;
+  void clear_delta_t_s();
+  float delta_t_s() const;
+  void set_delta_t_s(float value);
+  private:
+  float _internal_delta_t_s() const;
+  void _internal_set_delta_t_s(float value);
+  public:
+
   // @@protoc_insertion_point(class_scope:zoomies.DriverLog)
  private:
   class _Internal;
@@ -452,6 +462,7 @@ class DriverLog final :
   float heading_stddev_;
   float esc_;
   float steer_;
+  float delta_t_s_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_zoomies_2fzoomies_2eproto;
 };
@@ -484,6 +495,26 @@ inline void DriverLog::_internal_set_t_us(uint64_t value) {
 inline void DriverLog::set_t_us(uint64_t value) {
   _internal_set_t_us(value);
   // @@protoc_insertion_point(field_set:zoomies.DriverLog.t_us)
+}
+
+// float delta_t_s = 21;
+inline void DriverLog::clear_delta_t_s() {
+  delta_t_s_ = 0;
+}
+inline float DriverLog::_internal_delta_t_s() const {
+  return delta_t_s_;
+}
+inline float DriverLog::delta_t_s() const {
+  // @@protoc_insertion_point(field_get:zoomies.DriverLog.delta_t_s)
+  return _internal_delta_t_s();
+}
+inline void DriverLog::_internal_set_delta_t_s(float value) {
+  
+  delta_t_s_ = value;
+}
+inline void DriverLog::set_delta_t_s(float value) {
+  _internal_set_delta_t_s(value);
+  // @@protoc_insertion_point(field_set:zoomies.DriverLog.delta_t_s)
 }
 
 // float linear_velocity = 2;

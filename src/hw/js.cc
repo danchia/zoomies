@@ -8,7 +8,7 @@
 #include "spdlog/spdlog.h"
 
 JS::JS() {
-  fd_ = open("/dev/input/js0", O_RDONLY);
+  fd_ = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
   if (fd_ < 0) {
     spdlog::warn("error joystick {}", fd_);
     fd_ = 0;
@@ -32,32 +32,34 @@ void JS::ReadLoop() {
   if (fd_ <= 0) return;
 
   struct js_event e;
-  while (read(fd_, &e, sizeof(e)) == sizeof(e) ||
-         done_.load(std::memory_order_relaxed)) {
-    if (done_.load(std::memory_order_relaxed)) return;
-
-    if (e.type & JS_EVENT_AXIS) {
-      if (e.number == 4) {
-        s.accel = (e.value / 32767.0f) / 2.0f + 0.5f;
+  while (!done_.load(std::memory_order_relaxed)) {
+    while (read(fd_, &e, sizeof(e)) == sizeof(e)) {
+      if (e.type & JS_EVENT_AXIS) {
+        if (e.number == 4) {
+          s.accel = (e.value / 32767.0f) / 2.0f + 0.5f;
+        }
+        if (e.number == 0) {
+          s.steer = e.value / -32767.0f;
+          bool neg = s.steer < 0.0f;
+          s.steer = pow(abs(s.steer), 1.5);
+          if (neg) s.steer = -s.steer;
+        }
       }
-      if (e.number == 0) {
-        s.steer = e.value / -32767.0f;
-        bool neg = s.steer < 0.0f;
-        s.steer = pow(abs(s.steer), 1.5);
-        if (neg) s.steer = -s.steer;
+      if (e.type & JS_EVENT_BUTTON) {
+        if (e.number == 0) {
+          s.a_btn = e.value > 0;
+        }
+        if (e.number == 4) {
+          s.y_btn = e.value > 0;
+        }
       }
     }
-    if (e.type & JS_EVENT_BUTTON) {
-      if (e.number == 0) {
-        s.a_btn = e.value > 0;
-      }
-      if (e.number == 4) {
-        s.y_btn = e.value > 0;
-      }
-    }
 
-    std::lock_guard l(mu_);
+    mu_.lock();
     s_ = s;
+    mu_.unlock();
+
+    usleep(50000);
   }
 }
 

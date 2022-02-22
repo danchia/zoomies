@@ -19,6 +19,8 @@ constexpr int64_t kLoopPeriodMicros = 10000;
 // pi * 62.7e-3 (wheel diameter) * 0.5 (belt ratio, 17t) * 25/90 / 3 =
 constexpr float kMetersPerTick = 0.00911934534f;
 
+constexpr float kMaxSteerDelta = 0.44;  // ~25 deg
+
 constexpr float kCGtoFrontAxle = 0.137f;
 constexpr float kFrontToRearLength = 0.265f;
 
@@ -51,7 +53,7 @@ void Driver::OnCameraTick(int64_t t_us, uint8_t* buf, int len) {
   int64_t loop_tick = ticks_.load(std::memory_order_relaxed);
   if (loop_tick <= 0) return;
 
-  if (kLogVideo && loop_tick % 10 == 0) {
+  if (kLogVideo) {
     img_msg_.Clear();
     // A bit hacky, but we'll send the whole YUV420 image which technically
     // isn't supported, but we'll advertise it as a smaller mono8 image.
@@ -96,6 +98,9 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   state.total_distance = prev_state_.total_distance + state.dist_delta;
 
   float dt = (state.t_micros - prev_state_.t_micros) * 1e-6;
+  if (dt > 0.1f) {
+    spdlog::warn("control loop stall: {} s", dt);
+  }
   float heading_delta = state.angular_vel * dt;
   state.heading = prev_state_.heading + (heading_delta / 2.0f);
   state.x = prev_state_.x + cos(state.heading) * state.fwd_vel * dt;
@@ -124,7 +129,7 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
         racing_path_.total_length()) {
       return Done();
     }
-    DoFollowRacingPath(t_us, state);
+    DoFollowRacingPath(t_us, dt, state);
   }
 
   float esc = CalculateLongitudinalControl(state);
@@ -149,6 +154,7 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
 
   zoomies::DriverLog driver_log;
   driver_log.set_t_us(t_us);
+  driver_log.set_delta_t_s(dt);
   driver_log.set_linear_velocity(state.fwd_vel);
   driver_log.set_angular_velocity(state.angular_vel);
   driver_log.set_desired_linear_velocity(state.desired_fwd_vel_);
@@ -194,7 +200,7 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   };
 }
 
-void Driver::DoFollowRacingPath(int64_t t_us, State& state) {
+void Driver::DoFollowRacingPath(int64_t t_us, float dt, State& state) {
   float s_guess = prev_state_.racing_path_dist_ + state.dist_delta;
 
   // For the Stanley controller, have to translate CG coordinates into front
@@ -208,13 +214,16 @@ void Driver::DoFollowRacingPath(int64_t t_us, State& state) {
                                      path_info.dist_to_closest >= 0.0f);
 
   state.racing_path_dist_ = path_info.s;
-  state.desired_fwd_vel_ = path_info.velocity;
+  state.desired_fwd_vel_ =
+      std::min(path_info.velocity,
+               prev_state_.desired_fwd_vel_ + racing_path_.max_accel() * dt);
 
-  constexpr float lane_gain = 4.0f;
+  constexpr float lane_gain = 2.0f;
   float delta_heading = path_info.heading - state.heading;
   float lane =
       atan2f32(lane_gain * path_info.dist_to_closest, state.desired_fwd_vel_);
   float delta = delta_heading + lane;
+  delta = std::clamp(delta, -kMaxSteerDelta, kMaxSteerDelta);
 
   // tan delta = L/R = L*w / V
   // w = (tan delta)*V/L

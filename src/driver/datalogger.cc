@@ -1,8 +1,15 @@
 #include "driver/datalogger.h"
 
+#include <unistd.h>
+
 #include "ros/nav_msgs/Path.pb.h"
 #include "ros/std_msgs/ColorRGBA.pb.h"
 #include "ros/visualization_msgs/Marker.pb.h"
+#include "spdlog/spdlog.h"
+
+namespace {
+constexpr int kMaxBacklog = 100 * 1024 * 1024;
+}
 
 ros::geometry_msgs::Quaternion HeadingToQuat(float theta) {
   // Rotation about z-axis.
@@ -31,25 +38,71 @@ Datalogger::Datalogger(const std::string& path)
                                            ros::nav_msgs::Path::descriptor());
   racing_path_closet_pt_topic_ =
       writer_->AddChannel("/motion_planner/closest_point",
-                          ros::visualization_msgs::ImageMarker::descriptor());
+                          ros::visualization_msgs::Marker::descriptor());
   driver_log_topic_ =
       writer_->AddChannel("/driver/state", zoomies::DriverLog::descriptor());
+
+  writer_thread_ = std::thread([this] { WriterLoop(); });
+}
+
+Datalogger::~Datalogger() {
+  mu_.lock();
+  done_ = true;
+  mu_.unlock();
+
+  writer_thread_.join();
+}
+
+void Datalogger::WriterLoop() {
+  while (true) {
+    bool done;
+    int size;
+    std::vector<Msg> msgs;
+
+    {
+      std::lock_guard l(mu_);
+      done = done_;
+      using std::swap;
+      swap(msgs, msgs_);
+      size = size_;
+      size_ = 0;
+    }
+    if (size > kMaxBacklog) {
+      spdlog::warn("Logging backlog, msgs may have been dropped");
+    }
+    for (const auto& m : msgs) {
+      writer_->WriteMsg(m.chan_id, m.t_us, m.data);
+    }
+    if (done) return;
+
+    usleep(50000);
+  }
+}
+
+void Datalogger::QMsg(int chan_id, int64_t t_us,
+                      const google::protobuf::MessageLite& m) {
+  Msg msg;
+  msg.chan_id = chan_id;
+  msg.t_us = t_us;
+  m.SerializeToString(&msg.data);
+
+  std::lock_guard l(mu_);
+  if (size_ > kMaxBacklog) return;
+  size_ += msg.data.size();
+  msgs_.push_back(std::move(msg));
 }
 
 void Datalogger::LogVideoFrame(int64_t t_us, const ros::sensor_msgs::Image& m) {
-  std::lock_guard<std::mutex> l(mu_);
-  writer_->Write(img_topic_, t_us, m);
+  QMsg(img_topic_, t_us, m);
 }
 
 void Datalogger::LogGlobalPose(int64_t t_us,
                                const ros::geometry_msgs::PoseStamped& m) {
-  std::lock_guard<std::mutex> l(mu_);
-  writer_->Write(global_pose_topic_, t_us, m);
+  QMsg(global_pose_topic_, t_us, m);
 }
 
 void Datalogger::LogDriverLog(int64_t t_us, const zoomies::DriverLog& m) {
-  std::lock_guard<std::mutex> l(mu_);
-  writer_->Write(driver_log_topic_, t_us, m);
+  QMsg(driver_log_topic_, t_us, m);
 }
 
 void Datalogger::LogRacingPath(int64_t t_us,
@@ -66,8 +119,7 @@ void Datalogger::LogRacingPath(int64_t t_us,
     *pose.mutable_pose()->mutable_orientation() = HeadingToQuat(p.heading);
   }
 
-  std::lock_guard<std::mutex> l(mu_);
-  writer_->Write(racing_path_topic_, t_us, m);
+  QMsg(racing_path_topic_, t_us, m);
 }
 
 void Datalogger::LogRacingPathClosestPt(int64_t t_us, float car_x, float car_y,
@@ -78,6 +130,11 @@ void Datalogger::LogRacingPathClosestPt(int64_t t_us, float car_x, float car_y,
 
   m.set_ns("motion_plan");
   m.set_id(0);
+
+  m.mutable_pose()->mutable_position();
+  m.mutable_pose()->mutable_orientation();
+  m.mutable_scale();
+  m.mutable_color();
 
   m.set_type(4);  // line strip
   m.set_action(0);
@@ -107,6 +164,5 @@ void Datalogger::LogRacingPathClosestPt(int64_t t_us, float car_x, float car_y,
     p.set_y(py);
   }
 
-  std::lock_guard<std::mutex> l(mu_);
-  writer_->Write(racing_path_closet_pt_topic_, t_us, m);
+  QMsg(racing_path_closet_pt_topic_, t_us, m);
 }

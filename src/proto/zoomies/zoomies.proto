@@ -6,6 +6,7 @@ package zoomies;
 
 message DriverLog {
   fixed64 t_us = 1;
+  float delta_t_s = 21;
   float linear_velocity = 2;
   float angular_velocity = 3;
 

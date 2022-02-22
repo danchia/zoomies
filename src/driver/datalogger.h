@@ -6,7 +6,10 @@
 #include <memory>
 #include <mutex>
 #include <string>
+#include <thread>
+#include <vector>
 
+#include "google/protobuf/message_lite.h"
 #include "mcap/writer.h"
 #include "ros/builtins.pb.h"
 #include "ros/geometry_msgs/PoseStamped.pb.h"
@@ -19,6 +22,7 @@
 class Datalogger {
  public:
   Datalogger(const std::string& path);
+  ~Datalogger();
 
   void LogVideoFrame(int64_t t_us, const ros::sensor_msgs::Image& m);
   void LogGlobalPose(int64_t t_us, const ros::geometry_msgs::PoseStamped& m);
@@ -29,14 +33,27 @@ class Datalogger {
   void LogDriverLog(int64_t t_us, const zoomies::DriverLog& m);
 
  private:
+  struct Msg {
+    int chan_id;
+    int64_t t_us;
+    std::string data;
+  };
+  void QMsg(int chan_id, int64_t t_us, const google::protobuf::MessageLite& m);
+  void WriterLoop();
+
   int img_topic_;
   int global_pose_topic_;
   int racing_path_topic_;
   int racing_path_closet_pt_topic_;
   int driver_log_topic_;
 
-  std::mutex mu_;
   std::unique_ptr<McapLogWriter> writer_;
+
+  std::thread writer_thread_;
+  std::mutex mu_;
+  std::vector<Msg> msgs_;
+  int size_ = 0;
+  bool done_ = false;
 };
 
 ros::geometry_msgs::Quaternion HeadingToQuat(float theta);

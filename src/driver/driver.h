@@ -51,7 +51,7 @@ class Driver {
 
   ControlOutput Done();
 
-  void DoFollowRacingPath(int64_t t_us, State& state);
+  void DoFollowRacingPath(int64_t t_us, float dt, State& state);
   float CalculateLongitudinalControl(State& state);
   float CalculateLateralControl(State& state);
 

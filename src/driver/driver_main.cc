@@ -17,7 +17,7 @@ constexpr int kImageHeight = 480;
 constexpr float kCeilHeight = 2.5f;
 
 constexpr float kSteerTrim = 0.0f;
-constexpr bool kSkipWaitJs = false;
+constexpr bool kSkipWaitJs = true;
 constexpr int64_t kLoopPeriodMicros = 10000;
 
 }  // namespace
@@ -56,6 +56,8 @@ int main() {
   }
 
   spdlog::info("Starting program\n");
+
+  clock.Reset();
 
   // run the control loop
   int64_t target_ftime = kLoopPeriodMicros;

@@ -38,7 +38,8 @@ constexpr DriverLog::DriverLog(
   , dist_stddev_(0)
   , heading_stddev_(0)
   , esc_(0)
-  , steer_(0){}
+  , steer_(0)
+  , delta_t_s_(0){}
 struct DriverLogDefaultTypeInternal {
   constexpr DriverLogDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -61,6 +62,7 @@ const uint32_t TableStruct_zoomies_2fzoomies_2eproto::offsets[] PROTOBUF_SECTION
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::zoomies::DriverLog, t_us_),
+  PROTOBUF_FIELD_OFFSET(::zoomies::DriverLog, delta_t_s_),
   PROTOBUF_FIELD_OFFSET(::zoomies::DriverLog, linear_velocity_),
   PROTOBUF_FIELD_OFFSET(::zoomies::DriverLog, angular_velocity_),
   PROTOBUF_FIELD_OFFSET(::zoomies::DriverLog, desired_linear_velocity_),
@@ -91,28 +93,29 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_zoomies_2fzoomies_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\025zoomies/zoomies.proto\022\007zoomies\032\037ros/ge"
-  "ometry_msgs/Vector3.proto\"\257\004\n\tDriverLog\022"
-  "\014\n\004t_us\030\001 \001(\006\022\027\n\017linear_velocity\030\002 \001(\002\022\030"
-  "\n\020angular_velocity\030\003 \001(\002\022\037\n\027desired_line"
-  "ar_velocity\030\004 \001(\002\022 \n\030desired_angular_vel"
-  "ocity\030\005 \001(\002\022\017\n\007heading\030\006 \001(\002\022\t\n\001x\030\007 \001(\002\022"
-  "\t\n\001y\030\010 \001(\002\022\026\n\016total_distance\030\t \001(\002\022\030\n\020ra"
-  "cing_path_dist\030\n \001(\002\022\022\n\ndist_delta\030\013 \001(\002"
-  "\022\025\n\rheading_delta\030\014 \001(\002\022\023\n\013dist_stddev\030\r"
-  " \001(\002\022\026\n\016heading_stddev\030\016 \001(\002\022\013\n\003esc\030\017 \001("
-  "\002\022\r\n\005steer\030\020 \001(\002\022-\n\timu_accel\030\021 \001(\0132\032.ro"
-  "s.geometry_msgs.Vector3\0220\n\014imu_rotation\030"
-  "\022 \001(\0132\032.ros.geometry_msgs.Vector3\0228\n\024loc"
-  "alizer_correction\030\023 \001(\0132\032.ros.geometry_m"
-  "sgs.Vector3\0226\n\022localizer_variance\030\024 \001(\0132"
-  "\032.ros.geometry_msgs.Vector3b\006proto3"
+  "ometry_msgs/Vector3.proto\"\302\004\n\tDriverLog\022"
+  "\014\n\004t_us\030\001 \001(\006\022\021\n\tdelta_t_s\030\025 \001(\002\022\027\n\017line"
+  "ar_velocity\030\002 \001(\002\022\030\n\020angular_velocity\030\003 "
+  "\001(\002\022\037\n\027desired_linear_velocity\030\004 \001(\002\022 \n\030"
+  "desired_angular_velocity\030\005 \001(\002\022\017\n\007headin"
+  "g\030\006 \001(\002\022\t\n\001x\030\007 \001(\002\022\t\n\001y\030\010 \001(\002\022\026\n\016total_d"
+  "istance\030\t \001(\002\022\030\n\020racing_path_dist\030\n \001(\002\022"
+  "\022\n\ndist_delta\030\013 \001(\002\022\025\n\rheading_delta\030\014 \001"
+  "(\002\022\023\n\013dist_stddev\030\r \001(\002\022\026\n\016heading_stdde"
+  "v\030\016 \001(\002\022\013\n\003esc\030\017 \001(\002\022\r\n\005steer\030\020 \001(\002\022-\n\ti"
+  "mu_accel\030\021 \001(\0132\032.ros.geometry_msgs.Vecto"
+  "r3\0220\n\014imu_rotation\030\022 \001(\0132\032.ros.geometry_"
+  "msgs.Vector3\0228\n\024localizer_correction\030\023 \001"
+  "(\0132\032.ros.geometry_msgs.Vector3\0226\n\022locali"
+  "zer_variance\030\024 \001(\0132\032.ros.geometry_msgs.V"
+  "ector3b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_zoomies_2fzoomies_2eproto_deps[1] = {
   &::descriptor_table_ros_2fgeometry_5fmsgs_2fVector3_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_zoomies_2fzoomies_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_zoomies_2fzoomies_2eproto = {
-  false, false, 635, descriptor_table_protodef_zoomies_2fzoomies_2eproto, "zoomies/zoomies.proto", 
+  false, false, 654, descriptor_table_protodef_zoomies_2fzoomies_2eproto, "zoomies/zoomies.proto", 
   &descriptor_table_zoomies_2fzoomies_2eproto_once, descriptor_table_zoomies_2fzoomies_2eproto_deps, 1, 1,
   schemas, file_default_instances, TableStruct_zoomies_2fzoomies_2eproto::offsets,
   file_level_metadata_zoomies_2fzoomies_2eproto, file_level_enum_descriptors_zoomies_2fzoomies_2eproto, file_level_service_descriptors_zoomies_2fzoomies_2eproto,
@@ -208,16 +211,16 @@ DriverLog::DriverLog(const DriverLog& from)
     localizer_variance_ = nullptr;
   }
   ::memcpy(&t_us_, &from.t_us_,
-    static_cast<size_t>(reinterpret_cast<char*>(&steer_) -
-    reinterpret_cast<char*>(&t_us_)) + sizeof(steer_));
+    static_cast<size_t>(reinterpret_cast<char*>(&delta_t_s_) -
+    reinterpret_cast<char*>(&t_us_)) + sizeof(delta_t_s_));
   // @@protoc_insertion_point(copy_constructor:zoomies.DriverLog)
 }
 
 inline void DriverLog::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&imu_accel_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&steer_) -
-    reinterpret_cast<char*>(&imu_accel_)) + sizeof(steer_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&delta_t_s_) -
+    reinterpret_cast<char*>(&imu_accel_)) + sizeof(delta_t_s_));
 }
 
 DriverLog::~DriverLog() {
@@ -268,8 +271,8 @@ void DriverLog::Clear() {
   }
   localizer_variance_ = nullptr;
   ::memset(&t_us_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&steer_) -
-      reinterpret_cast<char*>(&t_us_)) + sizeof(steer_));
+      reinterpret_cast<char*>(&delta_t_s_) -
+      reinterpret_cast<char*>(&t_us_)) + sizeof(delta_t_s_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -436,6 +439,14 @@ const char* DriverLog::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 162)) {
           ptr = ctx->ParseMessage(_internal_mutable_localizer_variance(), ptr);
           CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // float delta_t_s = 21;
+      case 21:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 173)) {
+          delta_t_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
         } else
           goto handle_unusual;
         continue;
@@ -656,6 +667,16 @@ uint8_t* DriverLog::_InternalSerialize(
         20, _Internal::localizer_variance(this), target, stream);
   }
 
+  // float delta_t_s = 21;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_t_s = this->_internal_delta_t_s();
+  uint32_t raw_delta_t_s;
+  memcpy(&raw_delta_t_s, &tmp_delta_t_s, sizeof(tmp_delta_t_s));
+  if (raw_delta_t_s != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(21, this->_internal_delta_t_s(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -840,6 +861,15 @@ size_t DriverLog::ByteSizeLong() const {
     total_size += 2 + 4;
   }
 
+  // float delta_t_s = 21;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_t_s = this->_internal_delta_t_s();
+  uint32_t raw_delta_t_s;
+  memcpy(&raw_delta_t_s, &tmp_delta_t_s, sizeof(tmp_delta_t_s));
+  if (raw_delta_t_s != 0) {
+    total_size += 2 + 4;
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
@@ -982,6 +1012,13 @@ void DriverLog::MergeFrom(const DriverLog& from) {
   if (raw_steer != 0) {
     _internal_set_steer(from._internal_steer());
   }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_t_s = from._internal_delta_t_s();
+  uint32_t raw_delta_t_s;
+  memcpy(&raw_delta_t_s, &tmp_delta_t_s, sizeof(tmp_delta_t_s));
+  if (raw_delta_t_s != 0) {
+    _internal_set_delta_t_s(from._internal_delta_t_s());
+  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1000,8 +1037,8 @@ void DriverLog::InternalSwap(DriverLog* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(DriverLog, steer_)
-      + sizeof(DriverLog::steer_)
+      PROTOBUF_FIELD_OFFSET(DriverLog, delta_t_s_)
+      + sizeof(DriverLog::delta_t_s_)
       - PROTOBUF_FIELD_OFFSET(DriverLog, imu_accel_)>(
           reinterpret_cast<char*>(&imu_accel_),
           reinterpret_cast<char*>(&other->imu_accel_));
