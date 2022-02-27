@@ -11,9 +11,8 @@
 
 #include "google/protobuf/message_lite.h"
 #include "mcap/writer.h"
-#include "ros/builtins.pb.h"
+#include "proto/proto_util.h"
 #include "ros/geometry_msgs/PoseStamped.pb.h"
-#include "ros/geometry_msgs/Quaternion.pb.h"
 #include "ros/sensor_msgs/Image.pb.h"
 #include "ros/visualization_msgs/ImageMarker.pb.h"
 #include "track/track.h"
@@ -55,7 +54,3 @@ class Datalogger {
   int size_ = 0;
   bool done_ = false;
 };
-
-ros::geometry_msgs::Quaternion HeadingToQuat(float theta);
-
-ros::Time MicrosToRos(int64_t t);

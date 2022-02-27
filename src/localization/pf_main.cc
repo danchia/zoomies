@@ -10,14 +10,15 @@
 #include "localization/localization_util.h"
 #include "localization/pf.h"
 #include "mcap/reader.hpp"
-#include "ros/ros_types.h"
-#include "ros/ros_util.h"
-#include "ros/ros_writer.h"
+#include "mcap/writer.h"
+#include "proto/proto_util.h"
+#include "ros/sensor_msgs/Image.pb.h"
+#include "ros/sensor_msgs/PointCloud2.pb.h"
+#include "ros/visualization_msgs/ImageMarker.pb.h"
 #include "spdlog/cfg/env.h"
 #include "spdlog/fmt/ostr.h"
 #include "spdlog/spdlog.h"
 #include "zoomies/zoomies.pb.h"
-#include "ros/sensor_msgs/Image.pb.h"
 
 namespace {
 
@@ -143,7 +144,7 @@ class Localizer {
   int64_t last_floormap_us_ = 0;
 
   // Viz
-  std::optional<RosWriter> ros_writer_;
+  std::unique_ptr<McapLogWriter> ros_writer_;
   int img_topic_;
   int img_rgb_topic_;
   int floor_map_topic_;
@@ -166,21 +167,22 @@ Localizer::Localizer()
 }
 
 void Localizer::InitViz() {
-  ros_writer_.emplace("/tmp/pfviz");
-  img_topic_ =
-      ros_writer_->AddConnection("/camera1/image", "sensor_msgs/msg/Image");
-  img_rgb_topic_ =
-      ros_writer_->AddConnection("/camera1/rgb_image", "sensor_msgs/msg/Image");
-  pf_topic_ = ros_writer_->AddConnection("/localization/pf_cloud",
-                                         "sensor_msgs/msg/PointCloud2");
-  landmark_img_overlay_topic_ = ros_writer_->AddConnection(
-      "/landmarks/img_overlay", "visualization_msgs/msg/ImageMarker");
-  map_topic_ = ros_writer_->AddConnection("/landmarks/map",
-                                          "sensor_msgs/msg/PointCloud2");
-  landmark_detected_topic_ = ros_writer_->AddConnection(
-      "/landmarks/detected", "sensor_msgs/msg/PointCloud2");
-  floor_map_topic_ =
-      ros_writer_->AddConnection("/floormap", "sensor_msgs/msg/Image");
+  ros_writer_ = McapLogWriter::Make("/tmp/pfviz");
+  img_topic_ = ros_writer_->AddChannel("/camera1/image",
+                                       ros::sensor_msgs::Image::descriptor());
+  img_rgb_topic_ = ros_writer_->AddChannel(
+      "/camera1/rgb_image", ros::sensor_msgs::Image::descriptor());
+  pf_topic_ = ros_writer_->AddChannel(
+      "/localization/pf_cloud", ros::sensor_msgs::PointCloud2::descriptor());
+  landmark_img_overlay_topic_ = ros_writer_->AddChannel(
+      "/landmarks/img_overlay",
+      ros::visualization_msgs::ImageMarker::descriptor());
+  map_topic_ = ros_writer_->AddChannel(
+      "/landmarks/map", ros::sensor_msgs::PointCloud2::descriptor());
+  landmark_detected_topic_ = ros_writer_->AddChannel(
+      "/landmarks/detected", ros::sensor_msgs::PointCloud2::descriptor());
+  floor_map_topic_ = ros_writer_->AddChannel(
+      "/floormap", ros::sensor_msgs::Image::descriptor());
 }
 
 void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
@@ -226,124 +228,125 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
     });
   }
   {
-    sensor_msgs__Image ros_img;
-    ros_img.header().stamp() = MicrosToRos(t_us);
-    ros_img.header().frame_id("/camera-frame");
-    ros_img.height(kImageHeight);
-    ros_img.width(kImageWidth);
-    ros_img.encoding("mono8");
-    ros_img.is_bigendian(false);
-    ros_img.step(kImageWidth);
-    ros_img.data(img);
+    ros::sensor_msgs::Image ros_img;
+    *ros_img.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+    ros_img.mutable_header()->set_frame_id("/camera-frame");
+    ros_img.set_height(kImageHeight);
+    ros_img.set_width(kImageWidth);
+    ros_img.set_encoding("mono8");
+    ros_img.set_is_bigendian(false);
+    ros_img.set_step(kImageWidth);
+    *ros_img.mutable_data() = std::string(img.begin(), img.end());
     ros_writer_->Write(img_topic_, t_us, ros_img);
   }
   {
-    sensor_msgs__Image ros_img;
-    ros_img.header().stamp() = MicrosToRos(t_us);
-    ros_img.header().frame_id("/camera-frame");
-    ros_img.height(kImageHeight);
-    ros_img.width(kImageWidth);
-    ros_img.encoding("rgb8");
-    ros_img.is_bigendian(false);
-    ros_img.step(kImageWidth * 3);
-    ros_img.data(rgb_img);
+    ros::sensor_msgs::Image ros_img;
+    *ros_img.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+    ros_img.mutable_header()->set_frame_id("/camera-frame");
+    ros_img.set_height(kImageHeight);
+    ros_img.set_width(kImageWidth);
+    ros_img.set_encoding("rgb8");
+    ros_img.set_is_bigendian(false);
+    ros_img.set_step(kImageWidth * 3);
+    *ros_img.mutable_data() = std::string(rgb_img.begin(), rgb_img.end());
     ros_writer_->Write(img_rgb_topic_, t_us, ros_img);
   }
 
   if (t_us > last_floormap_us_ + 500000) {
     last_floormap_us_ = t_us;
 
-    sensor_msgs__Image ros_img;
-    ros_img.header().stamp() = MicrosToRos(t_us);
-    ros_img.header().frame_id("/world");
-    ros_img.height(map_maker_.height());
-    ros_img.width(map_maker_.width());
-    ros_img.encoding("rgb8");
-    ros_img.is_bigendian(false);
-    ros_img.step(map_maker_.width() * 3);
-    ros_img.data(map_maker_.map());
+    ros::sensor_msgs::Image ros_img;
+    *ros_img.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+    ros_img.mutable_header()->set_frame_id("/world");
+    ros_img.set_height(map_maker_.height());
+    ros_img.set_width(map_maker_.width());
+    ros_img.set_encoding("rgb8");
+    ros_img.set_is_bigendian(false);
+    ros_img.set_step(map_maker_.width() * 3);
+    *ros_img.mutable_data() =
+        std::string(map_maker_.map().begin(), map_maker_.map().end());
     ros_writer_->Write(floor_map_topic_, t_us, ros_img);
   }
 
   {
-    sensor_msgs__PointCloud2 pt_cloud;
-    pt_cloud.header().stamp() = MicrosToRos(t_us);
-    pt_cloud.header().frame_id("/world");
-    pt_cloud.height(1);
-    pt_cloud.width(particles.size());
+    ros::sensor_msgs::PointCloud2 pt_cloud;
+    *pt_cloud.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+    pt_cloud.mutable_header()->set_frame_id("/world");
+    pt_cloud.set_height(1);
+    pt_cloud.set_width(particles.size());
 
-    pt_cloud.fields().emplace_back();
-    pt_cloud.fields().back().name("x");
-    pt_cloud.fields().back().offset(0);
-    pt_cloud.fields().back().datatype(7);
-    pt_cloud.fields().back().count(1);
+    auto* field = pt_cloud.add_fields();
+    field->set_name("x");
+    field->set_offset(0);
+    field->set_datatype(7);
+    field->set_count(1);
 
-    pt_cloud.fields().emplace_back();
-    pt_cloud.fields().back().name("y");
-    pt_cloud.fields().back().offset(4);
-    pt_cloud.fields().back().datatype(7);
-    pt_cloud.fields().back().count(1);
+    field = pt_cloud.add_fields();
+    field->set_name("y");
+    field->set_offset(4);
+    field->set_datatype(7);
+    field->set_count(1);
 
-    pt_cloud.fields().emplace_back();
-    pt_cloud.fields().back().name("z");
-    pt_cloud.fields().back().offset(8);
-    pt_cloud.fields().back().datatype(7);
-    pt_cloud.fields().back().count(1);
+    field = pt_cloud.add_fields();
+    field->set_name("z");
+    field->set_offset(8);
+    field->set_datatype(7);
+    field->set_count(1);
 
-    pt_cloud.fields().emplace_back();
-    pt_cloud.fields().back().name("weight");
-    pt_cloud.fields().back().offset(12);
-    pt_cloud.fields().back().datatype(7);
-    pt_cloud.fields().back().count(1);
+    field = pt_cloud.add_fields();
+    field->set_name("weight");
+    field->set_offset(12);
+    field->set_datatype(7);
+    field->set_count(1);
 
-    pt_cloud.is_bigendian(false);
-    pt_cloud.point_step(16);
+    pt_cloud.set_is_bigendian(false);
+    pt_cloud.set_point_step(16);
     size_t nbytes = 16 * particles.size();
-    pt_cloud.row_step(nbytes);
-    pt_cloud.data().resize(nbytes);
-    memcpy(pt_cloud.data().data(), particles.data(), nbytes);
-    pt_cloud.is_dense(true);
+    pt_cloud.set_row_step(nbytes);
+    pt_cloud.mutable_data()->resize(nbytes);
+    memcpy(pt_cloud.mutable_data()->data(), particles.data(), nbytes);
+    pt_cloud.set_is_dense(true);
 
     // ideally this would have been a pose array
     ros_writer_->Write(pf_topic_, t_us, pt_cloud);
   }
 
-  sensor_msgs__PointCloud2 pt_cloud;
-  pt_cloud.header().stamp() = MicrosToRos(t_us);
-  pt_cloud.header().frame_id("/world");
-  pt_cloud.height(1);
+  ros::sensor_msgs::PointCloud2 pt_cloud;
+  *pt_cloud.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+  pt_cloud.mutable_header()->set_frame_id("/world");
+  pt_cloud.set_height(1);
 
-  pt_cloud.fields().emplace_back();
-  pt_cloud.fields().back().name("x");
-  pt_cloud.fields().back().offset(0);
-  pt_cloud.fields().back().datatype(7);
-  pt_cloud.fields().back().count(1);
+  auto* field = pt_cloud.add_fields();
+  field->set_name("x");
+  field->set_offset(0);
+  field->set_datatype(7);
+  field->set_count(1);
 
-  pt_cloud.fields().emplace_back();
-  pt_cloud.fields().back().name("y");
-  pt_cloud.fields().back().offset(4);
-  pt_cloud.fields().back().datatype(7);
-  pt_cloud.fields().back().count(1);
+  field = pt_cloud.add_fields();
+  field->set_name("y");
+  field->set_offset(4);
+  field->set_datatype(7);
+  field->set_count(1);
 
-  pt_cloud.fields().emplace_back();
-  pt_cloud.fields().back().name("z");
-  pt_cloud.fields().back().offset(8);
-  pt_cloud.fields().back().datatype(7);
-  pt_cloud.fields().back().count(1);
+  field = pt_cloud.add_fields();
+  field->set_name("z");
+  field->set_offset(8);
+  field->set_datatype(7);
+  field->set_count(1);
 
-  pt_cloud.is_bigendian(false);
-  pt_cloud.point_step(12);
-  pt_cloud.is_dense(true);
+  pt_cloud.set_is_bigendian(false);
+  pt_cloud.set_point_step(12);
+  pt_cloud.set_is_dense(true);
 
   std::vector<Eigen::Vector3f> map;
   for (const auto& lm : pf_.map()) {
     map.push_back({lm.x(), lm.y(), kCeilHeight});
   }
-  pt_cloud.width(map.size());
+  pt_cloud.set_width(map.size());
   int nbytes = 12 * map.size();
-  pt_cloud.row_step(nbytes);
-  pt_cloud.data().resize(nbytes);
-  memcpy(pt_cloud.data().data(), map.data(), nbytes);
+  pt_cloud.set_row_step(nbytes);
+  pt_cloud.mutable_data()->resize(nbytes);
+  memcpy(pt_cloud.mutable_data()->data(), map.data(), nbytes);
   ros_writer_->Write(map_topic_, t_us, pt_cloud);
 
   {
@@ -356,29 +359,29 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
 
       landmark_pts.push_back({pt.x(), pt.y(), kCeilHeight});
     }
-    pt_cloud.width(landmark_pts.size());
+    pt_cloud.set_width(landmark_pts.size());
     nbytes = 12 * landmark_pts.size();
-    pt_cloud.row_step(nbytes);
-    pt_cloud.data().resize(nbytes);
-    memcpy(pt_cloud.data().data(), landmark_pts.data(), nbytes);
+    pt_cloud.set_row_step(nbytes);
+    pt_cloud.mutable_data()->resize(nbytes);
+    memcpy(pt_cloud.mutable_data()->data(), landmark_pts.data(), nbytes);
     ros_writer_->Write(landmark_detected_topic_, t_us, pt_cloud);
   }
 
-  visualization_msgs__ImageMarker marker;
-  marker.header().stamp() = MicrosToRos(t_us);
-  marker.ns("landmark_overlay");
-  marker.id(0);
-  marker.type(4);  // POINTS
-  marker.action(0);
-  marker.scale(5);
-  marker.lifetime().nsec(100000000);
+  ros::visualization_msgs::ImageMarker marker;
+  *marker.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+  marker.set_ns("landmark_overlay");
+  marker.set_id(0);
+  marker.set_type(4);  // POINTS
+  marker.set_action(0);
+  marker.set_scale(5);
+  marker.mutable_lifetime()->set_nsec(100000000);
   for (int i = 0; i < lights.size(); ++i) {
-    auto& pt = marker.points().emplace_back();
-    pt.x(lights[i].u);
-    pt.y(lights[i].v);
-    auto& oc = marker.outline_colors().emplace_back();
-    oc.g(1.0);
-    oc.a(1.0);
+    auto& pt = *marker.add_points();
+    pt.set_x(lights[i].u);
+    pt.set_y(lights[i].v);
+    auto& oc = *marker.add_outline_colors();
+    oc.set_g(1.0);
+    oc.set_a(1.0);
   }
   ros_writer_->Write(landmark_img_overlay_topic_, t_us, marker);
 }
