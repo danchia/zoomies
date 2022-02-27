@@ -12,6 +12,10 @@
 
 namespace {
 
+constexpr int kImageWidth = 640;
+constexpr int kImageHeight = 480;
+constexpr float kCeilHeight = 2.5f;
+
 constexpr float kSteerTrim = 0.0f;
 constexpr bool kSkipWaitJs = true;
 constexpr int64_t kLoopPeriodMicros = 10000;
@@ -21,9 +25,17 @@ constexpr int64_t kLoopPeriodMicros = 10000;
 int main() {
   spdlog::info("Initializing...\n");
   HW hw;
-  Datalogger datalogger("datalog");
+  Datalogger datalogger("log.mcap");
   RacingPath racing_path("track.bin");
-  Driver driver(datalogger, racing_path);
+  Localizer localizer({
+      .img_width = kImageWidth,
+      .img_height = kImageHeight,
+      .ceil_height = kCeilHeight,
+      .camera_model_path = "camera_lut.bin",
+      .ceil_mask_path = "ceil_mask.bin",
+      .map_path = "map.txt",
+  });
+  Driver driver(datalogger, racing_path, localizer);
   JS js;
   Clock clock;
   Camera cam(640, 480, 30);
@@ -44,6 +56,8 @@ int main() {
   }
 
   spdlog::info("Starting program\n");
+
+  clock.Reset();
 
   // run the control loop
   int64_t target_ftime = kLoopPeriodMicros;
@@ -81,6 +95,8 @@ int main() {
   }
 
   spdlog::info("Stopping car\n");
+
+  cam.Stop();
 
   // Stop the car.
   for (int i = 0; i < 200; ++i) {

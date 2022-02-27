@@ -33,6 +33,7 @@ class RacingPath {
   PathInfo GetPathInfo(float s_guess, float x, float y,
                        float search_dist = 0.10f) const;
   float total_length() const { return total_length_; }
+  float max_accel() const { return max_accel_; }
 
   const std::vector<PathPoint>& path_points() { return path_; }
 
@@ -46,5 +47,6 @@ class RacingPath {
 
   float segment_length_;
   float total_length_;
+  float max_accel_;
   std::vector<PathPoint> path_;
 };

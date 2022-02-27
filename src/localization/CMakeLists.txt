@@ -1,13 +1,16 @@
-add_library(pf pf.cc)
-target_link_libraries(pf localization_util spdlog)
+add_library(localizer localizer.cc pf.cc)
+target_link_libraries(localizer localization_util CONAN_PKG::spdlog)
 
 add_library(localization_util localization_util.cc)
 
 add_executable(slam slam.cc)
-target_link_libraries(slam ros_compat localization_util sqlite3 core types_slam2d spdlog)
+target_link_libraries(slam ros_compat localization_util sqlite3 core types_slam2d mcap CONAN_PKG::spdlog)
 
 add_executable(pf_main pf_main.cc)
-target_link_libraries(pf_main pf common ros_compat localization_util sqlite3 spdlog)
+target_link_libraries(pf_main localizer common ros_compat localization_util sqlite3 mcap CONAN_PKG::spdlog)
+
+add_executable(map_maker map_maker.cc)
+target_link_libraries(map_maker localizer common ros_compat localization_util sqlite3 mcap CONAN_PKG::spdlog)
 
 enable_testing()
 

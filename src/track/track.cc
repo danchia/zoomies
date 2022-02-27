@@ -75,6 +75,7 @@ RacingPath::RacingPath(std::string_view fs_path) {
 
   f.read(reinterpret_cast<char*>(&n_segments), sizeof(n_segments));
   f.read(reinterpret_cast<char*>(&segment_length_), sizeof(segment_length_));
+  f.read(reinterpret_cast<char*>(&max_accel_), sizeof(max_accel_));
 
   total_length_ = n_segments * segment_length_;
 

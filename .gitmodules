@@ -7,9 +7,6 @@
 [submodule "src/googletest"]
 	path = src/googletest
 	url = https://github.com/google/googletest
-[submodule "src/spdlog"]
-	path = src/spdlog
-	url = https://github.com/gabime/spdlog
 [submodule "src/g2o"]
 	path = src/g2o
 	url = https://github.com/RainerKuemmerle/g2o.git
@@ -22,3 +19,9 @@
 [submodule "src/gcem"]
 	path = src/gcem
 	url = https://github.com/kthohr/gcem
+[submodule "src/mcap/mcap"]
+	path = src/mcap/mcap
+	url = https://github.com/foxglove/mcap.git
+[submodule "src/proto/ros-message-schemas"]
+	path = src/proto/ros-message-schemas
+	url = https://github.com/foxglove/ros-message-schemas

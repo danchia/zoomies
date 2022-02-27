@@ -7,7 +7,10 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# add_compile_options(-Wno-psabi)
+add_compile_options(-Wno-psabi)
+
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
 
 include_directories(.)
 
@@ -31,14 +34,17 @@ include_directories(googletest/googlemock/include)
 add_subdirectory(googletest)
 
 add_subdirectory(sqlite)
-add_subdirectory(spdlog)
-include_directories(spdlog/include)
 
 set(LIBRARY_TYPE STATIC)
 add_subdirectory(userland)
 include_directories(userland)
 
+include_directories(proto/generated)
+add_subdirectory(proto)
 add_subdirectory(common)
+
+include_directories(mcap/mcap/cpp/mcap/include)
+add_subdirectory(mcap)
 add_subdirectory(track)
 add_subdirectory(ros)
 add_subdirectory(hw)

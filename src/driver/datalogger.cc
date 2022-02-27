@@ -1,185 +1,168 @@
 #include "driver/datalogger.h"
 
-#include "ros/ros_types.h"
-#include "ros/ros_util.h"
+#include <unistd.h>
+
+#include "ros/nav_msgs/Path.pb.h"
+#include "ros/std_msgs/ColorRGBA.pb.h"
+#include "ros/visualization_msgs/Marker.pb.h"
+#include "spdlog/spdlog.h"
 
 namespace {
-geometry_msgs__Quaternion HeadingToQuat(float theta) {
+constexpr int kMaxBacklog = 100 * 1024 * 1024;
+}
+
+ros::geometry_msgs::Quaternion HeadingToQuat(float theta) {
   // Rotation about z-axis.
-  geometry_msgs__Quaternion q;
-  q.w(std::cos(0.5 * theta));
-  q.x(0);
-  q.y(0);
-  q.z(std::sin(0.5 * theta));
+  ros::geometry_msgs::Quaternion q;
+  q.set_w(std::cos(0.5 * theta));
+  q.set_x(0);
+  q.set_y(0);
+  q.set_z(std::sin(0.5 * theta));
   return q;
 }
-}  // namespace
 
-Datalogger::Datalogger(std::string_view path) : ros_writer_(path) {
-  img_topic_ =
-      ros_writer_.AddConnection("/camera1/raw", "sensor_msgs/msg/Image");
-  imu_topic_ = ros_writer_.AddConnection("/imu", "sensor_msgs/msg/Imu");
-  desired_twist_topic_ = ros_writer_.AddConnection(
-      "/desired_twist", "geometry_msgs/msg/TwistStamped");
-  actual_twist_topic_ = ros_writer_.AddConnection(
-      "/actual_twist", "geometry_msgs/msg/TwistWithCovarianceStamped");
-  global_pose_topic_ = ros_writer_.AddConnection(
-      "/global_pose/pose_only", "geometry_msgs/msg/PoseStamped");
-  esc_topic_ = ros_writer_.AddConnection("/hw/esc", "std_msgs/msg/Float32");
-  steer_topic_ = ros_writer_.AddConnection("/hw/steer", "std_msgs/msg/Float32");
-  racing_path_topic_ =
-      ros_writer_.AddConnection("/motion_planner/path", "nav_msgs/msg/Path");
-  racing_path_closet_pt_topic_ = ros_writer_.AddConnection(
-      "/motion_planner/closest_point", "visualization_msgs/msg/Marker");
+ros::Time MicrosToRos(int64_t t) {
+  ros::Time r;
+  r.set_sec(t / 1000000);
+  r.set_nsec((t % 1000000) * 1000);
+  return r;
 }
 
-void Datalogger::LogVideoFrame(int64_t t_us, int width, int height,
-                               uint8_t* data, int len) {
-  // A bit hacky, but we'll send the whole YUV420 image which technically isn't
-  // supported, but we'll advertise it as a smaller mono8 image.
-  sensor_msgs__Image ros_img;
-  ros_img.header().stamp() = MicrosToRos(t_us);
-  ros_img.header().frame_id("/camera");
-  ros_img.height(height);
-  ros_img.width(width);
-  ros_img.encoding("mono8");
-  ros_img.is_bigendian(false);
-  ros_img.step(width);
-  ros_img.data().resize(len);
-  memcpy(ros_img.data().data(), data, len);  // unfortunate copy
+Datalogger::Datalogger(const std::string& path)
+    : writer_(McapLogWriter::Make(path)) {
+  img_topic_ = writer_->AddChannel("/camera1/raw",
+                                   ros::sensor_msgs::Image::descriptor());
+  global_pose_topic_ = writer_->AddChannel(
+      "/global_pose/pose_only", ros::geometry_msgs::PoseStamped::descriptor());
+  racing_path_topic_ = writer_->AddChannel("/motion_planner/path",
+                                           ros::nav_msgs::Path::descriptor());
+  racing_path_closet_pt_topic_ =
+      writer_->AddChannel("/motion_planner/closest_point",
+                          ros::visualization_msgs::Marker::descriptor());
+  driver_log_topic_ =
+      writer_->AddChannel("/driver/state", zoomies::DriverLog::descriptor());
 
-  std::lock_guard<std::mutex> l(mu_);
-  ros_writer_.Write(img_topic_, t_us, ros_img);
+  writer_thread_ = std::thread([this] { WriterLoop(); });
 }
 
-void Datalogger::LogIMU(int64_t t_us, const Eigen::Vector3f& linear_accel,
-                        const Eigen::Vector3f& angular_vel) {
-  sensor_msgs__Imu m;
+Datalogger::~Datalogger() {
+  mu_.lock();
+  done_ = true;
+  mu_.unlock();
 
-  m.header().stamp() = MicrosToRos(t_us);
-  m.header().frame_id("/base_link");
-  m.orientation().w(1);
-
-  m.angular_velocity().x(angular_vel.x());
-  m.angular_velocity().y(angular_vel.y());
-  m.angular_velocity().z(angular_vel.z());
-
-  m.linear_acceleration().x(linear_accel.x());
-  m.linear_acceleration().y(linear_accel.y());
-  m.linear_acceleration().z(linear_accel.z());
-
-  std::lock_guard<std::mutex> l(mu_);
-  ros_writer_.Write(imu_topic_, t_us, m);
+  writer_thread_.join();
 }
 
-void Datalogger::LogDesiredTwist(int64_t t_us, float linear_velocity,
-                                 float angular_velocity) {
-  geometry_msgs__TwistStamped m;
+void Datalogger::WriterLoop() {
+  while (true) {
+    bool done;
+    int size;
+    std::vector<Msg> msgs;
 
-  m.header().stamp() = MicrosToRos(t_us);
-  m.header().frame_id("/base_link");
+    {
+      std::lock_guard l(mu_);
+      done = done_;
+      using std::swap;
+      swap(msgs, msgs_);
+      size = size_;
+      size_ = 0;
+    }
+    if (size > kMaxBacklog) {
+      spdlog::warn("Logging backlog, msgs may have been dropped");
+    }
+    for (const auto& m : msgs) {
+      writer_->WriteMsg(m.chan_id, m.t_us, m.data);
+    }
+    if (done) return;
 
-  m.twist().linear().x(linear_velocity);
-  m.twist().angular().z(angular_velocity);
-
-  std::lock_guard<std::mutex> l(mu_);
-  ros_writer_.Write(desired_twist_topic_, t_us, m);
+    usleep(50000);
+  }
 }
 
-void Datalogger::LogActualTwist(int64_t t_us, float linear_velocity,
-                                float angular_velocity) {
-  geometry_msgs__TwistWithCovarianceStamped m;
+void Datalogger::QMsg(int chan_id, int64_t t_us,
+                      const google::protobuf::MessageLite& m) {
+  Msg msg;
+  msg.chan_id = chan_id;
+  msg.t_us = t_us;
+  m.SerializeToString(&msg.data);
 
-  m.header().stamp() = MicrosToRos(t_us);
-  m.header().frame_id("/base_link");
-
-  m.twist().twist().linear().x(linear_velocity);
-  m.twist().twist().angular().z(angular_velocity);
-
-  std::lock_guard<std::mutex> l(mu_);
-  ros_writer_.Write(actual_twist_topic_, t_us, m);
+  std::lock_guard l(mu_);
+  if (size_ > kMaxBacklog) return;
+  size_ += msg.data.size();
+  msgs_.push_back(std::move(msg));
 }
 
-void Datalogger::LogGlobalPose(int64_t t_us, float x, float y, float theta) {
-  geometry_msgs__PoseStamped m;
-
-  m.header().stamp() = MicrosToRos(t_us);
-  m.header().frame_id("/map");
-
-  m.pose().position().x(x);
-  m.pose().position().y(y);
-
-  m.pose().orientation(HeadingToQuat(theta));
-
-  std::lock_guard<std::mutex> l(mu_);
-  ros_writer_.Write(global_pose_topic_, t_us, m);
+void Datalogger::LogVideoFrame(int64_t t_us, const ros::sensor_msgs::Image& m) {
+  QMsg(img_topic_, t_us, m);
 }
 
-void Datalogger::LogEscSteer(int64_t t_us, float esc, float steer) {
-  std_msgs__Float32 esc_m, steer_m;
-  esc_m.data(esc);
-  steer_m.data(steer);
+void Datalogger::LogGlobalPose(int64_t t_us,
+                               const ros::geometry_msgs::PoseStamped& m) {
+  QMsg(global_pose_topic_, t_us, m);
+}
 
-  std::lock_guard<std::mutex> l(mu_);
-  ros_writer_.Write(esc_topic_, t_us, esc_m);
-  ros_writer_.Write(steer_topic_, t_us, steer_m);
+void Datalogger::LogDriverLog(int64_t t_us, const zoomies::DriverLog& m) {
+  QMsg(driver_log_topic_, t_us, m);
 }
 
 void Datalogger::LogRacingPath(int64_t t_us,
                                const std::vector<RacingPath::PathPoint>& path) {
-  nav_msgs__Path m;
-  m.header().stamp() = MicrosToRos(t_us);
-  m.header().frame_id("/map");
+  ros::nav_msgs::Path m;
+  *m.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+  m.mutable_header()->set_frame_id("/map");
 
   for (const auto& p : path) {
-    auto& pose = m.poses().emplace_back();
-    auto& pos = pose.pose().position();
-    pos.x(p.x);
-    pos.y(p.y);
-    pose.pose().orientation(HeadingToQuat(p.heading));
+    auto& pose = *m.add_poses();
+    auto& pos = *pose.mutable_pose()->mutable_position();
+    pos.set_x(p.x);
+    pos.set_y(p.y);
+    *pose.mutable_pose()->mutable_orientation() = HeadingToQuat(p.heading);
   }
 
-  std::lock_guard<std::mutex> l(mu_);
-  ros_writer_.Write(racing_path_topic_, t_us, m);
+  QMsg(racing_path_topic_, t_us, m);
 }
 
 void Datalogger::LogRacingPathClosestPt(int64_t t_us, float car_x, float car_y,
                                         float px, float py, bool is_right) {
-  visualization_msgs__Marker m;
-  m.header().stamp() = MicrosToRos(t_us);
-  m.header().frame_id("/map");
+  ros::visualization_msgs::Marker m;
+  *m.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+  m.mutable_header()->set_frame_id("/map");
 
-  m.ns("motion_plan");
-  m.id(0);
+  m.set_ns("motion_plan");
+  m.set_id(0);
 
-  m.type(4);  // line strip
-  m.action(0);
+  m.mutable_pose()->mutable_position();
+  m.mutable_pose()->mutable_orientation();
+  m.mutable_scale();
+  m.mutable_color();
 
-  m.scale().x(0.1);
-  m.scale().y(0.1);
-  m.scale().z(0.1);
+  m.set_type(4);  // line strip
+  m.set_action(0);
 
-  std_msgs__ColorRGBA color;
-  color.a(1.0f);
+  m.mutable_scale()->set_x(0.1);
+  m.mutable_scale()->set_y(0.1);
+  m.mutable_scale()->set_z(0.1);
+
+  ros::std_msgs::ColorRGBA color;
+  color.set_a(1.0f);
   if (is_right) {
-    color.r(1.0f);
+    color.set_r(1.0f);
   } else {
-    color.g(1.0f);
+    color.set_g(1.0f);
   }
   {
-    auto& car = m.points().emplace_back();
-    m.colors().push_back(color);
-    car.x(car_x);
-    car.y(car_y);
+    auto& car = *m.add_points();
+    *m.add_colors() = color;
+    car.set_x(car_x);
+    car.set_y(car_y);
   }
 
   {
-    auto& p = m.points().emplace_back();
-    m.colors().push_back(color);
-    p.x(px);
-    p.y(py);
+    auto& p = *m.add_points();
+    *m.add_colors() = color;
+    p.set_x(px);
+    p.set_y(py);
   }
 
-  std::lock_guard<std::mutex> l(mu_);
-  ros_writer_.Write(racing_path_closet_pt_topic_, t_us, m);
+  QMsg(racing_path_closet_pt_topic_, t_us, m);
 }

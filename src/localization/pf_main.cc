@@ -9,13 +9,15 @@
 #include "common/color.h"
 #include "localization/localization_util.h"
 #include "localization/pf.h"
+#include "mcap/reader.hpp"
 #include "ros/ros_types.h"
 #include "ros/ros_util.h"
 #include "ros/ros_writer.h"
 #include "spdlog/cfg/env.h"
 #include "spdlog/fmt/ostr.h"
 #include "spdlog/spdlog.h"
-#include "sqlite/sqlite3.h"
+#include "zoomies/zoomies.pb.h"
+#include "ros/sensor_msgs/Image.pb.h"
 
 namespace {
 
@@ -24,100 +26,6 @@ constexpr int kImageHeight = 480;
 constexpr float kCeilHeight = 2.5f;
 constexpr int kNumParticles = 300;
 constexpr float kCameraHeight = 0.095f;
-
-void sCheck(int rc, std::string_view msg, sqlite3* db) {
-  if (rc) {
-    const char* err_msg = sqlite3_errmsg(db);
-    spdlog::warn("sqlite {} {}: {}", msg, sqlite3_errstr(rc), err_msg);
-    throw std::runtime_error("sqlite error");
-  }
-}
-
-class ImageIter {
- public:
-  struct Row {
-    int64_t t_us;
-    std::vector<uint8_t> image;
-  };
-
-  ImageIter(sqlite3* db) : db_(db) {}
-  ~ImageIter() { sCheck(sqlite3_finalize(stmt_), "finalize vid sql", db_); }
-
-  void Init() {
-    sCheck(
-        sqlite3_prepare_v2(db_, "SELECT t_us, data FROM videos ORDER BY t_us",
-                           -1, &stmt_, nullptr),
-        "video sql", db_);
-  }
-
-  bool Next() {
-    int rc = sqlite3_step(stmt_);
-    if (rc == SQLITE_DONE) return false;
-    if (rc != SQLITE_ROW) {
-      sCheck(rc, "image iter next", db_);
-      return false;
-    }
-
-    row_.t_us = sqlite3_column_int64(stmt_, 0);
-
-    row_.image.resize(sqlite3_column_bytes(stmt_, 1));
-    memcpy(row_.image.data(), sqlite3_column_blob(stmt_, 1), row_.image.size());
-    return true;
-  }
-
-  const Row& row() { return row_; }
-
- private:
-  sqlite3* db_;
-  sqlite3_stmt* stmt_ = nullptr;
-
-  Row row_;
-};
-
-class DataIter {
- public:
-  struct Row {
-    int64_t t_us;
-    float odo_dist_delta;
-    float odo_heading_delta;
-    float imu_rot_z;
-  };
-
-  DataIter(sqlite3* db) : db_(db) {}
-  ~DataIter() { sCheck(sqlite3_finalize(stmt_), "finalize data sql", db_); }
-
-  void Init() {
-    sCheck(sqlite3_prepare_v2(db_,
-                              "SELECT t_us, odo_dist_delta, odo_heading_delta, "
-                              "imu_rot_z FROM data ORDER BY t_us",
-                              -1, &stmt_, nullptr),
-           "data sql", db_);
-  }
-
-  bool Next() {
-    int rc = sqlite3_step(stmt_);
-    if (rc == SQLITE_DONE) return false;
-    if (rc != SQLITE_ROW) {
-      sCheck(rc, "image iter next", db_);
-      return false;
-    }
-
-    row_.t_us = sqlite3_column_int64(stmt_, 0);
-    row_.odo_dist_delta = sqlite3_column_double(stmt_, 1);
-    row_.odo_heading_delta = sqlite3_column_double(stmt_, 2);
-    row_.imu_rot_z = sqlite3_column_double(stmt_, 3);
-
-    return true;
-  }
-
-  const Row& row() { return row_; }
-
- private:
-  sqlite3* db_;
-  sqlite3_stmt* stmt_ = nullptr;
-
-  Row row_;
-};
 
 class MapMaker {
  public:
@@ -134,7 +42,8 @@ class MapMaker {
         max_y_(max_y),
         map_width_((max_x - min_x) / resolution + 1),
         map_height_((max_y - min_y) / resolution + 1),
-        map_(map_width_ * map_height_ * 3) {
+        map_(map_width_ * map_height_ * 3),
+        dist_(map_width_ * map_height_, 100.0f) {
     floor_mask_.resize(cam_width_ * cam_height_);
 
     std::ifstream f(floor_mask_file, std::ios::in | std::ios::binary);
@@ -159,6 +68,7 @@ class MapMaker {
         uint8_t ib = img[img_idx + 2];
 
         Eigen::Vector2f floor_pos = camera_model_.Lookup(u, v) * kCameraHeight;
+        float nd = floor_pos.norm();
         floor_pos = t * floor_pos;
         int idx = index(floor_pos.x(), floor_pos.y());
         auto& r = map_[idx];
@@ -172,9 +82,12 @@ class MapMaker {
           continue;
         }
 
-        r = 0.9 * ir + 0.1 * r;
-        g = 0.9 * ig + 0.1 * g;
-        b = 0.9 * ib + 0.1 * b;
+        float& dist = dist_[idx / 3];
+        float od = dist;
+        r = (od * ir + nd * r) / (od + nd);
+        g = (od * ig + nd * g) / (od + nd);
+        b = (od * ib + nd * b) / (od + nd);
+        dist = (2 * od * nd) / (od + nd);
       }
     }
   }
@@ -207,6 +120,7 @@ class MapMaker {
   int map_height_;
 
   std::vector<uint8_t> map_;
+  std::vector<float> dist_;
 };
 
 class Localizer {
@@ -336,7 +250,7 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
     ros_writer_->Write(img_rgb_topic_, t_us, ros_img);
   }
 
-  if (t_us > last_floormap_us_ + 100000) {
+  if (t_us > last_floormap_us_ + 500000) {
     last_floormap_us_ = t_us;
 
     sensor_msgs__Image ros_img;
@@ -471,14 +385,14 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
 
 void Localizer::OdoFrame(int64_t t_us, float odo_dist_delta,
                          float odo_heading_delta, float imu_rot_z) {
-  spdlog::debug("odo frame t:{} dist_d:{} heading_d:{}", t_us, odo_dist_delta,
-                odo_heading_delta);
+  spdlog::info("odo frame t:{} dist_d:{} heading_d:{}", t_us, odo_dist_delta,
+               odo_heading_delta);
 
   motions_.push_back({
       .delta_dist = odo_dist_delta,
       .delta_heading = odo_heading_delta,
       .stddev_dist = std::max(0.1f * odo_dist_delta, 0.03f * 0.01f),
-      .stddev_heading = std::max(0.2f * odo_heading_delta, 0.1f * 0.01f),
+      .stddev_heading = std::max(fabsf(0.3f * odo_heading_delta), 0.1f * 0.01f),
   });
 }
 
@@ -487,54 +401,49 @@ void Localizer::OdoFrame(int64_t t_us, float odo_dist_delta,
 int main() {
   spdlog::cfg::load_env_levels();
 
-  sqlite3* db = nullptr;
-
-  sCheck(sqlite3_open("/home/danchia/data.db3", &db), "open", db);
+  std::ifstream input("/home/danchia/log.mcap", std::ios::binary);
+  mcap::FileStreamReader dataSource(input);
+  mcap::McapReader reader;
+  auto status = reader.open(dataSource);
+  if (!status.ok()) {
+    spdlog::warn("{}", status.message);
+    return -1;
+  }
+  auto onProblem = [](const mcap::Status& problem) {
+    spdlog::warn("! {}", problem.message);
+  };
+  auto messages = reader.readMessages(onProblem);
 
   Localizer localizer;
 
-  {
-    ImageIter img_iter(db);
-    img_iter.Init();
-    DataIter data_iter(db);
-    data_iter.Init();
+  int images = 0;
+  int datas = 0;
 
-    int images = 0;
-    int datas = 0;
-    bool data_iter_done = false;
-
-    data_iter.Next();  // Should have at least one data frame, right ;)
-    while (img_iter.Next()) {
-      int64_t target_t = img_iter.row().t_us;
-      int64_t last_datas = datas;
-
-      if (target_t > 5500000) break;
-
-      while (true) {
-        const auto& row = data_iter.row();
-        if (row.t_us > target_t + 5000) break;
-
-        ++datas;
-        localizer.OdoFrame(row.t_us, row.odo_dist_delta, row.odo_heading_delta,
-                           row.imu_rot_z);
-
-        data_iter_done = !data_iter.Next();
-        if (data_iter_done) break;
+  for (const auto& msgView : messages) {
+    const mcap::Channel& channel = *msgView.channel;
+    if (channel.topic == "/camera1/raw") {
+      ros::sensor_msgs::Image m;
+      if (!m.ParseFromArray(msgView.message.data, msgView.message.dataSize)) {
+        spdlog::warn("parse error for {}", channel.topic);
       }
-      if (data_iter_done) break;
-
+      std::vector<uint8_t> img(m.data().begin(), m.data().end());
+      int64_t t_us = msgView.message.publishTime;
+      t_us /= int64_t{1000};
+      localizer.VideoFrame(t_us, img);
       ++images;
-      if (datas == last_datas) {
-        spdlog::warn("Skipping vid frame {} us due to no data frames",
-                     img_iter.row().t_us);
-        continue;
+    } else if (channel.topic == "/driver/state") {
+      zoomies::DriverLog m;
+      if (!m.ParseFromArray(msgView.message.data, msgView.message.dataSize)) {
+        spdlog::warn("parse error for {}", channel.topic);
       }
-      localizer.VideoFrame(img_iter.row().t_us, img_iter.row().image);
+      int64_t t_us = msgView.message.publishTime;
+      t_us /= int64_t{1000};
+      localizer.OdoFrame(t_us, m.dist_delta(), m.heading_delta(),
+                         m.imu_rotation().z());
+      ++datas;
     }
-
-    spdlog::info("Processed {} image, {} data frames", images, datas);
   }
-  sqlite3_close(db);
+  spdlog::info("Processed {} image, {} data frames", images, datas);
 
   return 0;
 }

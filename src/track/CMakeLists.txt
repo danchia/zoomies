@@ -1,5 +1,5 @@
 add_library(track track.cc)
-target_link_libraries(track spdlog::spdlog)
+target_link_libraries(track CONAN_PKG::spdlog)
 
 enable_testing()
 

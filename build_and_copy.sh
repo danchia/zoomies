@@ -1,4 +1,3 @@
 set -e 
-cmake --build . -t driver -j
-scp driver/driver pi@rpi:/home/pi/car/driver
-#scp hw/camera_test pi@rpi:/home/pi/car/camera_test
+cmake --build . -t driver -j6
+scp bin/driver pi@rpi:/home/pi/car/driver

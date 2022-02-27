@@ -15,13 +15,16 @@
 #include "g2o/types/slam2d/vertex_point_xy.h"
 #include "g2o/types/slam2d/vertex_se2.h"
 #include "localization/localization_util.h"
+#include "mcap/reader.hpp"
+#include "proto/proto_util.h"
 #include "ros/ros_types.h"
 #include "ros/ros_util.h"
 #include "ros/ros_writer.h"
+#include "ros/sensor_msgs/Image.pb.h"
 #include "spdlog/cfg/env.h"
 #include "spdlog/fmt/ostr.h"
 #include "spdlog/spdlog.h"
-#include "sqlite/sqlite3.h"
+#include "zoomies/zoomies.pb.h"
 
 namespace {
 
@@ -30,100 +33,6 @@ constexpr float kLightAssocDist = 0.5f;
 constexpr int kImageWidth = 640;
 constexpr int kImageHeight = 480;
 constexpr int kImageNoisePixels = 10;
-
-void sCheck(int rc, std::string_view msg, sqlite3* db) {
-  if (rc) {
-    const char* err_msg = sqlite3_errmsg(db);
-    spdlog::warn("sqlite {} {}: {}", msg, sqlite3_errstr(rc), err_msg);
-    throw std::runtime_error("sqlite error");
-  }
-}
-
-class ImageIter {
- public:
-  struct Row {
-    int64_t t_us;
-    std::vector<uint8_t> image;
-  };
-
-  ImageIter(sqlite3* db) : db_(db) {}
-  ~ImageIter() { sCheck(sqlite3_finalize(stmt_), "finalize vid sql", db_); }
-
-  void Init() {
-    sCheck(
-        sqlite3_prepare_v2(db_, "SELECT t_us, data FROM videos ORDER BY t_us",
-                           -1, &stmt_, nullptr),
-        "video sql", db_);
-  }
-
-  bool Next() {
-    int rc = sqlite3_step(stmt_);
-    if (rc == SQLITE_DONE) return false;
-    if (rc != SQLITE_ROW) {
-      sCheck(rc, "image iter next", db_);
-      return false;
-    }
-
-    row_.t_us = sqlite3_column_int64(stmt_, 0);
-
-    row_.image.resize(sqlite3_column_bytes(stmt_, 1));
-    memcpy(row_.image.data(), sqlite3_column_blob(stmt_, 1), row_.image.size());
-    return true;
-  }
-
-  const Row& row() { return row_; }
-
- private:
-  sqlite3* db_;
-  sqlite3_stmt* stmt_ = nullptr;
-
-  Row row_;
-};
-
-class DataIter {
- public:
-  struct Row {
-    int64_t t_us;
-    float odo_dist_delta;
-    float odo_heading_delta;
-    float imu_rot_z;
-  };
-
-  DataIter(sqlite3* db) : db_(db) {}
-  ~DataIter() { sCheck(sqlite3_finalize(stmt_), "finalize data sql", db_); }
-
-  void Init() {
-    sCheck(sqlite3_prepare_v2(db_,
-                              "SELECT t_us, odo_dist_delta, odo_heading_delta, "
-                              "imu_rot_z FROM data ORDER BY t_us",
-                              -1, &stmt_, nullptr),
-           "data sql", db_);
-  }
-
-  bool Next() {
-    int rc = sqlite3_step(stmt_);
-    if (rc == SQLITE_DONE) return false;
-    if (rc != SQLITE_ROW) {
-      sCheck(rc, "image iter next", db_);
-      return false;
-    }
-
-    row_.t_us = sqlite3_column_int64(stmt_, 0);
-    row_.odo_dist_delta = sqlite3_column_double(stmt_, 1);
-    row_.odo_heading_delta = sqlite3_column_double(stmt_, 2);
-    row_.imu_rot_z = sqlite3_column_double(stmt_, 3);
-
-    return true;
-  }
-
-  const Row& row() { return row_; }
-
- private:
-  sqlite3* db_;
-  sqlite3_stmt* stmt_ = nullptr;
-
-  Row row_;
-};
 
 class SLAM {
  public:
@@ -509,54 +418,52 @@ SLAM::Result SLAM::Finish() {
 int main() {
   spdlog::cfg::load_env_levels();
 
-  sqlite3* db = nullptr;
-
-  sCheck(sqlite3_open("/home/danchia/data.db3", &db), "open", db);
+  std::ifstream input("/home/danchia/log.mcap", std::ios::binary);
+  mcap::FileStreamReader dataSource(input);
+  mcap::McapReader reader;
+  auto status = reader.open(dataSource);
+  if (!status.ok()) {
+    spdlog::warn("{}", status.message);
+    return -1;
+  }
+  auto onProblem = [](const mcap::Status& problem) {
+    spdlog::warn("! {}", problem.message);
+  };
+  auto messages = reader.readMessages(onProblem);
 
   SLAM slam;
 
-  {
-    ImageIter img_iter(db);
-    img_iter.Init();
-    DataIter data_iter(db);
-    data_iter.Init();
+  int images = 0;
+  int datas = 0;
 
-    int images = 0;
-    int datas = 0;
-    bool data_iter_done = false;
-
-    data_iter.Next();  // Should have at least one data frame, right ;)
-    while (img_iter.Next()) {
-      int64_t target_t = img_iter.row().t_us;
-      int64_t last_datas = datas;
-
-      if (target_t > 5500000) break;
-
-      while (true) {
-        const auto& row = data_iter.row();
-        if (row.t_us > target_t + 5000) break;
-
-        ++datas;
-        slam.OdoFrame(row.t_us, row.odo_dist_delta, row.odo_heading_delta,
-                      row.imu_rot_z);
-
-        data_iter_done = !data_iter.Next();
-        if (data_iter_done) break;
+  for (const auto& msgView : messages) {
+    const mcap::Channel& channel = *msgView.channel;
+    if (channel.topic == "/camera1/raw") {
+      ros::sensor_msgs::Image m;
+      if (!m.ParseFromArray(msgView.message.data, msgView.message.dataSize)) {
+        spdlog::warn("parse error for {}", channel.topic);
       }
-      if (data_iter_done) break;
+      std::vector<uint8_t> img(m.data().begin(), m.data().end());
+      int64_t t_us = msgView.message.publishTime;
+      t_us /= int64_t{1000};
+      slam.VideoFrame(t_us, img);
+
+      if (t_us > 30000000) break;
 
       ++images;
-      if (datas == last_datas) {
-        spdlog::warn("Skipping vid frame {} us due to no data frames",
-                     img_iter.row().t_us);
-        continue;
+    } else if (channel.topic == "/driver/state") {
+      zoomies::DriverLog m;
+      if (!m.ParseFromArray(msgView.message.data, msgView.message.dataSize)) {
+        spdlog::warn("parse error for {}", channel.topic);
       }
-      slam.VideoFrame(img_iter.row().t_us, img_iter.row().image);
+      int64_t t_us = msgView.message.publishTime;
+      t_us /= int64_t{1000};
+      slam.OdoFrame(t_us, m.dist_delta(), m.heading_delta(),
+                    m.imu_rotation().z());
+      ++datas;
     }
-
-    spdlog::info("Processed {} image, {} data frames", images, datas);
   }
-  sqlite3_close(db);
+  spdlog::info("Processed {} image, {} data frames", images, datas);
 
   auto result = slam.Finish();
 

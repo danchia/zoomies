@@ -29,7 +29,7 @@ float normAngle(float x);
 
 class CameraModel {
  public:
-  CameraModel(int width, int height, std::string_view lut_file);
+  CameraModel(int width, int height, const std::string& lut_file);
   Eigen::Vector2f Lookup(int u, int v) const {
     int idx = u + v * width_;
     return Eigen::Vector2f{camera_lut_[idx * 2], camera_lut_[idx * 2 + 1]};

@@ -9,15 +9,12 @@
 #include "spdlog/spdlog.h"
 
 namespace {
+const float kMaxLightDist = 1.2f;
 const float kNoDetectionProb = logf(0.1f);
-}
+}  // namespace
 
 ParticleFilter::UpdateResult ParticleFilter::Update(
     const std::vector<Motion>& motion, const std::vector<Landmark>& landmarks) {
-  // TODO: our heading representation isn't canonicalized right now.
-  // If the robot rotates enough times around in one direction, we'll loose
-  // precision. Fixing is not simple though - we have to fix how we're averaging
-  // heading.
   for (const auto& m : motion) {
     for (auto& state : states_) {
       float dist_delta = stats::rnorm(m.delta_dist, m.stddev_dist, rand_gen_);
@@ -43,8 +40,11 @@ ParticleFilter::UpdateResult ParticleFilter::Update(
         if (c_dist < dist) dist = c_dist;
       }
       dist = sqrtf(dist);
-      log_p +=
-          std::max(kNoDetectionProb, logf(stats::dnorm(dist, 0.0f, lm.stddev)));
+      if (dist >= kMaxLightDist) {
+        log_p += kNoDetectionProb;
+      } else {
+        log_p += stats::dnorm(dist, 0.0f, lm.stddev, /*log_form=*/true);
+      }
     }
     weights_[i] = log_p;
   }
@@ -52,18 +52,24 @@ ParticleFilter::UpdateResult ParticleFilter::Update(
   Resample();
 
   UpdateResult res;
-  Eigen::Vector3f K = states_[0];
-  Eigen::Vector3f Ex = Eigen::Vector3f::Zero();
-  Eigen::Vector3f Ex2 = Eigen::Vector3f::Zero();
+  auto& state0 = states_[0];
+  Eigen::Vector4f K = {state0.x(), state0.y(), cosf(state0.z()),
+                       sinf(state0.z())};
+  Eigen::Vector4f Ex = Eigen::Vector4f::Zero();
+  Eigen::Vector4f Ex2 = Eigen::Vector4f::Zero();
 
   for (const auto& s : states_) {
-    auto diff = s - K;
+    Eigen::Vector4f st = {s.x(), s.y(), cosf(s.z()), sinf(s.z())};
+    Eigen::Vector4f diff = st - K;
     Ex += diff;
-    Ex2 += Eigen::Vector3f(diff.array().square());
+    Ex2 += Eigen::Vector4f(diff.array().square());
   }
 
-  res.pose = Ex / num_particles_ + states_[0];
-  res.variance = Ex2 / num_particles_;
+  Ex = Ex / num_particles_ + K;
+  res.pose = {Ex.x(), Ex.y(), atan2f(Ex.w(), Ex.z())};
+  Ex2 /= num_particles_;
+  // Variance of the heading is probably rubbish...
+  res.variance = {Ex2.x(), Ex2.y(), Ex2.z() + Ex2.w()};
   return res;
 }
 

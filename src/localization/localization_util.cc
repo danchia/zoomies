@@ -7,7 +7,8 @@
 
 namespace {
 
-constexpr int kImageNoisePixels = 10;
+constexpr float kLightMinStddev = 0.3f;
+constexpr float kLightDistFactor = 0.15f;
 
 struct ImgPoint {
   int u = 0;
@@ -120,11 +121,10 @@ std::ostream& operator<<(std::ostream& os, const Rect& rect) {
   return os;
 }
 
-CameraModel::CameraModel(int width, int height, std::string_view lut_file)
+CameraModel::CameraModel(int width, int height, const std::string& lut_file)
     : width_(width), height_(height) {
   camera_lut_.resize(width_ * height_ * 2);
-  std::ifstream f("../data/calib/camera_lut.bin",
-                  std::ios::in | std::ios::binary);
+  std::ifstream f(lut_file, std::ios::in | std::ios::binary);
   if (!f.good()) throw std::runtime_error("error opening lut");
   f.read(reinterpret_cast<char*>(camera_lut_.data()), width_ * height_ * 2 * 4);
   if (!f) throw std::runtime_error("error while reading lut");
@@ -180,20 +180,9 @@ std::vector<LightFinder::Light> LightFinder::Find(
     l.u = u;
     l.v = v;
     l.pos = camera_model_.Lookup(u, v) * ceiling_height_;
-    float d = 0.1f;
-    for (int u_p = -kImageNoisePixels; u_p <= kImageNoisePixels;
-         u_p += kImageNoisePixels) {
-      for (int v_p = -kImageNoisePixels; v_p <= kImageNoisePixels;
-           v_p += kImageNoisePixels) {
-        if (u_p == 0 && v_p == 0) continue;
-        int nu = std::clamp(u + u_p, 0, width_ - 1);
-        int nv = std::clamp(v + v_p, 0, height_ - 1);
-        auto pt = camera_model_.Lookup(nu, nv);
-        float d_cand = (pt - l.pos).norm();
-        if (d_cand > d) d = d_cand;
-      }
-    }
-    l.pos_variance = d * d;
+    l.pos_variance =
+        std::max(kLightMinStddev * kLightMinStddev,
+                 l.pos.squaredNorm() * kLightDistFactor * kLightDistFactor);
   }
 
   return lights;
