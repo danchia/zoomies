@@ -27,4 +27,4 @@ while t < 2*math.pi:
     pts.append(pt)
     t += t_inc
 
-serde.write(r'C:\tmp\car\path.bin', 0.05, pts)
+serde.write(r'C:\tmp\car\path.bin', 0.05, 9.81, pts)
