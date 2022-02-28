@@ -14,12 +14,14 @@ class Track:
         self.u = u
         self.tck = tck
         self.pts = splev(u, tck)
+        # S[idx] == distance between pt at idx, and previous point.
         self.S = [0.0]
         for idx in range(1, len(self.pts[0])):
-            x, y = pts[0][idx], pts[1][idx]
-            px, py = pts[0][idx-1], pts[1][idx-1]
+            x, y = self.pts[0][idx], self.pts[1][idx]
+            px, py = self.pts[0][idx-1], self.pts[1][idx-1]
             s = math.sqrt((x-px)**2 + (y-py)**2)
             self.S.append(s)
+        self.S[0] = self.S[-1]
         self.total_s = sum(self.S)
 
         pts_d = splev(u, tck, der=1)
