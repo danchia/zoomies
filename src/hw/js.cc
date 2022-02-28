@@ -35,7 +35,7 @@ void JS::ReadLoop() {
   while (!done_.load(std::memory_order_relaxed)) {
     while (read(fd_, &e, sizeof(e)) == sizeof(e)) {
       if (e.type & JS_EVENT_AXIS) {
-        if (e.number == 4) {
+        if (e.number == 5) {
           s.accel = (e.value / 32767.0f) / 2.0f + 0.5f;
         }
         if (e.number == 0) {
@@ -49,7 +49,7 @@ void JS::ReadLoop() {
         if (e.number == 0) {
           s.a_btn = e.value > 0;
         }
-        if (e.number == 4) {
+        if (e.number == 3) {
           s.y_btn = e.value > 0;
         }
       }

@@ -1,2 +1,0 @@
-add_compile_definitions(SQLITE_OMIT_LOAD_EXTENSION)
-add_library(sqlite3 sqlite3.c)

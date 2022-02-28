@@ -17,9 +17,6 @@ include_directories(.)
 add_subdirectory(eigen)
 include_directories(eigen)
 
-add_subdirectory(Fast-CDR)
-include_directories(Fast-CDR/include)
-
 include_directories(stats/include)
 include_directories(gcem/include)
 
@@ -33,8 +30,6 @@ include_directories(googletest/googletest/include)
 include_directories(googletest/googlemock/include)
 add_subdirectory(googletest)
 
-add_subdirectory(sqlite)
-
 set(LIBRARY_TYPE STATIC)
 add_subdirectory(userland)
 include_directories(userland)
@@ -46,7 +41,6 @@ add_subdirectory(common)
 include_directories(mcap/mcap/cpp/mcap/include)
 add_subdirectory(mcap)
 add_subdirectory(track)
-add_subdirectory(ros)
 add_subdirectory(hw)
 add_subdirectory(localization)
 add_subdirectory(driver)
