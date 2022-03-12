@@ -17,7 +17,7 @@ constexpr int kImageHeight = 480;
 constexpr float kCeilHeight = 2.5f;
 
 constexpr float kSteerTrim = 0.0f;
-constexpr bool kSkipWaitJs = true;
+constexpr bool kSkipWaitJs = false;
 constexpr int64_t kLoopPeriodMicros = 10000;
 
 }  // namespace

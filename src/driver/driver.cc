@@ -28,6 +28,7 @@ constexpr int kVideoWidth = 640;
 constexpr int kVideoHeight = 480;
 
 constexpr bool kLogVideo = true;
+constexpr int kVideoLogInterval = 10;
 
 float MotorTickPeriodToMetersPerSecond(uint16_t p) {
   if (p == 0) return 0.0f;
@@ -53,7 +54,9 @@ void Driver::OnCameraTick(int64_t t_us, uint8_t* buf, int len) {
   int64_t loop_tick = ticks_.load(std::memory_order_relaxed);
   if (loop_tick <= 0) return;
 
-  if (kLogVideo) {
+  ++vid_frame_;
+
+  if (kLogVideo && vid_frame_ % kVideoLogInterval == 0) {
     img_msg_.Clear();
     // A bit hacky, but we'll send the whole YUV420 image which technically
     // isn't supported, but we'll advertise it as a smaller mono8 image.
@@ -125,10 +128,10 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   if (kManualDrive) {
     state.desired_fwd_vel_ = js_state.accel > 0 ? js_state.accel * 1.5f : 0.0f;
   } else {
-    if (prev_state_.racing_path_dist_ + state.dist_delta >
-        racing_path_.total_length()) {
-      return Done();
-    }
+    // if (prev_state_.racing_path_dist_ + state.dist_delta >
+    //     racing_path_.total_length()) {
+    //   return Done();
+    // }
     DoFollowRacingPath(t_us, dt, state);
   }
 
@@ -200,6 +203,20 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   };
 }
 
+namespace {
+// h2 releative to h1. Positive means H2 is left turn relative to H1.
+// hand turn.
+double HeadingDiff(double h1, double h2) {
+  double left = h2 - h1;
+  double right = h1 - h2;
+  if (left < 0) left += 2.0 * M_PI;
+  if (right < 0) right += 2.0 * M_PI;
+
+  return left < right ? left : -right;
+}
+
+}  // namespace
+
 void Driver::DoFollowRacingPath(int64_t t_us, float dt, State& state) {
   float s_guess = prev_state_.racing_path_dist_ + state.dist_delta;
 
@@ -218,8 +235,8 @@ void Driver::DoFollowRacingPath(int64_t t_us, float dt, State& state) {
       std::min(path_info.velocity,
                prev_state_.desired_fwd_vel_ + racing_path_.max_accel() * dt);
 
-  constexpr float lane_gain = 2.0f;
-  float delta_heading = path_info.heading - state.heading;
+  constexpr float lane_gain = 1.5f;
+  float delta_heading = HeadingDiff(state.heading, path_info.heading);
   float lane =
       atan2f32(lane_gain * path_info.dist_to_closest, state.desired_fwd_vel_);
   float delta = delta_heading + lane;
@@ -243,10 +260,9 @@ float Driver::CalculateLongitudinalControl(State& state) {
     fwd_vel_accel_e_i_ = 0.0f;
     fwd_vel_decel_e_i_ = 0.8f * fwd_vel_decel_e_i_ + e;
     float feed_forward =
-        (state.desired_fwd_vel_ - prev_state_.desired_fwd_vel_) * 8.0f;
-    float esc = feed_forward + e * 0.6f + fwd_vel_decel_e_i_ * 0.15f;
-    return std::clamp(esc, -1.0f, 0.0f);
-    return esc;
+        (state.desired_fwd_vel_ - prev_state_.desired_fwd_vel_) * 1.0f;
+    float esc = feed_forward + e * 0.3f + fwd_vel_decel_e_i_ * 0.03f;
+    return std::clamp(esc, -1.0f, 0.5f);
   }
 
   float e = state.desired_fwd_vel_ - state.fwd_vel;
@@ -261,15 +277,16 @@ float Driver::CalculateLongitudinalControl(State& state) {
 
 float Driver::CalculateLateralControl(State& state) {
   float e = state.desired_angular_vel_ - state.angular_vel;
-  angular_vel_e_i_ = 0.8f * angular_vel_e_i_ + e;
+  angular_vel_e_i_ = 0.75f * angular_vel_e_i_ + e;
 
   // Fitted data gives: 3E-03 + 0.516x + -0.0673x^2
   float ov = (state.desired_fwd_vel_ > 0.1f)
                  ? state.desired_angular_vel_ / state.desired_fwd_vel_
                  : 0.0f;
   float feedforward = 0.516f * ov - 0.0673f * ov * ov;
-  float steer = feedforward + 0.25f * e -
-                0.002f * (state.angular_vel - prev_state_.angular_vel);
+  float steer =
+      feedforward + 0.05f * e -
+      0.005f * (state.desired_angular_vel_ - prev_state_.desired_angular_vel_);
   return std::clamp(steer, -1.0f, 1.0f);
 }
 

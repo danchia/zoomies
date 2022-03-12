@@ -56,6 +56,7 @@ class Driver {
   float CalculateLateralControl(State& state);
 
   std::atomic<int64_t> ticks_;
+  int64_t vid_frame_ = 0;
   Datalogger& datalogger_;
   RacingPath& racing_path_;
   Localizer& localizer_;
