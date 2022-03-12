@@ -24,7 +24,11 @@ RacingPath::PathInfo RacingPath::GetPathInfo(float s_guess, float x, float y,
     s_guess -= total_length_;
   }
 
-  int idx_guess = static_cast<int>(s_guess / segment_length_);
+  // int idx_guess = static_cast<int>(s_guess / segment_length_);
+  int idx_guess = 0;
+  while (idx_guess + 1 < path_.size() && path_[idx_guess + 1].s < s_guess) {
+    ++idx_guess;
+  }
   int search_offset = search_dist / segment_length_;
 
   PathInfo result;
@@ -77,8 +81,6 @@ RacingPath::RacingPath(std::string_view fs_path) {
   f.read(reinterpret_cast<char*>(&segment_length_), sizeof(segment_length_));
   f.read(reinterpret_cast<char*>(&max_accel_), sizeof(max_accel_));
 
-  total_length_ = n_segments * segment_length_;
-
   for (int32_t i = 0; i < n_segments; ++i) {
     f.read(reinterpret_cast<char*>(scratch), 5 * sizeof(scratch[0]));
     path_.push_back(
@@ -90,8 +92,10 @@ RacingPath::RacingPath(std::string_view fs_path) {
     throw std::runtime_error("racing path");
   }
 
+  total_length_ = path_.back().s;
+
   f.close();
 
-  spdlog::info("Loaded path, total dist {}m, {} segments", total_length_,
-               path_.size());
+  spdlog::info("Loaded path, total dist {}m, {} segments, max accel {}",
+               total_length_, path_.size(), max_accel_);
 }

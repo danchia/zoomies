@@ -31,7 +31,7 @@ class RacingPath {
   RacingPath(std::string_view fs_path);
 
   PathInfo GetPathInfo(float s_guess, float x, float y,
-                       float search_dist = 0.10f) const;
+                       float search_dist = 0.30f) const;
   float total_length() const { return total_length_; }
   float max_accel() const { return max_accel_; }
 
