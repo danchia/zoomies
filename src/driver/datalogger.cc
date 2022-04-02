@@ -22,6 +22,8 @@ Datalogger::Datalogger(const std::string& path)
   racing_path_closet_pt_topic_ =
       writer_->AddChannel("/motion_planner/closest_point",
                           ros::visualization_msgs::Marker::descriptor());
+  motion_plan_topic_ = writer_->AddChannel("/motion_planner/plan",
+                                           zoomies::MotionPlan::descriptor());
   driver_log_topic_ =
       writer_->AddChannel("/driver/state", zoomies::DriverLog::descriptor());
 
@@ -148,4 +150,8 @@ void Datalogger::LogRacingPathClosestPt(int64_t t_us, float car_x, float car_y,
   }
 
   QMsg(racing_path_closet_pt_topic_, t_us, m);
+}
+
+void Datalogger::LogMotionPlan(int64_t t_us, const zoomies::MotionPlan& m) {
+  QMsg(motion_plan_topic_, t_us, m);
 }

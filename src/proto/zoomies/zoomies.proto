@@ -36,3 +36,18 @@ message DriverLog {
   ros.geometry_msgs.Vector3 localizer_correction = 19;
   ros.geometry_msgs.Vector3 localizer_variance = 20;
 }
+
+message MotionPlan {
+  float path_velocity = 1;
+  float path_heading = 2;
+  float path_dist_to_closest = 9;
+
+  float desired_linear_velocity = 3;
+
+  float lane_gain = 4;
+  float delta_heading = 5;
+  float lane_delta = 6;
+  float delta = 7;
+
+  float desired_angular_velocity = 8;
+}

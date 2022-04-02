@@ -49,8 +49,28 @@ struct DriverLogDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT DriverLogDefaultTypeInternal _DriverLog_default_instance_;
+constexpr MotionPlan::MotionPlan(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : path_velocity_(0)
+  , path_heading_(0)
+  , desired_linear_velocity_(0)
+  , lane_gain_(0)
+  , delta_heading_(0)
+  , lane_delta_(0)
+  , delta_(0)
+  , desired_angular_velocity_(0)
+  , path_dist_to_closest_(0){}
+struct MotionPlanDefaultTypeInternal {
+  constexpr MotionPlanDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~MotionPlanDefaultTypeInternal() {}
+  union {
+    MotionPlan _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT MotionPlanDefaultTypeInternal _MotionPlan_default_instance_;
 }  // namespace zoomies
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_zoomies_2fzoomies_2eproto[1];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_zoomies_2fzoomies_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_zoomies_2fzoomies_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_zoomies_2fzoomies_2eproto = nullptr;
 
@@ -82,13 +102,30 @@ const uint32_t TableStruct_zoomies_2fzoomies_2eproto::offsets[] PROTOBUF_SECTION
   PROTOBUF_FIELD_OFFSET(::zoomies::DriverLog, imu_rotation_),
   PROTOBUF_FIELD_OFFSET(::zoomies::DriverLog, localizer_correction_),
   PROTOBUF_FIELD_OFFSET(::zoomies::DriverLog, localizer_variance_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, path_velocity_),
+  PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, path_heading_),
+  PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, path_dist_to_closest_),
+  PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, desired_linear_velocity_),
+  PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, lane_gain_),
+  PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, delta_heading_),
+  PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, lane_delta_),
+  PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, delta_),
+  PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, desired_angular_velocity_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::zoomies::DriverLog)},
+  { 27, -1, -1, sizeof(::zoomies::MotionPlan)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::zoomies::_DriverLog_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::zoomies::_MotionPlan_default_instance_),
 };
 
 const char descriptor_table_protodef_zoomies_2fzoomies_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -108,15 +145,21 @@ const char descriptor_table_protodef_zoomies_2fzoomies_2eproto[] PROTOBUF_SECTIO
   "msgs.Vector3\0228\n\024localizer_correction\030\023 \001"
   "(\0132\032.ros.geometry_msgs.Vector3\0226\n\022locali"
   "zer_variance\030\024 \001(\0132\032.ros.geometry_msgs.V"
-  "ector3b\006proto3"
+  "ector3\"\347\001\n\nMotionPlan\022\025\n\rpath_velocity\030\001"
+  " \001(\002\022\024\n\014path_heading\030\002 \001(\002\022\034\n\024path_dist_"
+  "to_closest\030\t \001(\002\022\037\n\027desired_linear_veloc"
+  "ity\030\003 \001(\002\022\021\n\tlane_gain\030\004 \001(\002\022\025\n\rdelta_he"
+  "ading\030\005 \001(\002\022\022\n\nlane_delta\030\006 \001(\002\022\r\n\005delta"
+  "\030\007 \001(\002\022 \n\030desired_angular_velocity\030\010 \001(\002"
+  "b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_zoomies_2fzoomies_2eproto_deps[1] = {
   &::descriptor_table_ros_2fgeometry_5fmsgs_2fVector3_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_zoomies_2fzoomies_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_zoomies_2fzoomies_2eproto = {
-  false, false, 654, descriptor_table_protodef_zoomies_2fzoomies_2eproto, "zoomies/zoomies.proto", 
-  &descriptor_table_zoomies_2fzoomies_2eproto_once, descriptor_table_zoomies_2fzoomies_2eproto_deps, 1, 1,
+  false, false, 888, descriptor_table_protodef_zoomies_2fzoomies_2eproto, "zoomies/zoomies.proto", 
+  &descriptor_table_zoomies_2fzoomies_2eproto_once, descriptor_table_zoomies_2fzoomies_2eproto_deps, 1, 2,
   schemas, file_default_instances, TableStruct_zoomies_2fzoomies_2eproto::offsets,
   file_level_metadata_zoomies_2fzoomies_2eproto, file_level_enum_descriptors_zoomies_2fzoomies_2eproto, file_level_service_descriptors_zoomies_2fzoomies_2eproto,
 };
@@ -1050,11 +1093,488 @@ void DriverLog::InternalSwap(DriverLog* other) {
       file_level_metadata_zoomies_2fzoomies_2eproto[0]);
 }
 
+// ===================================================================
+
+class MotionPlan::_Internal {
+ public:
+};
+
+MotionPlan::MotionPlan(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:zoomies.MotionPlan)
+}
+MotionPlan::MotionPlan(const MotionPlan& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::memcpy(&path_velocity_, &from.path_velocity_,
+    static_cast<size_t>(reinterpret_cast<char*>(&path_dist_to_closest_) -
+    reinterpret_cast<char*>(&path_velocity_)) + sizeof(path_dist_to_closest_));
+  // @@protoc_insertion_point(copy_constructor:zoomies.MotionPlan)
+}
+
+inline void MotionPlan::SharedCtor() {
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&path_velocity_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&path_dist_to_closest_) -
+    reinterpret_cast<char*>(&path_velocity_)) + sizeof(path_dist_to_closest_));
+}
+
+MotionPlan::~MotionPlan() {
+  // @@protoc_insertion_point(destructor:zoomies.MotionPlan)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void MotionPlan::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void MotionPlan::ArenaDtor(void* object) {
+  MotionPlan* _this = reinterpret_cast< MotionPlan* >(object);
+  (void)_this;
+}
+void MotionPlan::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void MotionPlan::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void MotionPlan::Clear() {
+// @@protoc_insertion_point(message_clear_start:zoomies.MotionPlan)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&path_velocity_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&path_dist_to_closest_) -
+      reinterpret_cast<char*>(&path_velocity_)) + sizeof(path_dist_to_closest_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* MotionPlan::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // float path_velocity = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 13)) {
+          path_velocity_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float path_heading = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
+          path_heading_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float desired_linear_velocity = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 29)) {
+          desired_linear_velocity_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float lane_gain = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 37)) {
+          lane_gain_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float delta_heading = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 45)) {
+          delta_heading_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float lane_delta = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 53)) {
+          lane_delta_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float delta = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 61)) {
+          delta_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float desired_angular_velocity = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 69)) {
+          desired_angular_velocity_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float path_dist_to_closest = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 77)) {
+          path_dist_to_closest_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* MotionPlan::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:zoomies.MotionPlan)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float path_velocity = 1;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_path_velocity = this->_internal_path_velocity();
+  uint32_t raw_path_velocity;
+  memcpy(&raw_path_velocity, &tmp_path_velocity, sizeof(tmp_path_velocity));
+  if (raw_path_velocity != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(1, this->_internal_path_velocity(), target);
+  }
+
+  // float path_heading = 2;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_path_heading = this->_internal_path_heading();
+  uint32_t raw_path_heading;
+  memcpy(&raw_path_heading, &tmp_path_heading, sizeof(tmp_path_heading));
+  if (raw_path_heading != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->_internal_path_heading(), target);
+  }
+
+  // float desired_linear_velocity = 3;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_desired_linear_velocity = this->_internal_desired_linear_velocity();
+  uint32_t raw_desired_linear_velocity;
+  memcpy(&raw_desired_linear_velocity, &tmp_desired_linear_velocity, sizeof(tmp_desired_linear_velocity));
+  if (raw_desired_linear_velocity != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_desired_linear_velocity(), target);
+  }
+
+  // float lane_gain = 4;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_lane_gain = this->_internal_lane_gain();
+  uint32_t raw_lane_gain;
+  memcpy(&raw_lane_gain, &tmp_lane_gain, sizeof(tmp_lane_gain));
+  if (raw_lane_gain != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_lane_gain(), target);
+  }
+
+  // float delta_heading = 5;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_heading = this->_internal_delta_heading();
+  uint32_t raw_delta_heading;
+  memcpy(&raw_delta_heading, &tmp_delta_heading, sizeof(tmp_delta_heading));
+  if (raw_delta_heading != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_delta_heading(), target);
+  }
+
+  // float lane_delta = 6;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_lane_delta = this->_internal_lane_delta();
+  uint32_t raw_lane_delta;
+  memcpy(&raw_lane_delta, &tmp_lane_delta, sizeof(tmp_lane_delta));
+  if (raw_lane_delta != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(6, this->_internal_lane_delta(), target);
+  }
+
+  // float delta = 7;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta = this->_internal_delta();
+  uint32_t raw_delta;
+  memcpy(&raw_delta, &tmp_delta, sizeof(tmp_delta));
+  if (raw_delta != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(7, this->_internal_delta(), target);
+  }
+
+  // float desired_angular_velocity = 8;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_desired_angular_velocity = this->_internal_desired_angular_velocity();
+  uint32_t raw_desired_angular_velocity;
+  memcpy(&raw_desired_angular_velocity, &tmp_desired_angular_velocity, sizeof(tmp_desired_angular_velocity));
+  if (raw_desired_angular_velocity != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(8, this->_internal_desired_angular_velocity(), target);
+  }
+
+  // float path_dist_to_closest = 9;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_path_dist_to_closest = this->_internal_path_dist_to_closest();
+  uint32_t raw_path_dist_to_closest;
+  memcpy(&raw_path_dist_to_closest, &tmp_path_dist_to_closest, sizeof(tmp_path_dist_to_closest));
+  if (raw_path_dist_to_closest != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(9, this->_internal_path_dist_to_closest(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:zoomies.MotionPlan)
+  return target;
+}
+
+size_t MotionPlan::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:zoomies.MotionPlan)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // float path_velocity = 1;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_path_velocity = this->_internal_path_velocity();
+  uint32_t raw_path_velocity;
+  memcpy(&raw_path_velocity, &tmp_path_velocity, sizeof(tmp_path_velocity));
+  if (raw_path_velocity != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float path_heading = 2;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_path_heading = this->_internal_path_heading();
+  uint32_t raw_path_heading;
+  memcpy(&raw_path_heading, &tmp_path_heading, sizeof(tmp_path_heading));
+  if (raw_path_heading != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float desired_linear_velocity = 3;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_desired_linear_velocity = this->_internal_desired_linear_velocity();
+  uint32_t raw_desired_linear_velocity;
+  memcpy(&raw_desired_linear_velocity, &tmp_desired_linear_velocity, sizeof(tmp_desired_linear_velocity));
+  if (raw_desired_linear_velocity != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float lane_gain = 4;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_lane_gain = this->_internal_lane_gain();
+  uint32_t raw_lane_gain;
+  memcpy(&raw_lane_gain, &tmp_lane_gain, sizeof(tmp_lane_gain));
+  if (raw_lane_gain != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float delta_heading = 5;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_heading = this->_internal_delta_heading();
+  uint32_t raw_delta_heading;
+  memcpy(&raw_delta_heading, &tmp_delta_heading, sizeof(tmp_delta_heading));
+  if (raw_delta_heading != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float lane_delta = 6;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_lane_delta = this->_internal_lane_delta();
+  uint32_t raw_lane_delta;
+  memcpy(&raw_lane_delta, &tmp_lane_delta, sizeof(tmp_lane_delta));
+  if (raw_lane_delta != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float delta = 7;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta = this->_internal_delta();
+  uint32_t raw_delta;
+  memcpy(&raw_delta, &tmp_delta, sizeof(tmp_delta));
+  if (raw_delta != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float desired_angular_velocity = 8;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_desired_angular_velocity = this->_internal_desired_angular_velocity();
+  uint32_t raw_desired_angular_velocity;
+  memcpy(&raw_desired_angular_velocity, &tmp_desired_angular_velocity, sizeof(tmp_desired_angular_velocity));
+  if (raw_desired_angular_velocity != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float path_dist_to_closest = 9;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_path_dist_to_closest = this->_internal_path_dist_to_closest();
+  uint32_t raw_path_dist_to_closest;
+  memcpy(&raw_path_dist_to_closest, &tmp_path_dist_to_closest, sizeof(tmp_path_dist_to_closest));
+  if (raw_path_dist_to_closest != 0) {
+    total_size += 1 + 4;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData MotionPlan::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    MotionPlan::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*MotionPlan::GetClassData() const { return &_class_data_; }
+
+void MotionPlan::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<MotionPlan *>(to)->MergeFrom(
+      static_cast<const MotionPlan &>(from));
+}
+
+
+void MotionPlan::MergeFrom(const MotionPlan& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:zoomies.MotionPlan)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_path_velocity = from._internal_path_velocity();
+  uint32_t raw_path_velocity;
+  memcpy(&raw_path_velocity, &tmp_path_velocity, sizeof(tmp_path_velocity));
+  if (raw_path_velocity != 0) {
+    _internal_set_path_velocity(from._internal_path_velocity());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_path_heading = from._internal_path_heading();
+  uint32_t raw_path_heading;
+  memcpy(&raw_path_heading, &tmp_path_heading, sizeof(tmp_path_heading));
+  if (raw_path_heading != 0) {
+    _internal_set_path_heading(from._internal_path_heading());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_desired_linear_velocity = from._internal_desired_linear_velocity();
+  uint32_t raw_desired_linear_velocity;
+  memcpy(&raw_desired_linear_velocity, &tmp_desired_linear_velocity, sizeof(tmp_desired_linear_velocity));
+  if (raw_desired_linear_velocity != 0) {
+    _internal_set_desired_linear_velocity(from._internal_desired_linear_velocity());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_lane_gain = from._internal_lane_gain();
+  uint32_t raw_lane_gain;
+  memcpy(&raw_lane_gain, &tmp_lane_gain, sizeof(tmp_lane_gain));
+  if (raw_lane_gain != 0) {
+    _internal_set_lane_gain(from._internal_lane_gain());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_heading = from._internal_delta_heading();
+  uint32_t raw_delta_heading;
+  memcpy(&raw_delta_heading, &tmp_delta_heading, sizeof(tmp_delta_heading));
+  if (raw_delta_heading != 0) {
+    _internal_set_delta_heading(from._internal_delta_heading());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_lane_delta = from._internal_lane_delta();
+  uint32_t raw_lane_delta;
+  memcpy(&raw_lane_delta, &tmp_lane_delta, sizeof(tmp_lane_delta));
+  if (raw_lane_delta != 0) {
+    _internal_set_lane_delta(from._internal_lane_delta());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta = from._internal_delta();
+  uint32_t raw_delta;
+  memcpy(&raw_delta, &tmp_delta, sizeof(tmp_delta));
+  if (raw_delta != 0) {
+    _internal_set_delta(from._internal_delta());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_desired_angular_velocity = from._internal_desired_angular_velocity();
+  uint32_t raw_desired_angular_velocity;
+  memcpy(&raw_desired_angular_velocity, &tmp_desired_angular_velocity, sizeof(tmp_desired_angular_velocity));
+  if (raw_desired_angular_velocity != 0) {
+    _internal_set_desired_angular_velocity(from._internal_desired_angular_velocity());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_path_dist_to_closest = from._internal_path_dist_to_closest();
+  uint32_t raw_path_dist_to_closest;
+  memcpy(&raw_path_dist_to_closest, &tmp_path_dist_to_closest, sizeof(tmp_path_dist_to_closest));
+  if (raw_path_dist_to_closest != 0) {
+    _internal_set_path_dist_to_closest(from._internal_path_dist_to_closest());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void MotionPlan::CopyFrom(const MotionPlan& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:zoomies.MotionPlan)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool MotionPlan::IsInitialized() const {
+  return true;
+}
+
+void MotionPlan::InternalSwap(MotionPlan* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(MotionPlan, path_dist_to_closest_)
+      + sizeof(MotionPlan::path_dist_to_closest_)
+      - PROTOBUF_FIELD_OFFSET(MotionPlan, path_velocity_)>(
+          reinterpret_cast<char*>(&path_velocity_),
+          reinterpret_cast<char*>(&other->path_velocity_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata MotionPlan::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_zoomies_2fzoomies_2eproto_getter, &descriptor_table_zoomies_2fzoomies_2eproto_once,
+      file_level_metadata_zoomies_2fzoomies_2eproto[1]);
+}
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace zoomies
 PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::zoomies::DriverLog* Arena::CreateMaybeMessage< ::zoomies::DriverLog >(Arena* arena) {
   return Arena::CreateMessageInternal< ::zoomies::DriverLog >(arena);
+}
+template<> PROTOBUF_NOINLINE ::zoomies::MotionPlan* Arena::CreateMaybeMessage< ::zoomies::MotionPlan >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::zoomies::MotionPlan >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

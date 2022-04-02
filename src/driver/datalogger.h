@@ -29,6 +29,7 @@ class Datalogger {
                      const std::vector<RacingPath::PathPoint>& path);
   void LogRacingPathClosestPt(int64_t t_us, float car_x, float car_y, float px,
                               float py, bool is_right);
+  void LogMotionPlan(int64_t t_us, const zoomies::MotionPlan& m);
   void LogDriverLog(int64_t t_us, const zoomies::DriverLog& m);
 
  private:
@@ -45,6 +46,7 @@ class Datalogger {
   int racing_path_topic_;
   int racing_path_closet_pt_topic_;
   int driver_log_topic_;
+  int motion_plan_topic_;
 
   std::unique_ptr<McapLogWriter> writer_;
 

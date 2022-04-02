@@ -235,7 +235,11 @@ void Driver::DoFollowRacingPath(int64_t t_us, float dt, State& state) {
       std::min(path_info.velocity,
                prev_state_.desired_fwd_vel_ + racing_path_.max_accel() * dt);
 
-  constexpr float lane_gain = 1.5f;
+  float lane_gain = 1.5f;
+  // At the start, side-by-side with other car, don't lane keep so aggressively.
+  if (state.total_distance <= 4.0f) {
+    lane_gain /= 10.0f;
+  }
   float delta_heading = HeadingDiff(state.heading, path_info.heading);
   float lane =
       atan2f32(lane_gain * path_info.dist_to_closest, state.desired_fwd_vel_);
@@ -246,6 +250,18 @@ void Driver::DoFollowRacingPath(int64_t t_us, float dt, State& state) {
   // w = (tan delta)*V/L
   state.desired_angular_vel_ =
       tanf32(delta) * state.desired_fwd_vel_ / kFrontToRearLength;
+
+  zoomies::MotionPlan plan;
+  plan.set_path_velocity(path_info.velocity);
+  plan.set_path_heading(path_info.heading);
+  plan.set_path_dist_to_closest(path_info.dist_to_closest);
+  plan.set_desired_linear_velocity(state.desired_fwd_vel_);
+  plan.set_lane_gain(lane_gain);
+  plan.set_delta_heading(delta_heading);
+  plan.set_lane_delta(lane);
+  plan.set_delta(delta);
+  plan.set_desired_angular_velocity(state.desired_angular_vel_);
+  datalogger_.LogMotionPlan(t_us, plan);
 }
 
 float Driver::CalculateLongitudinalControl(State& state) {

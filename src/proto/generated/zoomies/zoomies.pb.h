@@ -47,7 +47,7 @@ struct TableStruct_zoomies_2fzoomies_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[1]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[2]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -58,9 +58,13 @@ namespace zoomies {
 class DriverLog;
 struct DriverLogDefaultTypeInternal;
 extern DriverLogDefaultTypeInternal _DriverLog_default_instance_;
+class MotionPlan;
+struct MotionPlanDefaultTypeInternal;
+extern MotionPlanDefaultTypeInternal _MotionPlan_default_instance_;
 }  // namespace zoomies
 PROTOBUF_NAMESPACE_OPEN
 template<> ::zoomies::DriverLog* Arena::CreateMaybeMessage<::zoomies::DriverLog>(Arena*);
+template<> ::zoomies::MotionPlan* Arena::CreateMaybeMessage<::zoomies::MotionPlan>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace zoomies {
 
@@ -463,6 +467,240 @@ class DriverLog final :
   float esc_;
   float steer_;
   float delta_t_s_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_zoomies_2fzoomies_2eproto;
+};
+// -------------------------------------------------------------------
+
+class MotionPlan final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:zoomies.MotionPlan) */ {
+ public:
+  inline MotionPlan() : MotionPlan(nullptr) {}
+  ~MotionPlan() override;
+  explicit constexpr MotionPlan(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  MotionPlan(const MotionPlan& from);
+  MotionPlan(MotionPlan&& from) noexcept
+    : MotionPlan() {
+    *this = ::std::move(from);
+  }
+
+  inline MotionPlan& operator=(const MotionPlan& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline MotionPlan& operator=(MotionPlan&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const MotionPlan& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const MotionPlan* internal_default_instance() {
+    return reinterpret_cast<const MotionPlan*>(
+               &_MotionPlan_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  friend void swap(MotionPlan& a, MotionPlan& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(MotionPlan* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(MotionPlan* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  MotionPlan* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<MotionPlan>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const MotionPlan& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const MotionPlan& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(MotionPlan* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "zoomies.MotionPlan";
+  }
+  protected:
+  explicit MotionPlan(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kPathVelocityFieldNumber = 1,
+    kPathHeadingFieldNumber = 2,
+    kDesiredLinearVelocityFieldNumber = 3,
+    kLaneGainFieldNumber = 4,
+    kDeltaHeadingFieldNumber = 5,
+    kLaneDeltaFieldNumber = 6,
+    kDeltaFieldNumber = 7,
+    kDesiredAngularVelocityFieldNumber = 8,
+    kPathDistToClosestFieldNumber = 9,
+  };
+  // float path_velocity = 1;
+  void clear_path_velocity();
+  float path_velocity() const;
+  void set_path_velocity(float value);
+  private:
+  float _internal_path_velocity() const;
+  void _internal_set_path_velocity(float value);
+  public:
+
+  // float path_heading = 2;
+  void clear_path_heading();
+  float path_heading() const;
+  void set_path_heading(float value);
+  private:
+  float _internal_path_heading() const;
+  void _internal_set_path_heading(float value);
+  public:
+
+  // float desired_linear_velocity = 3;
+  void clear_desired_linear_velocity();
+  float desired_linear_velocity() const;
+  void set_desired_linear_velocity(float value);
+  private:
+  float _internal_desired_linear_velocity() const;
+  void _internal_set_desired_linear_velocity(float value);
+  public:
+
+  // float lane_gain = 4;
+  void clear_lane_gain();
+  float lane_gain() const;
+  void set_lane_gain(float value);
+  private:
+  float _internal_lane_gain() const;
+  void _internal_set_lane_gain(float value);
+  public:
+
+  // float delta_heading = 5;
+  void clear_delta_heading();
+  float delta_heading() const;
+  void set_delta_heading(float value);
+  private:
+  float _internal_delta_heading() const;
+  void _internal_set_delta_heading(float value);
+  public:
+
+  // float lane_delta = 6;
+  void clear_lane_delta();
+  float lane_delta() const;
+  void set_lane_delta(float value);
+  private:
+  float _internal_lane_delta() const;
+  void _internal_set_lane_delta(float value);
+  public:
+
+  // float delta = 7;
+  void clear_delta();
+  float delta() const;
+  void set_delta(float value);
+  private:
+  float _internal_delta() const;
+  void _internal_set_delta(float value);
+  public:
+
+  // float desired_angular_velocity = 8;
+  void clear_desired_angular_velocity();
+  float desired_angular_velocity() const;
+  void set_desired_angular_velocity(float value);
+  private:
+  float _internal_desired_angular_velocity() const;
+  void _internal_set_desired_angular_velocity(float value);
+  public:
+
+  // float path_dist_to_closest = 9;
+  void clear_path_dist_to_closest();
+  float path_dist_to_closest() const;
+  void set_path_dist_to_closest(float value);
+  private:
+  float _internal_path_dist_to_closest() const;
+  void _internal_set_path_dist_to_closest(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:zoomies.MotionPlan)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  float path_velocity_;
+  float path_heading_;
+  float desired_linear_velocity_;
+  float lane_gain_;
+  float delta_heading_;
+  float lane_delta_;
+  float delta_;
+  float desired_angular_velocity_;
+  float path_dist_to_closest_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_zoomies_2fzoomies_2eproto;
 };
@@ -1161,9 +1399,195 @@ inline void DriverLog::set_allocated_localizer_variance(::ros::geometry_msgs::Ve
   // @@protoc_insertion_point(field_set_allocated:zoomies.DriverLog.localizer_variance)
 }
 
+// -------------------------------------------------------------------
+
+// MotionPlan
+
+// float path_velocity = 1;
+inline void MotionPlan::clear_path_velocity() {
+  path_velocity_ = 0;
+}
+inline float MotionPlan::_internal_path_velocity() const {
+  return path_velocity_;
+}
+inline float MotionPlan::path_velocity() const {
+  // @@protoc_insertion_point(field_get:zoomies.MotionPlan.path_velocity)
+  return _internal_path_velocity();
+}
+inline void MotionPlan::_internal_set_path_velocity(float value) {
+  
+  path_velocity_ = value;
+}
+inline void MotionPlan::set_path_velocity(float value) {
+  _internal_set_path_velocity(value);
+  // @@protoc_insertion_point(field_set:zoomies.MotionPlan.path_velocity)
+}
+
+// float path_heading = 2;
+inline void MotionPlan::clear_path_heading() {
+  path_heading_ = 0;
+}
+inline float MotionPlan::_internal_path_heading() const {
+  return path_heading_;
+}
+inline float MotionPlan::path_heading() const {
+  // @@protoc_insertion_point(field_get:zoomies.MotionPlan.path_heading)
+  return _internal_path_heading();
+}
+inline void MotionPlan::_internal_set_path_heading(float value) {
+  
+  path_heading_ = value;
+}
+inline void MotionPlan::set_path_heading(float value) {
+  _internal_set_path_heading(value);
+  // @@protoc_insertion_point(field_set:zoomies.MotionPlan.path_heading)
+}
+
+// float path_dist_to_closest = 9;
+inline void MotionPlan::clear_path_dist_to_closest() {
+  path_dist_to_closest_ = 0;
+}
+inline float MotionPlan::_internal_path_dist_to_closest() const {
+  return path_dist_to_closest_;
+}
+inline float MotionPlan::path_dist_to_closest() const {
+  // @@protoc_insertion_point(field_get:zoomies.MotionPlan.path_dist_to_closest)
+  return _internal_path_dist_to_closest();
+}
+inline void MotionPlan::_internal_set_path_dist_to_closest(float value) {
+  
+  path_dist_to_closest_ = value;
+}
+inline void MotionPlan::set_path_dist_to_closest(float value) {
+  _internal_set_path_dist_to_closest(value);
+  // @@protoc_insertion_point(field_set:zoomies.MotionPlan.path_dist_to_closest)
+}
+
+// float desired_linear_velocity = 3;
+inline void MotionPlan::clear_desired_linear_velocity() {
+  desired_linear_velocity_ = 0;
+}
+inline float MotionPlan::_internal_desired_linear_velocity() const {
+  return desired_linear_velocity_;
+}
+inline float MotionPlan::desired_linear_velocity() const {
+  // @@protoc_insertion_point(field_get:zoomies.MotionPlan.desired_linear_velocity)
+  return _internal_desired_linear_velocity();
+}
+inline void MotionPlan::_internal_set_desired_linear_velocity(float value) {
+  
+  desired_linear_velocity_ = value;
+}
+inline void MotionPlan::set_desired_linear_velocity(float value) {
+  _internal_set_desired_linear_velocity(value);
+  // @@protoc_insertion_point(field_set:zoomies.MotionPlan.desired_linear_velocity)
+}
+
+// float lane_gain = 4;
+inline void MotionPlan::clear_lane_gain() {
+  lane_gain_ = 0;
+}
+inline float MotionPlan::_internal_lane_gain() const {
+  return lane_gain_;
+}
+inline float MotionPlan::lane_gain() const {
+  // @@protoc_insertion_point(field_get:zoomies.MotionPlan.lane_gain)
+  return _internal_lane_gain();
+}
+inline void MotionPlan::_internal_set_lane_gain(float value) {
+  
+  lane_gain_ = value;
+}
+inline void MotionPlan::set_lane_gain(float value) {
+  _internal_set_lane_gain(value);
+  // @@protoc_insertion_point(field_set:zoomies.MotionPlan.lane_gain)
+}
+
+// float delta_heading = 5;
+inline void MotionPlan::clear_delta_heading() {
+  delta_heading_ = 0;
+}
+inline float MotionPlan::_internal_delta_heading() const {
+  return delta_heading_;
+}
+inline float MotionPlan::delta_heading() const {
+  // @@protoc_insertion_point(field_get:zoomies.MotionPlan.delta_heading)
+  return _internal_delta_heading();
+}
+inline void MotionPlan::_internal_set_delta_heading(float value) {
+  
+  delta_heading_ = value;
+}
+inline void MotionPlan::set_delta_heading(float value) {
+  _internal_set_delta_heading(value);
+  // @@protoc_insertion_point(field_set:zoomies.MotionPlan.delta_heading)
+}
+
+// float lane_delta = 6;
+inline void MotionPlan::clear_lane_delta() {
+  lane_delta_ = 0;
+}
+inline float MotionPlan::_internal_lane_delta() const {
+  return lane_delta_;
+}
+inline float MotionPlan::lane_delta() const {
+  // @@protoc_insertion_point(field_get:zoomies.MotionPlan.lane_delta)
+  return _internal_lane_delta();
+}
+inline void MotionPlan::_internal_set_lane_delta(float value) {
+  
+  lane_delta_ = value;
+}
+inline void MotionPlan::set_lane_delta(float value) {
+  _internal_set_lane_delta(value);
+  // @@protoc_insertion_point(field_set:zoomies.MotionPlan.lane_delta)
+}
+
+// float delta = 7;
+inline void MotionPlan::clear_delta() {
+  delta_ = 0;
+}
+inline float MotionPlan::_internal_delta() const {
+  return delta_;
+}
+inline float MotionPlan::delta() const {
+  // @@protoc_insertion_point(field_get:zoomies.MotionPlan.delta)
+  return _internal_delta();
+}
+inline void MotionPlan::_internal_set_delta(float value) {
+  
+  delta_ = value;
+}
+inline void MotionPlan::set_delta(float value) {
+  _internal_set_delta(value);
+  // @@protoc_insertion_point(field_set:zoomies.MotionPlan.delta)
+}
+
+// float desired_angular_velocity = 8;
+inline void MotionPlan::clear_desired_angular_velocity() {
+  desired_angular_velocity_ = 0;
+}
+inline float MotionPlan::_internal_desired_angular_velocity() const {
+  return desired_angular_velocity_;
+}
+inline float MotionPlan::desired_angular_velocity() const {
+  // @@protoc_insertion_point(field_get:zoomies.MotionPlan.desired_angular_velocity)
+  return _internal_desired_angular_velocity();
+}
+inline void MotionPlan::_internal_set_desired_angular_velocity(float value) {
+  
+  desired_angular_velocity_ = value;
+}
+inline void MotionPlan::set_desired_angular_velocity(float value) {
+  _internal_set_desired_angular_velocity(value);
+  // @@protoc_insertion_point(field_set:zoomies.MotionPlan.desired_angular_velocity)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
