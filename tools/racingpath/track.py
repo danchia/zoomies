@@ -41,9 +41,10 @@ class Track:
         right = _calc_min_dist(self.pts, self.right_boundary, margin)
         return left, right
 
-    def display(self):
+    def display(self, V=None):
         plt.figure()
-        plt.plot(self.pts[0], self.pts[1], 'k')
+        c = 'k' if V == None else V
+        plt.scatter(self.pts[0], self.pts[1], s=10, marker='.', c=c, cmap='copper')
         plt.scatter(
             self.left_boundary[0], self.left_boundary[1], s=1, marker='.', c='g')
         plt.scatter(
