@@ -276,8 +276,10 @@ float Driver::CalculateLongitudinalControl(State& state) {
     fwd_vel_accel_e_i_ = 0.0f;
     fwd_vel_decel_e_i_ = 0.8f * fwd_vel_decel_e_i_ + e;
     float feed_forward =
-        (state.desired_fwd_vel_ - prev_state_.desired_fwd_vel_) * 1.0f;
-    float esc = feed_forward + e * 0.3f + fwd_vel_decel_e_i_ * 0.03f;
+        (state.desired_fwd_vel_ - prev_state_.desired_fwd_vel_) * 0.1f;
+    // float esc = feed_forward + e * 0.3f + fwd_vel_decel_e_i_ * 0.03f;
+    // float esc = feed_forward + e * 0.6f + fwd_vel_decel_e_i_ * 0.06f;
+    float esc = feed_forward + e * 0.9f + fwd_vel_decel_e_i_ * 0.09f;
     return std::clamp(esc, -1.0f, 0.5f);
   }
 
