@@ -16,8 +16,8 @@ namespace {
 
 constexpr bool kManualDrive = false;
 constexpr int64_t kLoopPeriodMicros = 10000;
-// pi * 62.7e-3 (wheel diameter) * 0.5 (belt ratio, 17t) * 25/90 / 3 =
-constexpr float kMetersPerTick = 0.00911934534f;
+// pi * 62.7e-3 (wheel diameter) * 0.5 (belt ratio, 17t) * 27/90 / 3 =
+constexpr float kMetersPerTick = 0.00984889296f;
 
 constexpr float kMaxSteerDelta = 0.44;  // ~25 deg
 
@@ -270,41 +270,36 @@ float Driver::CalculateLongitudinalControl(State& state) {
   bool is_decel =
       state.desired_fwd_vel_ + 0.005f < prev_state_.desired_fwd_vel_;
 
-  if (is_decel) {
-    // brake controller
-    float e = state.desired_fwd_vel_ - state.fwd_vel;
-    fwd_vel_accel_e_i_ = 0.0f;
-    fwd_vel_decel_e_i_ = 0.8f * fwd_vel_decel_e_i_ + e;
-    float feed_forward =
-        (state.desired_fwd_vel_ - prev_state_.desired_fwd_vel_) * 0.1f;
-    // float esc = feed_forward + e * 0.3f + fwd_vel_decel_e_i_ * 0.03f;
-    // float esc = feed_forward + e * 0.6f + fwd_vel_decel_e_i_ * 0.06f;
-    float esc = feed_forward + e * 0.9f + fwd_vel_decel_e_i_ * 0.09f;
-    return std::clamp(esc, -1.0f, 0.5f);
-  }
-
   float e = state.desired_fwd_vel_ - state.fwd_vel;
   fwd_vel_accel_e_i_ = 0.8f * fwd_vel_accel_e_i_ + e;
-  fwd_vel_decel_e_i_ = 0.0f;
-  float feedforward = state.desired_fwd_vel_ * 0.11f;
-  if (state.desired_fwd_vel_ > 0.0f) feedforward += 0.042f;
-  float esc = feedforward + e * 0.149f + fwd_vel_accel_e_i_ * 0.030f -
-              0.01f * (state.fwd_vel - prev_state_.fwd_vel);
-  return std::clamp(esc, 0.0f, 1.0f);
+  // Accel: 7m/s esc: 0.8.
+  // Decel: 4.47m/s esc: 0.11
+  float feedforward = is_decel ? powf(state.desired_fwd_vel_, 1.3) * 0.02f
+                               : powf(state.desired_fwd_vel_, 1.3) * 0.055f;
+
+  float Kp = 0.15f;
+  float Ki = 0.08f;
+  float Kd = 0.04f;
+  float esc = feedforward + e * Kp + fwd_vel_accel_e_i_ * Ki -
+              Kd * (state.fwd_vel - prev_state_.fwd_vel);
+  return std::clamp(esc, -1.0f, 1.0f);
 }
 
 float Driver::CalculateLateralControl(State& state) {
   float e = state.desired_angular_vel_ - state.angular_vel;
-  angular_vel_e_i_ = 0.75f * angular_vel_e_i_ + e;
+  angular_vel_e_i_ = 0.8f * angular_vel_e_i_ + e;
 
   // Fitted data gives: 3E-03 + 0.516x + -0.0673x^2
   float ov = (state.desired_fwd_vel_ > 0.1f)
                  ? state.desired_angular_vel_ / state.desired_fwd_vel_
                  : 0.0f;
   float feedforward = 0.516f * ov - 0.0673f * ov * ov;
+  float Kp = 0.025f;
+  float Ki = 0.0006f;
+  float Kd = 0.005f;
   float steer =
-      feedforward + 0.05f * e -
-      0.005f * (state.desired_angular_vel_ - prev_state_.desired_angular_vel_);
+      feedforward + Kp * e + Ki * angular_vel_e_i_ -
+      Kd * (state.desired_angular_vel_ - prev_state_.desired_angular_vel_);
   return std::clamp(steer, -1.0f, 1.0f);
 }
 
