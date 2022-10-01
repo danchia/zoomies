@@ -59,7 +59,10 @@ constexpr MotionPlan::MotionPlan(
   , lane_delta_(0)
   , delta_(0)
   , desired_angular_velocity_(0)
-  , path_dist_to_closest_(0){}
+  , path_dist_to_closest_(0)
+  , delta_heading_desired_(0)
+  , delta_heading_d_term_(0)
+  , delta_heading_previous_(0){}
 struct MotionPlanDefaultTypeInternal {
   constexpr MotionPlanDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -114,6 +117,9 @@ const uint32_t TableStruct_zoomies_2fzoomies_2eproto::offsets[] PROTOBUF_SECTION
   PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, desired_linear_velocity_),
   PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, lane_gain_),
   PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, delta_heading_),
+  PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, delta_heading_desired_),
+  PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, delta_heading_d_term_),
+  PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, delta_heading_previous_),
   PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, lane_delta_),
   PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, delta_),
   PROTOBUF_FIELD_OFFSET(::zoomies::MotionPlan, desired_angular_velocity_),
@@ -145,20 +151,22 @@ const char descriptor_table_protodef_zoomies_2fzoomies_2eproto[] PROTOBUF_SECTIO
   "msgs.Vector3\0228\n\024localizer_correction\030\023 \001"
   "(\0132\032.ros.geometry_msgs.Vector3\0226\n\022locali"
   "zer_variance\030\024 \001(\0132\032.ros.geometry_msgs.V"
-  "ector3\"\347\001\n\nMotionPlan\022\025\n\rpath_velocity\030\001"
+  "ector3\"\304\002\n\nMotionPlan\022\025\n\rpath_velocity\030\001"
   " \001(\002\022\024\n\014path_heading\030\002 \001(\002\022\034\n\024path_dist_"
   "to_closest\030\t \001(\002\022\037\n\027desired_linear_veloc"
   "ity\030\003 \001(\002\022\021\n\tlane_gain\030\004 \001(\002\022\025\n\rdelta_he"
-  "ading\030\005 \001(\002\022\022\n\nlane_delta\030\006 \001(\002\022\r\n\005delta"
-  "\030\007 \001(\002\022 \n\030desired_angular_velocity\030\010 \001(\002"
-  "b\006proto3"
+  "ading\030\005 \001(\002\022\035\n\025delta_heading_desired\030\n \001"
+  "(\002\022\034\n\024delta_heading_d_term\030\013 \001(\002\022\036\n\026delt"
+  "a_heading_previous\030\014 \001(\002\022\022\n\nlane_delta\030\006"
+  " \001(\002\022\r\n\005delta\030\007 \001(\002\022 \n\030desired_angular_v"
+  "elocity\030\010 \001(\002b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_zoomies_2fzoomies_2eproto_deps[1] = {
   &::descriptor_table_ros_2fgeometry_5fmsgs_2fVector3_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_zoomies_2fzoomies_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_zoomies_2fzoomies_2eproto = {
-  false, false, 888, descriptor_table_protodef_zoomies_2fzoomies_2eproto, "zoomies/zoomies.proto", 
+  false, false, 981, descriptor_table_protodef_zoomies_2fzoomies_2eproto, "zoomies/zoomies.proto", 
   &descriptor_table_zoomies_2fzoomies_2eproto_once, descriptor_table_zoomies_2fzoomies_2eproto_deps, 1, 2,
   schemas, file_default_instances, TableStruct_zoomies_2fzoomies_2eproto::offsets,
   file_level_metadata_zoomies_2fzoomies_2eproto, file_level_enum_descriptors_zoomies_2fzoomies_2eproto, file_level_service_descriptors_zoomies_2fzoomies_2eproto,
@@ -1112,16 +1120,16 @@ MotionPlan::MotionPlan(const MotionPlan& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&path_velocity_, &from.path_velocity_,
-    static_cast<size_t>(reinterpret_cast<char*>(&path_dist_to_closest_) -
-    reinterpret_cast<char*>(&path_velocity_)) + sizeof(path_dist_to_closest_));
+    static_cast<size_t>(reinterpret_cast<char*>(&delta_heading_previous_) -
+    reinterpret_cast<char*>(&path_velocity_)) + sizeof(delta_heading_previous_));
   // @@protoc_insertion_point(copy_constructor:zoomies.MotionPlan)
 }
 
 inline void MotionPlan::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&path_velocity_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&path_dist_to_closest_) -
-    reinterpret_cast<char*>(&path_velocity_)) + sizeof(path_dist_to_closest_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&delta_heading_previous_) -
+    reinterpret_cast<char*>(&path_velocity_)) + sizeof(delta_heading_previous_));
 }
 
 MotionPlan::~MotionPlan() {
@@ -1152,8 +1160,8 @@ void MotionPlan::Clear() {
   (void) cached_has_bits;
 
   ::memset(&path_velocity_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&path_dist_to_closest_) -
-      reinterpret_cast<char*>(&path_velocity_)) + sizeof(path_dist_to_closest_));
+      reinterpret_cast<char*>(&delta_heading_previous_) -
+      reinterpret_cast<char*>(&path_velocity_)) + sizeof(delta_heading_previous_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1231,6 +1239,30 @@ const char* MotionPlan::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
       case 9:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 77)) {
           path_dist_to_closest_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float delta_heading_desired = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 85)) {
+          delta_heading_desired_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float delta_heading_d_term = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 93)) {
+          delta_heading_d_term_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float delta_heading_previous = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 101)) {
+          delta_heading_previous_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else
           goto handle_unusual;
@@ -1354,6 +1386,36 @@ uint8_t* MotionPlan::_InternalSerialize(
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(9, this->_internal_path_dist_to_closest(), target);
   }
 
+  // float delta_heading_desired = 10;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_heading_desired = this->_internal_delta_heading_desired();
+  uint32_t raw_delta_heading_desired;
+  memcpy(&raw_delta_heading_desired, &tmp_delta_heading_desired, sizeof(tmp_delta_heading_desired));
+  if (raw_delta_heading_desired != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(10, this->_internal_delta_heading_desired(), target);
+  }
+
+  // float delta_heading_d_term = 11;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_heading_d_term = this->_internal_delta_heading_d_term();
+  uint32_t raw_delta_heading_d_term;
+  memcpy(&raw_delta_heading_d_term, &tmp_delta_heading_d_term, sizeof(tmp_delta_heading_d_term));
+  if (raw_delta_heading_d_term != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(11, this->_internal_delta_heading_d_term(), target);
+  }
+
+  // float delta_heading_previous = 12;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_heading_previous = this->_internal_delta_heading_previous();
+  uint32_t raw_delta_heading_previous;
+  memcpy(&raw_delta_heading_previous, &tmp_delta_heading_previous, sizeof(tmp_delta_heading_previous));
+  if (raw_delta_heading_previous != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(12, this->_internal_delta_heading_previous(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -1451,6 +1513,33 @@ size_t MotionPlan::ByteSizeLong() const {
     total_size += 1 + 4;
   }
 
+  // float delta_heading_desired = 10;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_heading_desired = this->_internal_delta_heading_desired();
+  uint32_t raw_delta_heading_desired;
+  memcpy(&raw_delta_heading_desired, &tmp_delta_heading_desired, sizeof(tmp_delta_heading_desired));
+  if (raw_delta_heading_desired != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float delta_heading_d_term = 11;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_heading_d_term = this->_internal_delta_heading_d_term();
+  uint32_t raw_delta_heading_d_term;
+  memcpy(&raw_delta_heading_d_term, &tmp_delta_heading_d_term, sizeof(tmp_delta_heading_d_term));
+  if (raw_delta_heading_d_term != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float delta_heading_previous = 12;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_heading_previous = this->_internal_delta_heading_previous();
+  uint32_t raw_delta_heading_previous;
+  memcpy(&raw_delta_heading_previous, &tmp_delta_heading_previous, sizeof(tmp_delta_heading_previous));
+  if (raw_delta_heading_previous != 0) {
+    total_size += 1 + 4;
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
@@ -1536,6 +1625,27 @@ void MotionPlan::MergeFrom(const MotionPlan& from) {
   if (raw_path_dist_to_closest != 0) {
     _internal_set_path_dist_to_closest(from._internal_path_dist_to_closest());
   }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_heading_desired = from._internal_delta_heading_desired();
+  uint32_t raw_delta_heading_desired;
+  memcpy(&raw_delta_heading_desired, &tmp_delta_heading_desired, sizeof(tmp_delta_heading_desired));
+  if (raw_delta_heading_desired != 0) {
+    _internal_set_delta_heading_desired(from._internal_delta_heading_desired());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_heading_d_term = from._internal_delta_heading_d_term();
+  uint32_t raw_delta_heading_d_term;
+  memcpy(&raw_delta_heading_d_term, &tmp_delta_heading_d_term, sizeof(tmp_delta_heading_d_term));
+  if (raw_delta_heading_d_term != 0) {
+    _internal_set_delta_heading_d_term(from._internal_delta_heading_d_term());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_delta_heading_previous = from._internal_delta_heading_previous();
+  uint32_t raw_delta_heading_previous;
+  memcpy(&raw_delta_heading_previous, &tmp_delta_heading_previous, sizeof(tmp_delta_heading_previous));
+  if (raw_delta_heading_previous != 0) {
+    _internal_set_delta_heading_previous(from._internal_delta_heading_previous());
+  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1554,8 +1664,8 @@ void MotionPlan::InternalSwap(MotionPlan* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(MotionPlan, path_dist_to_closest_)
-      + sizeof(MotionPlan::path_dist_to_closest_)
+      PROTOBUF_FIELD_OFFSET(MotionPlan, delta_heading_previous_)
+      + sizeof(MotionPlan::delta_heading_previous_)
       - PROTOBUF_FIELD_OFFSET(MotionPlan, path_velocity_)>(
           reinterpret_cast<char*>(&path_velocity_),
           reinterpret_cast<char*>(&other->path_velocity_));

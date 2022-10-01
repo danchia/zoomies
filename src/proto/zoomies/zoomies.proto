@@ -46,6 +46,9 @@ message MotionPlan {
 
   float lane_gain = 4;
   float delta_heading = 5;
+  float delta_heading_desired = 10;
+  float delta_heading_d_term = 11;
+  float delta_heading_previous = 12;
   float lane_delta = 6;
   float delta = 7;
 

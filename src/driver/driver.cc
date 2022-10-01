@@ -78,8 +78,6 @@ void Driver::OnCameraTick(int64_t t_us, uint8_t* buf, int len) {
 Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
                                             const HWSensorReading& reading,
                                             const JS::State& js_state) {
-  float desired_angular_velocity = 0.0f;
-
   int64_t loop_tick = ticks_.fetch_add(1, std::memory_order_relaxed) + 1;
 
   if (loop_tick == 1) {
@@ -235,12 +233,15 @@ void Driver::DoFollowRacingPath(int64_t t_us, float dt, State& state) {
       std::min(path_info.velocity,
                prev_state_.desired_fwd_vel_ + racing_path_.max_accel() * dt);
 
-  float lane_gain = 1.5f;
+  float lane_gain = 1.8f;
   // At the start, side-by-side with other car, don't lane keep so aggressively.
   if (state.total_distance <= 4.0f) {
-    lane_gain /= 10.0f;
+    lane_gain /= (state.total_distance / 4.0f) * 10.0f;
   }
-  float delta_heading = HeadingDiff(state.heading, path_info.heading);
+  float delta_heading_desired = HeadingDiff(state.heading, path_info.heading);
+  float delta_heading_d =
+      HeadingDiff(prev_delta_heading_, delta_heading_desired);
+  float delta_heading = 0.4f * delta_heading_desired + 0.06f * delta_heading_d;
   float lane =
       atan2f32(lane_gain * path_info.dist_to_closest, state.desired_fwd_vel_);
   float delta = delta_heading + lane;
@@ -258,10 +259,15 @@ void Driver::DoFollowRacingPath(int64_t t_us, float dt, State& state) {
   plan.set_desired_linear_velocity(state.desired_fwd_vel_);
   plan.set_lane_gain(lane_gain);
   plan.set_delta_heading(delta_heading);
+  plan.set_delta_heading_desired(delta_heading_desired);
+  plan.set_delta_heading_d_term(delta_heading_d);
+  plan.set_delta_heading_previous(prev_delta_heading_);
   plan.set_lane_delta(lane);
   plan.set_delta(delta);
   plan.set_desired_angular_velocity(state.desired_angular_vel_);
   datalogger_.LogMotionPlan(t_us, plan);
+
+  prev_delta_heading_ = delta_heading_desired;
 }
 
 float Driver::CalculateLongitudinalControl(State& state) {
@@ -275,11 +281,11 @@ float Driver::CalculateLongitudinalControl(State& state) {
   // Accel: 7m/s esc: 0.8.
   // Decel: 4.47m/s esc: 0.11
   float feedforward = is_decel ? powf(state.desired_fwd_vel_, 1.3) * 0.02f
-                               : powf(state.desired_fwd_vel_, 1.3) * 0.055f;
+                               : powf(state.desired_fwd_vel_, 1.3) * 0.045f;
 
   float Kp = 0.15f;
-  float Ki = 0.08f;
-  float Kd = 0.04f;
+  float Ki = 0.12f;
+  float Kd = 0.05f;
   float esc = feedforward + e * Kp + fwd_vel_accel_e_i_ * Ki -
               Kd * (state.fwd_vel - prev_state_.fwd_vel);
   return std::clamp(esc, -1.0f, 1.0f);
