@@ -16,6 +16,7 @@ class RacingPath {
   struct PathInfo {
     float s;
     float heading;
+    float curvature;
     float velocity;
     float closest_x;
     float closest_y;
@@ -24,6 +25,7 @@ class RacingPath {
   struct PathPoint {
     float s;
     float heading;
+    float curvature;
     float velocity;
     float x, y;
   };

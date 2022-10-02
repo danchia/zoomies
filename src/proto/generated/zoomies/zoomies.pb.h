@@ -603,6 +603,10 @@ class MotionPlan final :
     kDeltaFieldNumber = 7,
     kDesiredAngularVelocityFieldNumber = 8,
     kPathDistToClosestFieldNumber = 9,
+    kDeltaHeadingDesiredFieldNumber = 10,
+    kDeltaHeadingDTermFieldNumber = 11,
+    kDeltaHeadingPreviousFieldNumber = 12,
+    kDeltaFeedforwardFieldNumber = 13,
   };
   // float path_velocity = 1;
   void clear_path_velocity();
@@ -685,6 +689,42 @@ class MotionPlan final :
   void _internal_set_path_dist_to_closest(float value);
   public:
 
+  // float delta_heading_desired = 10;
+  void clear_delta_heading_desired();
+  float delta_heading_desired() const;
+  void set_delta_heading_desired(float value);
+  private:
+  float _internal_delta_heading_desired() const;
+  void _internal_set_delta_heading_desired(float value);
+  public:
+
+  // float delta_heading_d_term = 11;
+  void clear_delta_heading_d_term();
+  float delta_heading_d_term() const;
+  void set_delta_heading_d_term(float value);
+  private:
+  float _internal_delta_heading_d_term() const;
+  void _internal_set_delta_heading_d_term(float value);
+  public:
+
+  // float delta_heading_previous = 12;
+  void clear_delta_heading_previous();
+  float delta_heading_previous() const;
+  void set_delta_heading_previous(float value);
+  private:
+  float _internal_delta_heading_previous() const;
+  void _internal_set_delta_heading_previous(float value);
+  public:
+
+  // float delta_feedforward = 13;
+  void clear_delta_feedforward();
+  float delta_feedforward() const;
+  void set_delta_feedforward(float value);
+  private:
+  float _internal_delta_feedforward() const;
+  void _internal_set_delta_feedforward(float value);
+  public:
+
   // @@protoc_insertion_point(class_scope:zoomies.MotionPlan)
  private:
   class _Internal;
@@ -701,6 +741,10 @@ class MotionPlan final :
   float delta_;
   float desired_angular_velocity_;
   float path_dist_to_closest_;
+  float delta_heading_desired_;
+  float delta_heading_d_term_;
+  float delta_heading_previous_;
+  float delta_feedforward_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_zoomies_2fzoomies_2eproto;
 };
@@ -1521,6 +1565,86 @@ inline void MotionPlan::_internal_set_delta_heading(float value) {
 inline void MotionPlan::set_delta_heading(float value) {
   _internal_set_delta_heading(value);
   // @@protoc_insertion_point(field_set:zoomies.MotionPlan.delta_heading)
+}
+
+// float delta_heading_desired = 10;
+inline void MotionPlan::clear_delta_heading_desired() {
+  delta_heading_desired_ = 0;
+}
+inline float MotionPlan::_internal_delta_heading_desired() const {
+  return delta_heading_desired_;
+}
+inline float MotionPlan::delta_heading_desired() const {
+  // @@protoc_insertion_point(field_get:zoomies.MotionPlan.delta_heading_desired)
+  return _internal_delta_heading_desired();
+}
+inline void MotionPlan::_internal_set_delta_heading_desired(float value) {
+  
+  delta_heading_desired_ = value;
+}
+inline void MotionPlan::set_delta_heading_desired(float value) {
+  _internal_set_delta_heading_desired(value);
+  // @@protoc_insertion_point(field_set:zoomies.MotionPlan.delta_heading_desired)
+}
+
+// float delta_heading_d_term = 11;
+inline void MotionPlan::clear_delta_heading_d_term() {
+  delta_heading_d_term_ = 0;
+}
+inline float MotionPlan::_internal_delta_heading_d_term() const {
+  return delta_heading_d_term_;
+}
+inline float MotionPlan::delta_heading_d_term() const {
+  // @@protoc_insertion_point(field_get:zoomies.MotionPlan.delta_heading_d_term)
+  return _internal_delta_heading_d_term();
+}
+inline void MotionPlan::_internal_set_delta_heading_d_term(float value) {
+  
+  delta_heading_d_term_ = value;
+}
+inline void MotionPlan::set_delta_heading_d_term(float value) {
+  _internal_set_delta_heading_d_term(value);
+  // @@protoc_insertion_point(field_set:zoomies.MotionPlan.delta_heading_d_term)
+}
+
+// float delta_heading_previous = 12;
+inline void MotionPlan::clear_delta_heading_previous() {
+  delta_heading_previous_ = 0;
+}
+inline float MotionPlan::_internal_delta_heading_previous() const {
+  return delta_heading_previous_;
+}
+inline float MotionPlan::delta_heading_previous() const {
+  // @@protoc_insertion_point(field_get:zoomies.MotionPlan.delta_heading_previous)
+  return _internal_delta_heading_previous();
+}
+inline void MotionPlan::_internal_set_delta_heading_previous(float value) {
+  
+  delta_heading_previous_ = value;
+}
+inline void MotionPlan::set_delta_heading_previous(float value) {
+  _internal_set_delta_heading_previous(value);
+  // @@protoc_insertion_point(field_set:zoomies.MotionPlan.delta_heading_previous)
+}
+
+// float delta_feedforward = 13;
+inline void MotionPlan::clear_delta_feedforward() {
+  delta_feedforward_ = 0;
+}
+inline float MotionPlan::_internal_delta_feedforward() const {
+  return delta_feedforward_;
+}
+inline float MotionPlan::delta_feedforward() const {
+  // @@protoc_insertion_point(field_get:zoomies.MotionPlan.delta_feedforward)
+  return _internal_delta_feedforward();
+}
+inline void MotionPlan::_internal_set_delta_feedforward(float value) {
+  
+  delta_feedforward_ = value;
+}
+inline void MotionPlan::set_delta_feedforward(float value) {
+  _internal_set_delta_feedforward(value);
+  // @@protoc_insertion_point(field_set:zoomies.MotionPlan.delta_feedforward)
 }
 
 // float lane_delta = 6;

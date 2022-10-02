@@ -16,8 +16,8 @@ namespace {
 
 constexpr bool kManualDrive = false;
 constexpr int64_t kLoopPeriodMicros = 10000;
-// pi * 62.7e-3 (wheel diameter) * 0.5 (belt ratio, 17t) * 25/90 / 3 =
-constexpr float kMetersPerTick = 0.00911934534f;
+// pi * 62.7e-3 (wheel diameter) * 0.5 (belt ratio, 17t) * 27/90 / 3 =
+constexpr float kMetersPerTick = 0.00984889296f;
 
 constexpr float kMaxSteerDelta = 0.44;  // ~25 deg
 
@@ -78,8 +78,6 @@ void Driver::OnCameraTick(int64_t t_us, uint8_t* buf, int len) {
 Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
                                             const HWSensorReading& reading,
                                             const JS::State& js_state) {
-  float desired_angular_velocity = 0.0f;
-
   int64_t loop_tick = ticks_.fetch_add(1, std::memory_order_relaxed) + 1;
 
   if (loop_tick == 1) {
@@ -235,16 +233,22 @@ void Driver::DoFollowRacingPath(int64_t t_us, float dt, State& state) {
       std::min(path_info.velocity,
                prev_state_.desired_fwd_vel_ + racing_path_.max_accel() * dt);
 
-  float lane_gain = 1.5f;
-  // At the start, side-by-side with other car, don't lane keep so aggressively.
-  if (state.total_distance <= 4.0f) {
-    lane_gain /= 10.0f;
-  }
-  float delta_heading = HeadingDiff(state.heading, path_info.heading);
+  float feedforward = atanf(kFrontToRearLength * path_info.curvature);
+
+  float lane_gain = 0.7f;
+  float delta_heading_desired = HeadingDiff(state.heading, path_info.heading);
+  float delta_heading_d =
+      HeadingDiff(prev_delta_heading_, delta_heading_desired);
+  float delta_heading = 0.3f * delta_heading_desired + 0.01f * delta_heading_d;
   float lane =
       atan2f32(lane_gain * path_info.dist_to_closest, state.desired_fwd_vel_);
-  float delta = delta_heading + lane;
+  float delta = feedforward + delta_heading + lane;
   delta = std::clamp(delta, -kMaxSteerDelta, kMaxSteerDelta);
+
+  // At the start, side-by-side with other car, don't turn so aggressively.
+  if (state.total_distance <= 4.0f) {
+    delta *= state.total_distance / 4.0f;
+  }
 
   // tan delta = L/R = L*w / V
   // w = (tan delta)*V/L
@@ -257,11 +261,17 @@ void Driver::DoFollowRacingPath(int64_t t_us, float dt, State& state) {
   plan.set_path_dist_to_closest(path_info.dist_to_closest);
   plan.set_desired_linear_velocity(state.desired_fwd_vel_);
   plan.set_lane_gain(lane_gain);
+  plan.set_delta_feedforward(feedforward);
   plan.set_delta_heading(delta_heading);
+  plan.set_delta_heading_desired(delta_heading_desired);
+  plan.set_delta_heading_d_term(delta_heading_d);
+  plan.set_delta_heading_previous(prev_delta_heading_);
   plan.set_lane_delta(lane);
   plan.set_delta(delta);
   plan.set_desired_angular_velocity(state.desired_angular_vel_);
   datalogger_.LogMotionPlan(t_us, plan);
+
+  prev_delta_heading_ = delta_heading_desired;
 }
 
 float Driver::CalculateLongitudinalControl(State& state) {
@@ -270,41 +280,36 @@ float Driver::CalculateLongitudinalControl(State& state) {
   bool is_decel =
       state.desired_fwd_vel_ + 0.005f < prev_state_.desired_fwd_vel_;
 
-  if (is_decel) {
-    // brake controller
-    float e = state.desired_fwd_vel_ - state.fwd_vel;
-    fwd_vel_accel_e_i_ = 0.0f;
-    fwd_vel_decel_e_i_ = 0.8f * fwd_vel_decel_e_i_ + e;
-    float feed_forward =
-        (state.desired_fwd_vel_ - prev_state_.desired_fwd_vel_) * 0.1f;
-    // float esc = feed_forward + e * 0.3f + fwd_vel_decel_e_i_ * 0.03f;
-    // float esc = feed_forward + e * 0.6f + fwd_vel_decel_e_i_ * 0.06f;
-    float esc = feed_forward + e * 0.9f + fwd_vel_decel_e_i_ * 0.09f;
-    return std::clamp(esc, -1.0f, 0.5f);
-  }
-
   float e = state.desired_fwd_vel_ - state.fwd_vel;
   fwd_vel_accel_e_i_ = 0.8f * fwd_vel_accel_e_i_ + e;
-  fwd_vel_decel_e_i_ = 0.0f;
-  float feedforward = state.desired_fwd_vel_ * 0.11f;
-  if (state.desired_fwd_vel_ > 0.0f) feedforward += 0.042f;
-  float esc = feedforward + e * 0.149f + fwd_vel_accel_e_i_ * 0.030f -
-              0.01f * (state.fwd_vel - prev_state_.fwd_vel);
-  return std::clamp(esc, 0.0f, 1.0f);
+  // Accel: 7m/s esc: 0.8.
+  // Decel: 4.47m/s esc: 0.11
+  float feedforward = is_decel ? powf(state.desired_fwd_vel_, 1.3) * 0.02f
+                               : powf(state.desired_fwd_vel_, 1.3) * 0.045f;
+
+  float Kp = 0.15f;
+  float Ki = 0.12f;
+  float Kd = 0.05f;
+  float esc = feedforward + e * Kp + fwd_vel_accel_e_i_ * Ki -
+              Kd * (state.fwd_vel - prev_state_.fwd_vel);
+  return std::clamp(esc, -1.0f, 1.0f);
 }
 
 float Driver::CalculateLateralControl(State& state) {
   float e = state.desired_angular_vel_ - state.angular_vel;
-  angular_vel_e_i_ = 0.75f * angular_vel_e_i_ + e;
+  angular_vel_e_i_ = 0.8f * angular_vel_e_i_ + e;
 
   // Fitted data gives: 3E-03 + 0.516x + -0.0673x^2
   float ov = (state.desired_fwd_vel_ > 0.1f)
                  ? state.desired_angular_vel_ / state.desired_fwd_vel_
                  : 0.0f;
   float feedforward = 0.516f * ov - 0.0673f * ov * ov;
+  float Kp = 0.025f;
+  float Ki = 0.0006f;
+  float Kd = 0.005f;
   float steer =
-      feedforward + 0.05f * e -
-      0.005f * (state.desired_angular_vel_ - prev_state_.desired_angular_vel_);
+      feedforward + Kp * e + Ki * angular_vel_e_i_ -
+      Kd * (state.desired_angular_vel_ - prev_state_.desired_angular_vel_);
   return std::clamp(steer, -1.0f, 1.0f);
 }
 

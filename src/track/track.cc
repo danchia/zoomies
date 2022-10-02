@@ -56,6 +56,7 @@ RacingPath::PathInfo RacingPath::GetPathInfo(float s_guess, float x, float y,
       result.s = pt.s + twv.norm();
       result.heading = lerp_angle(pt.heading, next_pt.heading, t);
       result.velocity = ((1.0f - t) * pt.velocity) + t * next_pt.velocity;
+      result.curvature = ((1.0f - t) * pt.curvature) + t * next_pt.curvature;
 
       dist_positive = pclosest.x() * wv.y() - pclosest.y() * wv.x() >= 0.0f;
     }
@@ -75,16 +76,16 @@ RacingPath::RacingPath(std::string_view fs_path) {
   }
 
   int32_t n_segments;
-  float scratch[5];
+  float scratch[6];
 
   f.read(reinterpret_cast<char*>(&n_segments), sizeof(n_segments));
   f.read(reinterpret_cast<char*>(&segment_length_), sizeof(segment_length_));
   f.read(reinterpret_cast<char*>(&max_accel_), sizeof(max_accel_));
 
   for (int32_t i = 0; i < n_segments; ++i) {
-    f.read(reinterpret_cast<char*>(scratch), 5 * sizeof(scratch[0]));
-    path_.push_back(
-        {scratch[0], scratch[1], scratch[2], scratch[3], scratch[4]});
+    f.read(reinterpret_cast<char*>(scratch), 6 * sizeof(scratch[0]));
+    path_.push_back({scratch[0], scratch[1], scratch[2], scratch[3], scratch[4],
+                     scratch[5]});
   }
 
   if (f.fail()) {

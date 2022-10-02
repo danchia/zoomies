@@ -70,4 +70,6 @@ class Driver {
   float fwd_vel_decel_e_i_ = 0.0f;
   float angular_vel_e_i_ = 0.0f;
   float prev_fwd_e_ = 0.0f;
+
+  float prev_delta_heading_ = 0.0f;
 };

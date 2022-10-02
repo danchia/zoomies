@@ -93,11 +93,14 @@ void Datalogger::LogDriverLog(int64_t t_us, const zoomies::DriverLog& m) {
 void Datalogger::LogRacingPath(int64_t t_us,
                                const std::vector<RacingPath::PathPoint>& path) {
   ros::nav_msgs::Path m;
-  *m.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+  auto stamp = MicrosToRos(t_us);
+  *m.mutable_header()->mutable_stamp() = stamp;
   m.mutable_header()->set_frame_id("/map");
 
   for (const auto& p : path) {
     auto& pose = *m.add_poses();
+    *pose.mutable_header()->mutable_stamp() = stamp;
+    pose.mutable_header()->set_frame_id("/map");
     auto& pos = *pose.mutable_pose()->mutable_position();
     pos.set_x(p.x);
     pos.set_y(p.y);

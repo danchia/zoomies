@@ -100,7 +100,7 @@ int main() {
 
   // Stop the car.
   for (int i = 0; i < 200; ++i) {
-    hw.SetLedSpeedSteering(2, -0.3f, kSteerTrim);
+    hw.SetLedSpeedSteering(2, -0.7f, kSteerTrim);
     usleep(10000);
   }
 
