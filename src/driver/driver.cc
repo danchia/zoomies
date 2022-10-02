@@ -233,19 +233,22 @@ void Driver::DoFollowRacingPath(int64_t t_us, float dt, State& state) {
       std::min(path_info.velocity,
                prev_state_.desired_fwd_vel_ + racing_path_.max_accel() * dt);
 
-  float lane_gain = 1.8f;
-  // At the start, side-by-side with other car, don't lane keep so aggressively.
-  if (state.total_distance <= 4.0f) {
-    lane_gain /= (state.total_distance / 4.0f) * 10.0f;
-  }
+  float feedforward = atanf(kFrontToRearLength * path_info.curvature);
+
+  float lane_gain = 0.7f;
   float delta_heading_desired = HeadingDiff(state.heading, path_info.heading);
   float delta_heading_d =
       HeadingDiff(prev_delta_heading_, delta_heading_desired);
-  float delta_heading = 0.4f * delta_heading_desired + 0.06f * delta_heading_d;
+  float delta_heading = 0.3f * delta_heading_desired + 0.01f * delta_heading_d;
   float lane =
       atan2f32(lane_gain * path_info.dist_to_closest, state.desired_fwd_vel_);
-  float delta = delta_heading + lane;
+  float delta = feedforward + delta_heading + lane;
   delta = std::clamp(delta, -kMaxSteerDelta, kMaxSteerDelta);
+
+  // At the start, side-by-side with other car, don't turn so aggressively.
+  if (state.total_distance <= 4.0f) {
+    delta *= state.total_distance / 4.0f;
+  }
 
   // tan delta = L/R = L*w / V
   // w = (tan delta)*V/L
@@ -258,6 +261,7 @@ void Driver::DoFollowRacingPath(int64_t t_us, float dt, State& state) {
   plan.set_path_dist_to_closest(path_info.dist_to_closest);
   plan.set_desired_linear_velocity(state.desired_fwd_vel_);
   plan.set_lane_gain(lane_gain);
+  plan.set_delta_feedforward(feedforward);
   plan.set_delta_heading(delta_heading);
   plan.set_delta_heading_desired(delta_heading_desired);
   plan.set_delta_heading_d_term(delta_heading_d);

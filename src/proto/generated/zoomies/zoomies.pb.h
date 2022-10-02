@@ -606,6 +606,7 @@ class MotionPlan final :
     kDeltaHeadingDesiredFieldNumber = 10,
     kDeltaHeadingDTermFieldNumber = 11,
     kDeltaHeadingPreviousFieldNumber = 12,
+    kDeltaFeedforwardFieldNumber = 13,
   };
   // float path_velocity = 1;
   void clear_path_velocity();
@@ -715,6 +716,15 @@ class MotionPlan final :
   void _internal_set_delta_heading_previous(float value);
   public:
 
+  // float delta_feedforward = 13;
+  void clear_delta_feedforward();
+  float delta_feedforward() const;
+  void set_delta_feedforward(float value);
+  private:
+  float _internal_delta_feedforward() const;
+  void _internal_set_delta_feedforward(float value);
+  public:
+
   // @@protoc_insertion_point(class_scope:zoomies.MotionPlan)
  private:
   class _Internal;
@@ -734,6 +744,7 @@ class MotionPlan final :
   float delta_heading_desired_;
   float delta_heading_d_term_;
   float delta_heading_previous_;
+  float delta_feedforward_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_zoomies_2fzoomies_2eproto;
 };
@@ -1614,6 +1625,26 @@ inline void MotionPlan::_internal_set_delta_heading_previous(float value) {
 inline void MotionPlan::set_delta_heading_previous(float value) {
   _internal_set_delta_heading_previous(value);
   // @@protoc_insertion_point(field_set:zoomies.MotionPlan.delta_heading_previous)
+}
+
+// float delta_feedforward = 13;
+inline void MotionPlan::clear_delta_feedforward() {
+  delta_feedforward_ = 0;
+}
+inline float MotionPlan::_internal_delta_feedforward() const {
+  return delta_feedforward_;
+}
+inline float MotionPlan::delta_feedforward() const {
+  // @@protoc_insertion_point(field_get:zoomies.MotionPlan.delta_feedforward)
+  return _internal_delta_feedforward();
+}
+inline void MotionPlan::_internal_set_delta_feedforward(float value) {
+  
+  delta_feedforward_ = value;
+}
+inline void MotionPlan::set_delta_feedforward(float value) {
+  _internal_set_delta_feedforward(value);
+  // @@protoc_insertion_point(field_set:zoomies.MotionPlan.delta_feedforward)
 }
 
 // float lane_delta = 6;
