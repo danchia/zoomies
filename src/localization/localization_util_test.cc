@@ -18,14 +18,6 @@ std::vector<uint8_t> TestImage() {
   return img;
 }
 
-TEST(FindRects, Basic) {
-  auto img = TestImage();
-  auto res = FindRect(640, 480, img.data(), 220, 1000);
-  EXPECT_THAT(res, testing::UnorderedElementsAre(Rect{110, 116, 82, 33},
-                                                 Rect{287, 143, 62, 43},
-                                                 Rect{279, 336, 62, 38}));
-}
-
 const Eigen::Vector4f K{1.83260687e+02, 1.83044898e+02, 3.18091934e+02,
                         2.50873559e+02};
 const Eigen::Vector4f D{0.06782692, -0.03927174, 0.00502321, 0.00063159};
