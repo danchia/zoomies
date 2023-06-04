@@ -1,6 +1,7 @@
 #include "writer.h"
 
 #include "google/protobuf/descriptor.pb.h"
+#define MCAP_IMPLEMENTATION
 #include "mcap/mcap.hpp"
 
 class McapLogWriterImpl final : public McapLogWriter {
@@ -87,5 +88,5 @@ void McapLogWriterImpl::WriteMsg(int chan_id, int64_t timestamp_us,
   msg.publishTime = msg.logTime;
   msg.data = reinterpret_cast<const std::byte*>(data.data());
   msg.dataSize = data.size();
-  mcap_.write(msg);
+  auto s = mcap_.write(msg);
 }
