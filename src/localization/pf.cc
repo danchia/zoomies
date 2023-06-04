@@ -9,7 +9,8 @@
 #include "spdlog/spdlog.h"
 
 namespace {
-const float kMaxLightDist = 1.2f;
+// const float kMaxLightDist = 1.2f;
+const float kMaxLightDist = 5.0f;
 const float kNoDetectionProb = logf(0.1f);
 }  // namespace
 

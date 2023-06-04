@@ -12,6 +12,7 @@
 #include "mcap/reader.hpp"
 #include "mcap/writer.h"
 #include "proto/proto_util.h"
+#include "ros/geometry_msgs/PoseStamped.pb.h"
 #include "ros/sensor_msgs/Image.pb.h"
 #include "ros/sensor_msgs/PointCloud2.pb.h"
 #include "ros/visualization_msgs/ImageMarker.pb.h"
@@ -152,6 +153,7 @@ class Localizer {
   int pf_topic_;
   int map_topic_;
   int landmark_detected_topic_;
+  int pf_pose_topic_;
 };
 
 Localizer::Localizer()
@@ -163,7 +165,7 @@ Localizer::Localizer()
                  kImageHeight, 0.02f, -10.0f, -10.0f, 10.0f, 10.0f) {
   InitViz();
 
-  pf_.SeedLocation({-0.3f, -0.3f, -0.4f}, {0.3f, 0.3f, 0.4f});
+  pf_.SeedLocation({-1.0f, -0.3f, -0.4f}, {0.3f, 0.3f, 0.4f});
 }
 
 void Localizer::InitViz() {
@@ -183,6 +185,8 @@ void Localizer::InitViz() {
       "/landmarks/detected", ros::sensor_msgs::PointCloud2::descriptor());
   floor_map_topic_ = ros_writer_->AddChannel(
       "/floormap", ros::sensor_msgs::Image::descriptor());
+  pf_pose_topic_ = ros_writer_->AddChannel(
+      "/localization/pf_pose", ros::geometry_msgs::PoseStamped::descriptor());
 }
 
 void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
@@ -213,6 +217,17 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
   map_maker_.Update(pf_result.pose, rgb_img);
 
   // Update visuals
+  {
+    ros::geometry_msgs::PoseStamped pose;
+    *pose.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+    pose.mutable_header()->set_frame_id("/world");
+    pose.mutable_pose()->mutable_position()->set_x(pf_result.pose.x());
+    pose.mutable_pose()->mutable_position()->set_y(pf_result.pose.y());
+    *pose.mutable_pose()->mutable_orientation() =
+        HeadingToQuat(pf_result.pose.z());
+    ros_writer_->Write(pf_pose_topic_, t_us, pose);
+  }
+
   auto [particles_r, weights] = pf_.pose_particles();
   std::vector<Eigen::Vector4f> particles;
   float max_w = -1e10f;
@@ -236,7 +251,7 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
     ros_img.set_encoding("mono8");
     ros_img.set_is_bigendian(false);
     ros_img.set_step(kImageWidth);
-    *ros_img.mutable_data() = std::string(img.begin(), img.end());
+    *ros_img.mutable_data() = std::string(img_copy.begin(), img_copy.end());
     ros_writer_->Write(img_topic_, t_us, ros_img);
   }
   {
