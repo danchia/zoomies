@@ -108,7 +108,7 @@ Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
   state.y = prev_state_.y + sin(state.heading) * state.fwd_vel * dt;
   state.heading += (heading_delta / 2.0f);
 
-  const float stddev_dist = std::max(0.1f * state.dist_delta, 0.03f * 0.01f);
+  const float stddev_dist = std::max(0.2f * state.dist_delta, 0.03f * 0.01f);
   const float stddev_heading =
       std::max(fabsf(0.3f * heading_delta), 0.1f * 0.01f);
   std::optional<Localizer::SyncResult> localizer_result =
