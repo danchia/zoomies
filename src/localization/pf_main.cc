@@ -129,8 +129,9 @@ class Localizer {
  public:
   Localizer();
   void VideoFrame(int64_t t_us, const std::vector<uint8_t>& img);
-  void OdoFrame(int64_t t_us, float odo_dist_delta, float odo_heading_delta,
-                float imu_rot_z, float x, float y, float z);
+  void OdoFrame(int64_t t_us, float odo_dist_delta, float imu_rot_z,
+                float odo_heading_delta, float dist_stddev,
+                float heading_stddev, float x, float y, float z);
 
  private:
   void InitViz();
@@ -406,7 +407,8 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
 }
 
 void Localizer::OdoFrame(int64_t t_us, float odo_dist_delta,
-                         float odo_heading_delta, float imu_rot_z, float x,
+                         float odo_heading_delta, float imu_rot_z,
+                         float dist_stddev, float heading_stddev, float x,
                          float y, float z) {
   spdlog::info("odo frame t:{} dist_d:{} heading_d:{}", t_us, odo_dist_delta,
                odo_heading_delta);
@@ -424,8 +426,8 @@ void Localizer::OdoFrame(int64_t t_us, float odo_dist_delta,
   motions_.push_back({
       .delta_dist = odo_dist_delta,
       .delta_heading = odo_heading_delta,
-      .stddev_dist = std::max(0.1f * odo_dist_delta, 0.03f * 0.01f),
-      .stddev_heading = std::max(fabsf(0.3f * odo_heading_delta), 0.1f * 0.01f),
+      .stddev_dist = dist_stddev,
+      .stddev_heading = heading_stddev,
   });
 }
 
@@ -472,7 +474,8 @@ int main() {
       int64_t t_us = msgView.message.publishTime;
       t_us /= int64_t{1000};
       localizer.OdoFrame(t_us, m.dist_delta(), m.heading_delta(),
-                         m.imu_rotation().z(), m.x(), m.y(), m.heading());
+                         m.imu_rotation().z(), m.dist_stddev(),
+                         m.heading_stddev(), m.x(), m.y(), m.heading());
       ++datas;
     }
   }
