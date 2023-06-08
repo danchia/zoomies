@@ -167,7 +167,7 @@ Localizer::Localizer()
                  kImageHeight, 0.02f, -10.0f, -10.0f, 10.0f, 10.0f) {
   InitViz();
 
-  pf_.SeedLocation({-0.5f, -0.3f, -0.4f}, {0.3f, 0.3f, 0.4f});
+  pf_.SeedLocation({-1.0f, -0.3f, -0.4f}, {0.3f, 0.3f, 0.4f});
 }
 
 void Localizer::InitViz() {
