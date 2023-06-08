@@ -130,7 +130,7 @@ class Localizer {
   Localizer();
   void VideoFrame(int64_t t_us, const std::vector<uint8_t>& img);
   void OdoFrame(int64_t t_us, float odo_dist_delta, float odo_heading_delta,
-                float imu_rot_z);
+                float imu_rot_z, float x, float y, float z);
 
  private:
   void InitViz();
@@ -154,6 +154,7 @@ class Localizer {
   int map_topic_;
   int landmark_detected_topic_;
   int pf_pose_topic_;
+  int log_pose_topic_;
 };
 
 Localizer::Localizer()
@@ -187,6 +188,8 @@ void Localizer::InitViz() {
       "/floormap", ros::sensor_msgs::Image::descriptor());
   pf_pose_topic_ = ros_writer_->AddChannel(
       "/localization/pf_pose", ros::geometry_msgs::PoseStamped::descriptor());
+  log_pose_topic_ = ros_writer_->AddChannel(
+      "/log_pose", ros::geometry_msgs::PoseStamped::descriptor());
 }
 
 void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
@@ -403,9 +406,20 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
 }
 
 void Localizer::OdoFrame(int64_t t_us, float odo_dist_delta,
-                         float odo_heading_delta, float imu_rot_z) {
+                         float odo_heading_delta, float imu_rot_z, float x,
+                         float y, float z) {
   spdlog::info("odo frame t:{} dist_d:{} heading_d:{}", t_us, odo_dist_delta,
                odo_heading_delta);
+
+  {
+    ros::geometry_msgs::PoseStamped pose;
+    *pose.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+    pose.mutable_header()->set_frame_id("/world");
+    pose.mutable_pose()->mutable_position()->set_x(x);
+    pose.mutable_pose()->mutable_position()->set_y(y);
+    *pose.mutable_pose()->mutable_orientation() = HeadingToQuat(z);
+    ros_writer_->Write(log_pose_topic_, t_us, pose);
+  }
 
   motions_.push_back({
       .delta_dist = odo_dist_delta,
@@ -458,7 +472,7 @@ int main() {
       int64_t t_us = msgView.message.publishTime;
       t_us /= int64_t{1000};
       localizer.OdoFrame(t_us, m.dist_delta(), m.heading_delta(),
-                         m.imu_rotation().z());
+                         m.imu_rotation().z(), m.x(), m.y(), m.heading());
       ++datas;
     }
   }
