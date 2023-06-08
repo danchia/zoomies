@@ -165,7 +165,7 @@ Localizer::Localizer()
                  kImageHeight, 0.02f, -10.0f, -10.0f, 10.0f, 10.0f) {
   InitViz();
 
-  pf_.SeedLocation({-1.0f, -0.3f, -0.4f}, {0.3f, 0.3f, 0.4f});
+  pf_.SeedLocation({-0.5f, -0.3f, -0.4f}, {0.3f, 0.3f, 0.4f});
 }
 
 void Localizer::InitViz() {
@@ -208,6 +208,7 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
   }
 
   auto pf_result = pf_.Update(motions_, landmarks);
+  // auto pf_result = pf_.Update(motions_, {});
   motions_.clear();
 
   spdlog::info("PF loc: {} {} {}, var: {} {} {}", pf_result.pose.x(),

@@ -10,8 +10,8 @@
 
 namespace {
 // const float kMaxLightDist = 1.2f;
-const float kMaxLightDist = 5.0f;
-const float kNoDetectionProb = logf(0.1f);
+const float kMaxLightDist = 3.0f;
+const float kNoDetectionProb = logf(0.05f);
 }  // namespace
 
 ParticleFilter::UpdateResult ParticleFilter::Update(
@@ -41,11 +41,13 @@ ParticleFilter::UpdateResult ParticleFilter::Update(
         if (c_dist < dist) dist = c_dist;
       }
       dist = sqrtf(dist);
-      if (dist >= kMaxLightDist) {
-        log_p += kNoDetectionProb;
-      } else {
-        log_p += stats::dnorm(dist, 0.0f, lm.stddev, /*log_form=*/true);
-      }
+      log_p += std::max(stats::dnorm(dist, 0.0f, lm.stddev, /*log_form=*/true),
+                        kNoDetectionProb);
+      // if (dist >= kMaxLightDist) {
+      //   log_p += kNoDetectionProb;
+      // } else {
+      //   log_p += stats::dnorm(dist, 0.0f, lm.stddev, /*log_form=*/true);
+      // }
     }
     weights_[i] = log_p;
   }
