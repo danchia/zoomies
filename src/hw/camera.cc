@@ -89,6 +89,12 @@ bool Camera::Start(std::function<void(uint8_t *buf, int len)> cb) {
       MMAL_PARAM_EXPOSUREMETERINGMODE_MATRIX};
   mmal_port_parameter_set(camera_->control, &meter_mode.hdr);
 
+  // Prefer higher shutter speeds
+  MMAL_PARAMETER_EXPOSUREMODE_T exp_mode = {
+      {MMAL_PARAMETER_EXPOSURE_MODE, sizeof(exp_mode)},
+      MMAL_PARAM_EXPOSUREMODE_SPORTS};
+  mmal_port_parameter_set(camera_->control, &exp_mode.hdr);
+
   auto format = video_port->format;
   format->encoding = MMAL_ENCODING_I420;
   format->encoding_variant = MMAL_ENCODING_I420;
