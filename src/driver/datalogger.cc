@@ -3,7 +3,9 @@
 #include <unistd.h>
 
 #include "ros/nav_msgs/Path.pb.h"
+#include "ros/sensor_msgs/PointCloud2.pb.h"
 #include "ros/std_msgs/ColorRGBA.pb.h"
+#include "ros/tf2_msgs/TFMessage.pb.h"
 #include "ros/visualization_msgs/Marker.pb.h"
 #include "spdlog/spdlog.h"
 
@@ -26,6 +28,15 @@ Datalogger::Datalogger(const std::string& path)
                                            zoomies::MotionPlan::descriptor());
   driver_log_topic_ =
       writer_->AddChannel("/driver/state", zoomies::DriverLog::descriptor());
+
+  tf_topic_ =
+      writer_->AddChannel("/tf", ros::tf2_msgs::TFMessage::descriptor());
+
+  landmarks_topic_ = writer_->AddChannel(
+      "/localization/landmarks", ros::sensor_msgs::PointCloud2::descriptor());
+
+  map_topic_ = writer_->AddChannel("/localization/map",
+                                   ros::sensor_msgs::PointCloud2::descriptor());
 
   writer_thread_ = std::thread([this] { WriterLoop(); });
 }
@@ -81,8 +92,95 @@ void Datalogger::LogVideoFrame(int64_t t_us, const ros::sensor_msgs::Image& m) {
   QMsg(img_topic_, t_us, m);
 }
 
+void Datalogger::LogMap(int64_t t_us, const std::vector<Eigen::Vector3f>& map) {
+  ros::sensor_msgs::PointCloud2 pt_cloud;
+  *pt_cloud.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+  pt_cloud.mutable_header()->set_frame_id("/map");
+  pt_cloud.set_height(1);
+
+  auto* field = pt_cloud.add_fields();
+  field->set_name("x");
+  field->set_offset(0);
+  field->set_datatype(7);
+  field->set_count(1);
+
+  field = pt_cloud.add_fields();
+  field->set_name("y");
+  field->set_offset(4);
+  field->set_datatype(7);
+  field->set_count(1);
+
+  field = pt_cloud.add_fields();
+  field->set_name("z");
+  field->set_offset(8);
+  field->set_datatype(7);
+  field->set_count(1);
+
+  pt_cloud.set_is_bigendian(false);
+  pt_cloud.set_point_step(12);
+  pt_cloud.set_is_dense(true);
+
+  pt_cloud.set_width(map.size());
+  int nbytes = 12 * map.size();
+  pt_cloud.set_row_step(nbytes);
+  pt_cloud.mutable_data()->resize(nbytes);
+  memcpy(pt_cloud.mutable_data()->data(), map.data(), nbytes);
+
+  QMsg(map_topic_, t_us, pt_cloud);
+}
+
+void Datalogger::LogLandmarks(int64_t t_us,
+                              const std::vector<Eigen::Vector3f>& landmarks) {
+  ros::sensor_msgs::PointCloud2 pt_cloud;
+  *pt_cloud.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+  pt_cloud.mutable_header()->set_frame_id("/base_link");
+  pt_cloud.set_height(1);
+
+  auto* field = pt_cloud.add_fields();
+  field->set_name("x");
+  field->set_offset(0);
+  field->set_datatype(7);
+  field->set_count(1);
+
+  field = pt_cloud.add_fields();
+  field->set_name("y");
+  field->set_offset(4);
+  field->set_datatype(7);
+  field->set_count(1);
+
+  field = pt_cloud.add_fields();
+  field->set_name("z");
+  field->set_offset(8);
+  field->set_datatype(7);
+  field->set_count(1);
+
+  pt_cloud.set_is_bigendian(false);
+  pt_cloud.set_point_step(12);
+  pt_cloud.set_is_dense(true);
+
+  pt_cloud.set_width(landmarks.size());
+  int nbytes = 12 * landmarks.size();
+  pt_cloud.set_row_step(nbytes);
+  pt_cloud.mutable_data()->resize(nbytes);
+  memcpy(pt_cloud.mutable_data()->data(), landmarks.data(), nbytes);
+
+  QMsg(landmarks_topic_, t_us, pt_cloud);
+}
+
 void Datalogger::LogGlobalPose(int64_t t_us,
                                const ros::geometry_msgs::PoseStamped& m) {
+  ros::tf2_msgs::TFMessage tf;
+  auto& transform = *tf.add_transforms();
+  *transform.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+  transform.mutable_header()->set_frame_id("/map");
+  transform.set_child_frame_id("/base_link");
+  transform.mutable_transform()->mutable_translation()->set_x(
+      m.pose().position().x());
+  transform.mutable_transform()->mutable_translation()->set_y(
+      m.pose().position().y());
+  *transform.mutable_transform()->mutable_rotation() = m.pose().orientation();
+  QMsg(tf_topic_, t_us, tf);
+
   QMsg(global_pose_topic_, t_us, m);
 }
 

@@ -32,6 +32,10 @@ class Datalogger {
   void LogMotionPlan(int64_t t_us, const zoomies::MotionPlan& m);
   void LogDriverLog(int64_t t_us, const zoomies::DriverLog& m);
 
+  void LogMap(int64_t t_us, const std::vector<Eigen::Vector3f>& map);
+  void LogLandmarks(int64_t t_us,
+                    const std::vector<Eigen::Vector3f>& landmarks);
+
  private:
   struct Msg {
     int chan_id;
@@ -47,6 +51,9 @@ class Datalogger {
   int racing_path_closet_pt_topic_;
   int driver_log_topic_;
   int motion_plan_topic_;
+  int tf_topic_;
+  int landmarks_topic_;
+  int map_topic_;
 
   std::unique_ptr<McapLogWriter> writer_;
 

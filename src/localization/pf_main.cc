@@ -15,6 +15,7 @@
 #include "ros/geometry_msgs/PoseStamped.pb.h"
 #include "ros/sensor_msgs/Image.pb.h"
 #include "ros/sensor_msgs/PointCloud2.pb.h"
+#include "ros/tf2_msgs/TFMessage.pb.h"
 #include "ros/visualization_msgs/ImageMarker.pb.h"
 #include "spdlog/cfg/env.h"
 #include "spdlog/fmt/ostr.h"
@@ -156,6 +157,7 @@ class Localizer {
   int landmark_detected_topic_;
   int pf_pose_topic_;
   int log_pose_topic_;
+  int tf_topic_;
 };
 
 Localizer::Localizer()
@@ -191,6 +193,8 @@ void Localizer::InitViz() {
       "/localization/pf_pose", ros::geometry_msgs::PoseStamped::descriptor());
   log_pose_topic_ = ros_writer_->AddChannel(
       "/log_pose", ros::geometry_msgs::PoseStamped::descriptor());
+  tf_topic_ =
+      ros_writer_->AddChannel("/tf", ros::tf2_msgs::TFMessage::descriptor());
 }
 
 void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
@@ -223,9 +227,24 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
 
   // Update visuals
   {
+    ros::tf2_msgs::TFMessage tf;
+    auto& transform = *tf.add_transforms();
+    *transform.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
+    transform.mutable_header()->set_frame_id("/map");
+    transform.set_child_frame_id("/base_link");
+    transform.mutable_transform()->mutable_translation()->set_x(
+        pf_result.pose.x());
+    transform.mutable_transform()->mutable_translation()->set_y(
+        pf_result.pose.y());
+    *transform.mutable_transform()->mutable_rotation() =
+        HeadingToQuat(pf_result.pose.z());
+    ros_writer_->Write(tf_topic_, t_us, tf);
+  }
+
+  {
     ros::geometry_msgs::PoseStamped pose;
     *pose.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
-    pose.mutable_header()->set_frame_id("/world");
+    pose.mutable_header()->set_frame_id("/map");
     pose.mutable_pose()->mutable_position()->set_x(pf_result.pose.x());
     pose.mutable_pose()->mutable_position()->set_y(pf_result.pose.y());
     *pose.mutable_pose()->mutable_orientation() =
@@ -277,7 +296,7 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
 
     ros::sensor_msgs::Image ros_img;
     *ros_img.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
-    ros_img.mutable_header()->set_frame_id("/world");
+    ros_img.mutable_header()->set_frame_id("/map");
     ros_img.set_height(map_maker_.height());
     ros_img.set_width(map_maker_.width());
     ros_img.set_encoding("rgb8");
@@ -291,7 +310,7 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
   {
     ros::sensor_msgs::PointCloud2 pt_cloud;
     *pt_cloud.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
-    pt_cloud.mutable_header()->set_frame_id("/world");
+    pt_cloud.mutable_header()->set_frame_id("/map");
     pt_cloud.set_height(1);
     pt_cloud.set_width(particles.size());
 
@@ -333,7 +352,7 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
 
   ros::sensor_msgs::PointCloud2 pt_cloud;
   *pt_cloud.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
-  pt_cloud.mutable_header()->set_frame_id("/world");
+  pt_cloud.mutable_header()->set_frame_id("/map");
   pt_cloud.set_height(1);
 
   auto* field = pt_cloud.add_fields();
@@ -371,14 +390,10 @@ void Localizer::VideoFrame(int64_t t_us, const std::vector<uint8_t>& img) {
 
   {
     std::vector<Eigen::Vector3f> landmark_pts;
-    auto cam_to_world_rot = Eigen::Rotation2Df(pf_result.pose.z());
     for (const auto& lm : landmarks) {
-      Eigen::Vector2f pt = {lm.pos.x(), lm.pos.y()};
-      pt = cam_to_world_rot * pt +
-           Eigen::Vector2f{pf_result.pose.x(), pf_result.pose.y()};
-
-      landmark_pts.push_back({pt.x(), pt.y(), kCeilHeight});
+      landmark_pts.push_back({lm.pos.x(), lm.pos.y(), kCeilHeight});
     }
+    pt_cloud.mutable_header()->set_frame_id("/base_link");
     pt_cloud.set_width(landmark_pts.size());
     nbytes = 12 * landmark_pts.size();
     pt_cloud.set_row_step(nbytes);
@@ -416,7 +431,7 @@ void Localizer::OdoFrame(int64_t t_us, float odo_dist_delta,
   {
     ros::geometry_msgs::PoseStamped pose;
     *pose.mutable_header()->mutable_stamp() = MicrosToRos(t_us);
-    pose.mutable_header()->set_frame_id("/world");
+    pose.mutable_header()->set_frame_id("/map");
     pose.mutable_pose()->mutable_position()->set_x(x);
     pose.mutable_pose()->mutable_position()->set_y(y);
     *pose.mutable_pose()->mutable_orientation() = HeadingToQuat(z);

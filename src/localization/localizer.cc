@@ -6,11 +6,16 @@ Localizer::Localizer(const Options& options)
       light_finder_(camera_model_, options.img_width, options.img_height,
                     options.ceil_height, options.pix_thres, options.min_area,
                     options.ceil_mask_path),
-      pf_(options.num_particles, options.map_path) {
+      pf_(options.num_particles, options.map_path),
+      ceiling_height_(options.ceil_height) {
   pf_.SeedLocation({-1.0f, -0.3f, -0.4f}, {0.3f, 0.3f, 0.4f});
+
+  for (const auto& m : pf_.map()) {
+    map_.push_back({m.x(), m.y(), ceiling_height_});
+  }
 }
 
-void Localizer::OnVideoFrame(int64_t t_us, uint8_t* img) {
+Localizer::FrameResult Localizer::OnVideoFrame(int64_t t_us, uint8_t* img) {
   // NOTE: below alters img
   auto lights = light_finder_.Find(img);
 
@@ -49,6 +54,18 @@ void Localizer::OnVideoFrame(int64_t t_us, uint8_t* img) {
     std::lock_guard l(mu_);
     next_result_.reset();
   }
+
+  Localizer::FrameResult result;
+  result.landmarks.reserve(landmarks.size());
+  for (const auto& lm : landmarks) {
+    result.landmarks.push_back({
+        lm.pos.x(),
+        lm.pos.y(),
+        ceiling_height_,
+    });
+  }
+
+  return result;
 }
 
 std::optional<Localizer::SyncResult> Localizer::ControlSync(

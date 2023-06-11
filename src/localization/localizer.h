@@ -32,15 +32,21 @@ class Localizer {
     Eigen::Vector3f variance;
   };
 
+  struct FrameResult {
+    std::vector<Eigen::Vector3f> landmarks;
+  };
+
   Localizer(const Options& opts);
 
-  void OnVideoFrame(int64_t t_us, uint8_t* img);
+  FrameResult OnVideoFrame(int64_t t_us, uint8_t* img);
 
   std::optional<SyncResult> ControlSync(int64_t t_us,
                                         const Eigen::Vector3f& pos,
                                         float dist_delta, float heading_delta,
                                         float stddev_dist,
                                         float stddev_heading);
+
+  const std::vector<Eigen::Vector3f>& map() { return map_; }
 
  private:
   struct ControlUpdate {
@@ -52,6 +58,8 @@ class Localizer {
   CameraModel camera_model_;
   LightFinder light_finder_;
   ParticleFilter pf_;
+  float ceiling_height_;
+  std::vector<Eigen::Vector3f> map_;
 
   std::mutex mu_;
   std::vector<ControlUpdate> updates_;

@@ -72,7 +72,13 @@ void Driver::OnCameraTick(int64_t t_us, uint8_t* buf, int len) {
     memcpy(img_msg_.mutable_data()->data(), buf, len);  // unfortunate copy
     datalogger_.LogVideoFrame(t_us, img_msg_);
   }
-  localizer_.OnVideoFrame(t_us, buf);
+
+  auto frame_result = localizer_.OnVideoFrame(t_us, buf);
+
+  if (vid_frame_ == 1 || vid_frame_ % 30 == 0) {
+    datalogger_.LogMap(t_us, localizer_.map());
+  }
+  datalogger_.LogLandmarks(t_us, frame_result.landmarks);
 }
 
 Driver::ControlOutput Driver::OnControlTick(int64_t t_us,
