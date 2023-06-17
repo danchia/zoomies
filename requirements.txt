@@ -3,6 +3,7 @@ backcall==0.2.0
 colorama==0.4.4
 cvxpy==1.1.18
 cycler==0.11.0
+Cython==0.29.32
 debugpy==1.5.1
 decorator==5.1.0
 ecos==2.0.8
@@ -36,6 +37,7 @@ python-dateutil==2.8.2
 pywin32==303
 pyzmq==22.3.0
 qdldl==0.1.5.post0
+quadprog==0.1.7
 rosbags==0.9.8
 ruamel.yaml==0.17.17
 ruamel.yaml.clib==0.2.6
@@ -48,6 +50,7 @@ sympy==1.9
 toml==0.10.2
 tornado==6.1
 traitlets==5.1.1
+trajectory-planning-helpers==0.79
 wcwidth==0.2.5
 websockets==10.1
 zstandard==0.16.0
