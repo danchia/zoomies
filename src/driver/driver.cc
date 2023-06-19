@@ -28,7 +28,7 @@ constexpr int kVideoWidth = 640;
 constexpr int kVideoHeight = 480;
 
 constexpr bool kLogVideo = true;
-constexpr int kVideoLogInterval = 10;
+constexpr int kVideoLogInterval = 5;
 
 float MotorTickPeriodToMetersPerSecond(uint16_t p) {
   if (p == 0) return 0.0f;
