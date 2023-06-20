@@ -44,6 +44,8 @@ The camera vision based particle filter operates at 30Hz:
 
 The high-level motion planned is based around the Stanford Stanley steering controller, with an additional feedforward component as well as an addition PID control to more gradually move the desired angular velocity toward's Stanley's target velocity. Otherwise I found that the car would oscillate at high speeds from over-correcting.
 
+Telemetry is logged using the [MCAP](https://mcap.dev/) format and visualized using the most excellent [Foxglove Studio](https://foxglove.dev/). I wrote a blog about this for them [here](https://foxglove.dev/blog/recording-robocar-data-with-mcap).
+
 ## Acknowledgements
 
 I've been heavily inspired by Andy Sloane [robot car]](https://github.com/a1k0n/cycloid), and part of my impetus for releasing my code is continue the knowledge sharing!
